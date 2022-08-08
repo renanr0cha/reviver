@@ -1,6 +1,5 @@
 import { HStack, IconButton, Heading, useTheme } from "native-base";
 import { CaretLeft }from "phosphor-react-native"
-import { StyleSheet } from "react-native";
 
 export function Header({ title, ...rest}) {
 
@@ -8,8 +7,14 @@ export function Header({ title, ...rest}) {
   const { colors } = useTheme()
 
   return (
-    <HStack style={styles.container}
+    <HStack
+      w="full"
+      justifyContent="space-between"
+      alignItems="center"
       bg={colors.primary[600]}
+      pb={6}
+      pt={12}
+      px={6}
       {...rest}
     >
       <IconButton 
@@ -22,16 +27,4 @@ export function Header({ title, ...rest}) {
     </HStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "full",
-    justifyContent:"space-between",
-    alignItems:"center",
-    paddingBottom: 6,
-    paddingTop: 12,
-    paddingX:6,
-  }
-})
 

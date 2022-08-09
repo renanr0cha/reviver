@@ -1,7 +1,11 @@
-import { HStack, IconButton, Heading, useTheme } from "native-base";
+import { HStack, IconButton, Heading, StyledProps, useTheme } from "native-base";
 import { CaretLeft }from "phosphor-react-native"
 
-export function Header({ title, ...rest}) {
+type Props = StyledProps & {
+  title: string
+}
+
+export function Header({ title, ...rest}: Props) {
 
 
   const { colors } = useTheme()

@@ -8,6 +8,7 @@ export function Home() {
       <Header title="Nova medicação" />
       <Box flex={1} alignItems="center" justifyContent="center" color="black">Hello world!
       </Box>
+      
     </VStack>
   );
 }

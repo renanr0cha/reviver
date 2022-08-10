@@ -4,17 +4,17 @@ type Props = IButtonProps & {
   title: string
 }
 
-export function Button({ title, ...rest }: Props) {
+export function ButtonSmall({ title, ...rest }: Props) {
   const { colors } = useTheme()
   return (
     <ButtonNativeBase
       bg={colors.primary[700]}
-      h={14}
+      h={12}
       rounded="full"
       _pressed={{ bg: colors.primary[900]}}
       {...rest}
     >
-      <Heading color="white" fontSize="xl">{title}</Heading>
+      <Heading color="white" fontSize="md" textTransform="uppercase">{title}</Heading>
     </ButtonNativeBase>
   );
 }

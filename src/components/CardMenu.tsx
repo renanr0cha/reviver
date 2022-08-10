@@ -1,28 +1,8 @@
-import { HStack, Heading, VStack, useTheme, IconButton, Box, Text } from "native-base";
-import { SignOut, ChartLine } from "phosphor-react-native"
-import { ButtonSmall } from "../../components/ButtonSmall";
+import { VStack } from 'native-base';
 
-
-export function Home() {
-  const { colors } = useTheme()
+export function CardMenu() {
   return (
     <VStack>
-      <HStack
-      w="full"
-      justifyContent="space-between"
-      alignItems="center"
-      bg={colors.primary[600]}
-      pb={4}
-      pt={12}
-      px={4}
-      >
-        <Heading color={colors.white}  textAlign="left" fontSize="xl" flex={1} ml={4}>
-        Olá Paciente
-        </Heading>
-        <IconButton
-          icon={<SignOut size={26} color={colors.white} />}
-        />
-      </HStack>
       <Box
         p={4}
         margin={8}
@@ -51,7 +31,6 @@ export function Home() {
         </Box>
         
       </Box>
-      
     </VStack>
   );
 }

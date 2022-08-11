@@ -1,6 +1,8 @@
 import { HStack, Heading, VStack, useTheme, IconButton, Box, Text } from "native-base";
-import { SignOut, ChartLine } from "phosphor-react-native"
+import { SignOut, ChartLine, Pill } from "phosphor-react-native"
+import { Button } from "../../components/Button";
 import { ButtonSmall } from "../../components/ButtonSmall";
+import { CardMenu } from "../../components/CardMenu";
 
 
 export function Home() {
@@ -33,8 +35,8 @@ export function Home() {
         alignItems="center"
         justifyContent="flex-start"
       >
-        <Box backgroundColor={colors.primary[600]} p={2} rounded={50} >
-            <ChartLine size={42} color={colors.white} />
+        <Box backgroundColor={colors.primary[400]} p={2} rounded={50} >
+            <ChartLine size={38} color={colors.white} />
         </Box>
         <Box
         
@@ -51,7 +53,11 @@ export function Home() {
         </Box>
         
       </Box>
-      
+
+      <CardMenu title="Medicamentos" subtitle="Veja seus medicamentos" buttonTitle="adicionar" icon={Pill}/>
+
+
+      <Button title="Adicionar" m={8} alignSelf="flex-end"/>
     </VStack>
   );
 }

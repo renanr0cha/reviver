@@ -1,9 +1,20 @@
-import { VStack } from 'native-base';
+import { VStack, Box, Icon, useTheme, Heading, Text, HStack  } from 'native-base';
+import { IconProps } from 'phosphor-react-native';
+import React from 'react';
+import { ButtonSmall } from './ButtonSmall';
 
-export function CardMenu() {
+type Props = {
+  title: string,
+  subtitle: string,
+  buttonTitle: string,
+  icon: React.ElementType<IconProps>
+}
+
+export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, ...rest}: Props) {
+  const { colors } = useTheme()
   return (
     <VStack>
-      <Box
+      <HStack
         p={4}
         margin={8}
         rounded="lg"
@@ -11,26 +22,29 @@ export function CardMenu() {
         borderColor="coolGray.200"
         flexDirection="row"
         alignItems="center"
-        justifyContent="flex-start"
+        justifyContent="space-between"
       >
-        <Box backgroundColor={colors.primary[600]} p={2} rounded={50} >
-            <ChartLine size={42} color={colors.white} />
+        <Box backgroundColor={colors.primary[600]} p={2} mr={4}rounded={50} justifyItems="flex-start">
+            <Icon size={38} color={colors.white} />
         </Box>
-        <Box
-        
+        <VStack
           flexDirection="column"
           justifyContent="space-between"
+          borderWidth={1}
+          borderColor="red"
         >
           
-          <VStack pl={4} alignSelf="flex-start">
-            <Heading fontSize="lg">Progresso</Heading>
-            <Text>Acompanhe seus resultados</Text>
+          <VStack alignSelf="flex-start">
+            <Heading fontSize="lg">{title}</Heading>
+            <Text>{subtitle}</Text>
           </VStack>
-          <ButtonSmall title="Ver evolução" h={12} mt={6} ml={24} p={4} alignSelf="flex-end"/>
+          <Box flexDirection="row" alignSelf="flex-end">
+            <ButtonSmall title={buttonTitle} h={12} mt={6} p={4} alignSelf="flex-end"/>
+          </Box>
 
-        </Box>
+        </VStack>
         
-      </Box>
+      </HStack>
     </VStack>
   );
 }

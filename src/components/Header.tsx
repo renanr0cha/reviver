@@ -18,7 +18,7 @@ export function Header({ title, ...rest}: Props) {
       bg={colors.primary[600]}
       pb={6}
       pt={12}
-      px={6}
+      px={4}
       {...rest}
     >
       <IconButton 

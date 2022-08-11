@@ -17,7 +17,8 @@ export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButto
     <VStack>
       <HStack
         p={4}
-        margin={8}
+        marginX={4}
+        marginTop={4}
         rounded="lg"
         borderWidth={1}
         borderColor="coolGray.200"
@@ -31,14 +32,17 @@ export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButto
         <VStack
           flex={1}
           justifyContent="flex-end"
-          borderWidth={1}
-          borderColor="red"
-          alignItems="center"
         >
           <Heading fontSize="lg" alignSelf="flex-start">{title}</Heading>
-          <Text alignSelf="flex-start">{subtitle}</Text>
-          <ButtonSmall title={buttonTitle} h={12} mt={6} p={4} alignSelf="flex-end"/>
+          <Text alignSelf="flex-start" fontSize="md">{subtitle}</Text>
+          <HStack alignSelf="flex-end">
+            <ButtonSmall title={buttonTitle} h={12} mt={6} p={4}/>
 
+            {
+              !!secondButton &&
+              <ButtonSmall title={secondButton} h={12} mt={6} p={4} ml={4}/>
+            }
+          </HStack>
         </VStack>
         
       </HStack>

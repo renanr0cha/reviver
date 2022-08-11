@@ -9,7 +9,8 @@ export function Button({ title, ...rest }: Props) {
   return (
     <ButtonNativeBase
       bg={colors.primary[700]}
-      h={14}
+      minH={12}
+      p={4}
       rounded="full"
       _pressed={{ bg: colors.primary[900]}}
       {...rest}

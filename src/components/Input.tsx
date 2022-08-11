@@ -1,20 +1,21 @@
-import { Input as NativeBaseInput, IInputProps } from 'native-base';
+import { Input as NativeBaseInput, IInputProps, useTheme } from 'native-base';
 
 export function Input({ ...rest}: IInputProps) {
+  const { colors } = useTheme()
   return (
     <NativeBaseInput
-      bg="gray.700"
+      bg={colors.primary[100]}
       h={14}
       size="md"
       borderWidth={0}
       fontSize="md"
       fontFamily="body"
       color="white"
-      placeholderTextColor="gray.300"
+      placeholderTextColor={colors.text[400]}
       _focus={{
         borderWidth: 1,
-        borderColor: "green.500",
-        bg: "gray.700"
+        borderColor: colors.primary[500],
+        bg: colors.primary[200]
       }}
       { ...rest}
     />

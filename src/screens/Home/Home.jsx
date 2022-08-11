@@ -33,24 +33,23 @@ export function Home() {
         borderColor="coolGray.200"
         flexDirection="row"
         alignItems="center"
-        justifyContent="flex-start"
       >
-        <Box backgroundColor={colors.primary[400]} p={2} rounded={50} >
+        <Box backgroundColor={colors.primary[500]} p={2} mr={4} rounded={50} >
             <ChartLine size={38} color={colors.white} />
         </Box>
-        <Box
         
-          flexDirection="column"
-          justifyContent="space-between"
-        >
           
-          <VStack pl={4} alignSelf="flex-start">
-            <Heading fontSize="lg">Progresso</Heading>
-            <Text>Acompanhe seus resultados</Text>
+          <VStack
+            flex={1}
+            justifyContent="flex-end"
+            borderWidth={1}
+            borderColor="red"
+            alignItems="center"
+          >
+            <Heading fontSize="lg" alignSelf="flex-start">Progresso</Heading>
+            <Text alignSelf="flex-start">Acompanhe seus resultados</Text>
+            <ButtonSmall title="Ver evolução" h={12} mt={6}  alignSelf="flex-end"/>
           </VStack>
-          <ButtonSmall title="Ver evolução" h={12} mt={6} ml={24} p={4} alignSelf="flex-end"/>
-
-        </Box>
         
       </Box>
 

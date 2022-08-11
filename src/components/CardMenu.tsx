@@ -7,10 +7,11 @@ type Props = {
   title: string,
   subtitle: string,
   buttonTitle: string,
-  icon: React.ElementType<IconProps>
+  icon: React.ElementType<IconProps>,
+  secondButton: string
 }
 
-export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, ...rest}: Props) {
+export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButton,...rest}: Props) {
   const { colors } = useTheme()
   return (
     <VStack>
@@ -24,23 +25,19 @@ export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, ...rest}: P
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box backgroundColor={colors.primary[600]} p={2} mr={4}rounded={50} justifyItems="flex-start">
+        <Box backgroundColor={colors.primary[500]} p={2} mr={4}rounded={50} justifyItems="flex-start">
             <Icon size={38} color={colors.white} />
         </Box>
         <VStack
-          flexDirection="column"
-          justifyContent="space-between"
+          flex={1}
+          justifyContent="flex-end"
           borderWidth={1}
           borderColor="red"
+          alignItems="center"
         >
-          
-          <VStack alignSelf="flex-start">
-            <Heading fontSize="lg">{title}</Heading>
-            <Text>{subtitle}</Text>
-          </VStack>
-          <Box flexDirection="row" alignSelf="flex-end">
-            <ButtonSmall title={buttonTitle} h={12} mt={6} p={4} alignSelf="flex-end"/>
-          </Box>
+          <Heading fontSize="lg" alignSelf="flex-start">{title}</Heading>
+          <Text alignSelf="flex-start">{subtitle}</Text>
+          <ButtonSmall title={buttonTitle} h={12} mt={6} p={4} alignSelf="flex-end"/>
 
         </VStack>
         

@@ -1,7 +1,7 @@
-import { HStack, Heading, VStack, useTheme, IconButton, Box, Text } from "native-base";
+import { HStack, Heading, VStack, useTheme, IconButton } from "native-base";
 import { SignOut, ChartLine, Pill, Clipboard } from "phosphor-react-native"
-import { Button } from "../../components/Button";
-import { CardMenu } from "../../components/CardMenu";
+import { Button } from "../components/Button";
+import { CardMenu } from "../components/CardMenu";
 
 
 export function Home() {

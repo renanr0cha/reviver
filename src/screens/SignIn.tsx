@@ -8,9 +8,9 @@ import { Input } from '../components/Input';
 export function SignIn() {
   const { colors } = useTheme()
   return(
-    <VStack flex={1} alignItems="center" bg="coolGray.200" px={8} pt={24}>
+    <VStack flex={1} alignItems="center" bg="white" px={8} pt={24}>
       <Logo />
-      <Heading color="coolGray.100" fontSize="xl" mt={20} mb={6} >
+      <Heading color={colors.text[800]} fontSize="xl" mt={20} mb={6} >
         Acesse sua conta
       </Heading>
       <Input 
@@ -27,6 +27,7 @@ export function SignIn() {
 
       <Button
         title="Entrar"
+        w="full"
       />
     </VStack>
   )

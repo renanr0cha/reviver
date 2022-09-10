@@ -12,6 +12,7 @@ export function ButtonSmall({ title, ...rest }: Props) {
       h={12}
       rounded="full"
       _pressed={{ bg: colors.primary[900]}}
+      shadow={2}
       {...rest}
     >
       <Heading color="white" fontSize="sm" textTransform="uppercase">{title}</Heading>

@@ -1,37 +1,132 @@
-import { HStack, Heading, VStack, useTheme, IconButton } from "native-base";
-import { SignOut, ChartLine, Pill, Clipboard } from "phosphor-react-native"
-import { Button } from "../components/Button";
+import React, { useState} from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { HStack, Heading, VStack, useTheme, IconButton, Box } from "native-base";
+import { SignOut, ChartLine, Pill, Clipboard, UserCircle } from "phosphor-react-native"
+import { ButtonPrimary } from "../components/ButtonPrimary";
+import { ButtonSmall } from "../components/ButtonSmall";
+import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Home() {
+
+  const [isCaregiver, setIsCaregiver] = useState()
+
+  //check if you selected caregiver on login if yes, move to patientlist
+  async function getRole() {
+    try {
+      const roleItem = await AsyncStorage.getItem("role")
+      if (roleItem === "cuidador") {
+        navigation.navigate("patientlist")
+        await AsyncStorage.removeItem("role")
+      }
+    } catch(e) {
+      console.log(e)
+    }
+
+    
+  }
+  getRole()
+
+  //check if is caregiver
+  useFocusEffect(
+    React.useCallback(() => {
+      checkIfCaregiver()
+    }, []))
+
+    const checkIfCaregiver = async () => {
+      const patientUuid = await AsyncStorage.getItem("uuidPatient")
+      
+      setIsCaregiver(patientUuid)
+    }
+
+  const { signOut } = useAuth();
   const { colors } = useTheme()
+  
+  // navigation functions
+  const navigation = useNavigation()
+  function handleNewMedicine() {
+    navigation.navigate("addmed")
+  }
+  function handleNewInspection() {
+    navigation.navigate("addinfo1")
+  }
+  //temp
+  function handleMedicineList() {
+    navigation.navigate("medlist")
+  }
+  function handleChangePatient() {
+    navigation.navigate("patientlist")
+  }
+
   return (
-    <VStack flex={1}>
+    <>
       <HStack
         w="full"
         justifyContent="space-between"
         alignItems="center"
         bg={colors.primary[600]}
         pb={4}
-        pt={12}
+        pt={10}
         px={4}
       >
-        <Heading color={colors.white}  textAlign="left" fontSize="2xl" flex={1} >
-        Olá Paciente
+        <Heading color={colors.white}  textAlign="left" fontSize="xl" flex={1} >
+          Olá, {!isCaregiver ? "Paciente" : "Cuidador"}
         </Heading>
+        {
+          isCaregiver &&
+            <IconButton
+              icon={<UserCircle size={26} color={colors.white} />}
+              onPress={handleChangePatient}
+              borderRadius="full"
+              bgColor={colors.primary[600]}
+              _pressed={{
+                bg: colors.primary[700]
+              }}
+            />
+        }
         <IconButton
           icon={<SignOut size={26} color={colors.white} />}
+          onPress={signOut}
+          borderRadius="full"
+          bgColor={colors.primary[600]}
+          _pressed={{
+            bg: colors.primary[700]
+          }}
         />
       </HStack>
+      <VStack flex={1} bg={colors.white} justifyContent="space-between">
+        <VStack justifyContent="space-between">
+          <CardMenu title="Progresso" subtitle="Acompanhe sua evolução" buttonTitle="ver evolução" icon={ChartLine}>
+            <HStack alignSelf="flex-end">
+              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+            </HStack>
+          </CardMenu>
+          <CardMenu title="Medicamentos" subtitle="Veja seus medicamentos atuais e também adicione novos" buttonTitle="adicionar" secondButton="Ver lista" icon={Pill}>
+            <HStack alignSelf="flex-end">
+              <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewMedicine}/>
+              <ButtonSmall title="ver lista" onPress={handleMedicineList} h={12} mt={2} p={4} ml={4}/>
+            </HStack>
+          </CardMenu>
+          <CardMenu title="Registrar sinais" subtitle="Adicione como você se sente, seus sintomas e medições" buttonTitle="adicionar registros" onPress={handleNewInspection} icon={Clipboard}>
+            <HStack alignSelf="flex-end">
+              <ButtonSmall title="adicionar registros" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+            </HStack>
+          </CardMenu>
+          
+        </VStack>
+        <VStack justifyContent="space-between">
+          <Box px={4} mt={2} pb={2} w="100%">
+            <ButtonPrimary
+              title="Gerenciar Notificações"
+              mt={4}
+              bg={colors.red[500]}
+              onPress={handleMedicineList}
+            />
 
-      <CardMenu title="Progresso" subtitle="Acompanhe sua evolução" buttonTitle="ver evolução" icon={ChartLine}/>
-
-      <CardMenu title="Medicamentos" subtitle="Veja seus medicamentos atuais e também adicione novos" buttonTitle="adicionar" secondButton="Ver lista" icon={Pill}/>
-
-      <CardMenu title="Registrar sinais" subtitle="Adicione como você se sente, seus sintomas e medições" buttonTitle="adicionar registros" icon={Clipboard}/>
-
-      <Button title="Gerenciar Notificações" mx={4} mt={4} bg={colors.red[500]}/>
-    </VStack>
+          </Box>
+        </VStack>
+      </VStack>
+    </>
   );
 }

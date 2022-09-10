@@ -1,13 +1,22 @@
-import { VStack } from 'native-base';
+import { Heading, VStack, Divider, StyledProps } from 'native-base';
+import { ReactNode } from 'react';
 
-export function Section() {
+type Props = StyledProps & {
+  children: ReactNode,
+  title: string,
+  position?: string
+}
+
+export function Section({children, title, position,...rest}: Props) {
   return (
     <VStack
-      flex={1}
-      borderBottomWidth={1}
-      borderBottomColor="coolGray.300"
+      w="full"
+      px={4}
+      {...rest}
     >
-
+      <Heading textAlign="left" >{title}</Heading>
+      {children}
+      
     </VStack>
   );
 }

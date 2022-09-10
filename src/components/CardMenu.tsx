@@ -1,6 +1,6 @@
 import { VStack, Box, Icon, useTheme, Heading, Text, HStack  } from 'native-base';
 import { IconProps } from 'phosphor-react-native';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ButtonSmall } from './ButtonSmall';
 
 type Props = {
@@ -8,41 +8,35 @@ type Props = {
   subtitle: string,
   buttonTitle: string,
   icon: React.ElementType<IconProps>,
-  secondButton: string
+  secondButton: string,
+  children: ReactNode
 }
 
-export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButton,...rest}: Props) {
+export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButton, children,...rest}: Props) {
   const { colors } = useTheme()
   return (
-    <VStack>
+    <VStack {...rest}>
       <HStack
         p={4}
         marginX={4}
         marginTop={4}
         rounded="lg"
         borderWidth={1}
-        borderColor="coolGray.200"
+        borderColor="coolGray.300"
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
       >
         <Box backgroundColor={colors.primary[500]} p={2} mr={4}rounded={50} justifyItems="flex-start">
-            <Icon size={38} color={colors.white} />
+            <Icon size={36} color={colors.white} />
         </Box>
         <VStack
           flex={1}
           justifyContent="flex-end"
         >
-          <Heading fontSize="lg" alignSelf="flex-start">{title}</Heading>
+          <Heading fontSize="lg" alignSelf="flex-start" mb={2}>{title}</Heading>
           <Text alignSelf="flex-start" fontSize="md">{subtitle}</Text>
-          <HStack alignSelf="flex-end">
-            <ButtonSmall title={buttonTitle} h={12} mt={6} p={4}/>
-
-            {
-              !!secondButton &&
-              <ButtonSmall title={secondButton} h={12} mt={6} p={4} ml={4}/>
-            }
-          </HStack>
+          {children}
         </VStack>
         
       </HStack>

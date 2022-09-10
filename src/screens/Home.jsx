@@ -55,6 +55,9 @@ export function Home() {
   function handleMedicineList() {
     navigation.navigate("medlist")
   }
+  function handleFingerTap() {
+    navigation.navigate("fingertap")
+  }
   function handleChangePatient() {
     navigation.navigate("patientlist")
   }
@@ -99,7 +102,7 @@ export function Home() {
         <VStack justifyContent="space-between">
           <CardMenu title="Progresso" subtitle="Acompanhe sua evolução" buttonTitle="ver evolução" icon={ChartLine}>
             <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleFingerTap}/>
             </HStack>
           </CardMenu>
           <CardMenu title="Medicamentos" subtitle="Veja seus medicamentos atuais e também adicione novos" buttonTitle="adicionar" secondButton="Ver lista" icon={Pill}>

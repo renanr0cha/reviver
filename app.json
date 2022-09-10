@@ -1,13 +1,24 @@
 {
+  "name": "reviver",
+  "displayName": "reviver",
   "expo": {
     "name": "reviver",
     "slug": "reviver",
     "version": "1.0.0",
+    "sdkVersion": "45.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
       "package": "com.reviver"
+    },
+    "ios": {
+      "bundleIdentifier": "com.reviver-project"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c9965aa4-91a7-4152-bb90-8ca05a26af34"
+      }
     }
   }
 }

@@ -27,14 +27,11 @@ interface SignUpFormData {
 }
 
 //form validation
-const phoneRegex = /\([1-9]{2}\)\ ?[0-9]{4,5}?\-?[0-9]{4}/
-const cpfRegex = /([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2})/
 const schema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
-  cpf: Yup.string().required('Insira seu CPF').matches(cpfRegex, 'Informe um cpf válido.'),
+  cpf: Yup.string().required('Insira seu CPF'),
   email: Yup.string().required('Email é obrigatório'),
-  birth_date: Yup.date().required('Selecione a data de nascimento'),
-  phone: Yup.string().required('Insira seu contato').matches(phoneRegex, 'Informe um número válido.'),
+  phone: Yup.string().required('Insira seu contato'),
   sex: Yup.string().required('Selecione o sexo'),
   password: Yup.string().required('A senha é obrigatória'),
   password_confirmation: Yup.string().required('A confirmação da senha é obrigatória'),
@@ -63,15 +60,18 @@ export function SignUp() {
   const onSubmit: SubmitHandler<SignUpFormData>  = (data) => {
     setIsLoading(true)
 
+    data.birth_date = stringBirthDate
+
+
     console.log(data.birth_date)
 
     console.log(data)
     if (!data.birth_date) {
+      setIsLoading(false)
+
       return Alert.alert("Selecione a sua data de nascimento")
     }
-    if (!data.sex) {
-      return Alert.alert("Selecione seu sexo")
-    }
+    
     if (data.password != data.password_confirmation) {
       setIsLoading(false)
       return Alert.alert("As duas senhas não coincidem")

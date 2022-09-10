@@ -10,7 +10,6 @@ import { AuthProvider } from "./src/hooks/auth";
 
 
 
-
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold})
   return (

@@ -43,7 +43,7 @@ export function InputForm({ name, control, error,...rest}: IInputProps & InputPr
         )}
         name={name}
         />
-        {error && <Text fontSize={12} mb={2} fontWeight="bold" color={colors.red[400]}>{error}</Text>}
+        {error && <Text fontSize={12} mb={2} textAlign="left" fontWeight="bold" color={colors.red[400]}>{error}</Text>}
     </>
   );
 }

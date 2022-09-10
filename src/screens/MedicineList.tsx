@@ -1,4 +1,4 @@
-import { VStack, useTheme, Box, Heading, ScrollView } from 'native-base';
+import { VStack, useTheme, Box, Heading, ScrollView, Text } from 'native-base';
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
@@ -49,19 +49,23 @@ export function MedicineList() {
                 <VStack alignItems="center" justifyContent="space-between" bg="white" w="100%" h="full" pb={10}>
                   <VStack w="100%">
                     {
-                      medicines.length > 0 && 
+                      medicines.length > 0 ? 
                       medicines.map((medicine: any, index: any) => {
                         
                         return (
                           <MedicineCard medicineName={medicine.name} frequency={medicine.hours.length} startTime={medicine.hours[0]} secondTime={medicine.hours[1]} thirdTime={medicine.hours[2]} fourthTime={medicine.hours[3]} dosage={medicine.dosage} days={medicine.days} endDate={`${String(new Date(medicine.end_date).getDate()).padStart(2, "0")}/${String(new Date(medicine.end_date).getMonth() + 1).padStart(2, "0")}/${String(new Date(medicine.end_date).getFullYear())}`} key={index} inventory={medicine.inventory}/>
                         )
                       })
-                    }
-                    {
-                      medicines.length < 0 && 
-                      <>
-                        <Heading fontSize="lg">Você não tem nenhum medicamento cadastrado</Heading>
-                      </>
+                      :
+                        (
+                          <>
+                            <VStack alignItems="center" justifyContent="center" bg="white" w="100%"  mt={75}>
+                              <Heading fontSize="lg" w={300} textAlign="center" mt={40}>Você não possui nenhum medicamento cadastrado</Heading>
+                              <Text fontSize="md" mt={6}>Cadastre um novo no botão abaixo</Text>
+                            </VStack>
+                            
+                          </>
+                        )
                     }
                   </VStack>
                 </VStack>

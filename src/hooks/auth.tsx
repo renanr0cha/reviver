@@ -9,6 +9,7 @@ import React, {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from "../services/api"
+import { Alert } from 'react-native';
 
 interface AuthState {
   token: string
@@ -50,17 +51,29 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const signIn = useCallback(async ({ cpf, password }:SignCredentials) => {
-    const response = await api.post('/login', {
+    await api.post('/login', {
       cpf,
       password
+    }).then(async response => {
+      const { token } = response.data
+      if (token === "paciente" || token === "cuidador") {
+        return Alert.alert("CPF ou Senha incorreta")
+      }
+      await AsyncStorage.setItem('token', token)
+      setData({ token })
+    }).catch(error => {
+      error.response.data.error === "Unauthorized" ?
+      Alert.alert("CPF ou Senha incorreta") : console.log(error.response.data.error)
     })
+    
+    
+    
+    
 
-    const { token } = response.data
-
-    await AsyncStorage.setItem('token', token)
+    
 
 
-    setData({ token })
+    
   }, [])
 
   const signOut = useCallback(async () => {

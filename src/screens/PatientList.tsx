@@ -41,7 +41,6 @@ export function PatientList() {
   //set and delete patient uuid token
   const setPatientUuid = async (uuid: any) => {
     await AsyncStorage.setItem('uuidPatient', `/${uuid}`)
-    console.log(await AsyncStorage.getItem('uuidPatient'))
   }
   const deletePatientUuid = async () => {
     await AsyncStorage.removeItem('uuidPatient')
@@ -50,7 +49,6 @@ export function PatientList() {
   const getAllPatients = async () => {
 
     const userToken = await AsyncStorage.getItem('token')
-    console.log(userToken)
     api.get(`/${userToken}/patient/list`)
     .then((response) => {
       const allPatients = response.data
@@ -87,7 +85,7 @@ export function PatientList() {
             
             <ScrollView bg="white">
               <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <VStack alignItems="center" justifyContent="space-between" bg="white" w="100%" h="100%">
+                <VStack alignItems="center" justifyContent="space-between" bg="white" w="100%" h="100%" >
                   <VStack w="100%" pb={10} bg="white" >
                     {/* populate component with data from api */}
                     {
@@ -107,29 +105,27 @@ export function PatientList() {
                             />
                               
                         )
-                      }) : () => {
-                        return(
+                      }) : (
                           <>
-                            <VStack alignItems="center" justifyContent="center" bg="white" w="100%" h="full">
-                              <Heading fontSize="lg">Você não tem nenhum paciente cadastrado</Heading>
+                            <VStack alignItems="center" justifyContent="center" bg="white" w="100%"  mt={75}>
+                              <Heading fontSize="lg" w={300} textAlign="center" mt={40}>Você não tem nenhum paciente cadastrado</Heading>
+                              <Text fontSize="md" mt={6}>Cadastre um novo no botão abaixo</Text>
                             </VStack>
                             
                           </>
                         )
                       }
-                    }
 
                   </VStack>
                 </VStack>
               </TouchableWithoutFeedback>
             </ScrollView>
-            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)} >
               <Modal.Content maxWidth="400px">
-                <Modal.CloseButton />
-                <Modal.Header>Selecionar este paciente?</Modal.Header>
+                <Modal.Header _text={{ fontWeight:"bold"}} >Selecionar este paciente?</Modal.Header>
                 <Modal.Body>
                   <Text>
-                    Todas as informações que você ver e cadastrar serão salvos para o paciente selecionado até você fazer Logout e voltar a entrar como paciente
+                    Todas as informações que você ver e cadastrar após confirmar serão salvos para o paciente selecionado até você fazer Logout e voltar a entrar como paciente
                   </Text>
                 </Modal.Body>
                 <Modal.Footer>
@@ -150,8 +146,8 @@ export function PatientList() {
                 </Modal.Footer>
               </Modal.Content>
             </Modal>
-                  <VStack w="100%" bg={colors.white}>
-                    <Box px={4} mt={2} pb={2} w="100%">
+                  <VStack w="100%" bg={colors.white} >
+                    <Box px={4} mt={2} pb={2} w="100%" >
                       <ButtonPrimary
                         title="Adicionar novo paciente"
                         textAlign="center"

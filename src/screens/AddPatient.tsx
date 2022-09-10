@@ -67,9 +67,12 @@ export function AddPatient() {
 
     console.log(data)
     if (!data.birth_date) {
+      setIsLoading(false)
+
       return Alert.alert("Selecione a sua data de nascimento")
     }
     if (!data.sex) {
+      setIsLoading(false)
       return Alert.alert("Selecione seu sexo")
     }
 
@@ -93,16 +96,22 @@ export function AddPatient() {
     })
     .then(response => {
       console.log(response.data)
-      const { uuidPatient } = response.data
-      try {
-        AsyncStorage.setItem('uuidPatient', uuidPatient)
-      } catch (e) {
-        console.log(e)
-      }
+
+      // const { uuidPatient } = response.data
+      // try {
+      //   AsyncStorage.setItem('uuidPatient', uuidPatient)
+      // } catch (e) {
+      //   console.log(e)
+      // }
 
       navigation.navigate("patientlist")
+    }).catch(error => {
+      error.response.data.error === "Você não pode se adicionar como paciente" ?
+      Alert.alert("Você não pode se adicionar como paciente") : Alert.alert(error.response.data.error)
+      setIsLoading(false)
+
     })
-    .catch(error => console.log(error))
+    
 };
   const { colors } = useTheme()
 

@@ -8,6 +8,8 @@ module.exports = (() => {
   config.transformer = {
     ...transformer,
     babelTransformerPath: require.resolve("react-native-svg-transformer"),
+    assetPlugins: ['expo-asset/tools/hashAssetFiles'],
+
   };
   config.resolver = {
     ...resolver,

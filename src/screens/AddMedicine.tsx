@@ -1,5 +1,5 @@
 import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -14,13 +14,17 @@ import api from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+type Nav = {
+  navigate: (value: string) => void;
+}
 interface MedicineFormData {
   medicine: string,
   prescription: string,
   frequency: string,
   dosage_quantity: string,
   dosage_unit: string,
-  duration: string,
+  // duration: string,
   start_date?: string,
   end_date?: string,
   quantity_of_days: string,
@@ -36,7 +40,7 @@ const schema = Yup.object().shape({
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
-  duration: Yup.string().required('Informe a duração que vai tomar o medicamento'),
+  // duration: Yup.string().required('Informe a duração que vai tomar o medicamento'),
   start_date: Yup.string(),
   end_date: Yup.string(),
   quantity_of_days: Yup.string(),
@@ -47,7 +51,13 @@ const schema = Yup.object().shape({
 
 export function AddMedicine() {
 
-  const navigation = useNavigation()
+  // useEffect(() => {
+  //   reset({
+  //     data: 'test'
+  //   })
+  // }, [isSubmitSuccessful])
+
+  const navigation = useNavigation<Nav>()
 
   const [startDate, setStartDate] = useState(new Date())
   const [stringStartDate, setStringStartDate] = useState("")
@@ -75,7 +85,7 @@ export function AddMedicine() {
   //mostrar campo para adicionar estoque
   const [showInventory, setShowInventory] = useState(false)
 
-  const { control, handleSubmit, formState: { errors } } = useForm<MedicineFormData>({
+  const { control, reset, handleSubmit, formState: { errors } } = useForm<MedicineFormData>({
     resolver: yupResolver(schema)
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
@@ -119,7 +129,7 @@ export function AddMedicine() {
     })
     .then((response) => {
       console.log(response.data)
-      navigation.goBack()
+      navigation.navigate("medlist")
     })
     .catch(error => console.log(error))
   };
@@ -141,6 +151,7 @@ export function AddMedicine() {
                 autoCapitalize="sentences"
                 autoCorrect={false}
                 error={errors.medicine && errors.medicine.message}
+                defaultValue=""
               />
               <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>
               <Controller
@@ -158,7 +169,7 @@ export function AddMedicine() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                     <Select.Item label="Sim, precisa de receita" value="yes" />
-                    <Select.Item label="Não, você compra sem" value="no" />
+                    <Select.Item label="Não precisa de receita" value="no" />
                   </Select>
                 )}
                 name="prescription"
@@ -330,7 +341,7 @@ export function AddMedicine() {
                   }
             </Section>
             <Section title="Sobre a duração do tratamento" mt={6}>
-              <FormControl.Label _text={{bold: true}} mt={2}>Período do tratamento:</FormControl.Label>
+              {/* <FormControl.Label _text={{bold: true}} mt={2}>Período do tratamento:</FormControl.Label>
               <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -358,68 +369,65 @@ export function AddMedicine() {
                 name="duration"
                 rules={{ required: 'Field is required' }}
                 defaultValue=""
-              />
-              {
-                showDatePickers &&
-                <HStack justifyContent="space-between" mt={2}>
-                  <VStack w="46%" mr={4}>
-                    <FormControl.Label _text={{bold: true}} mt={2}>Início do tratamento:</FormControl.Label>
-                    <Button
-                      onPress={() => setStartDateOpen(true)}
-                      variant="outline"
-                      size="md"
-                      borderWidth={1}
-                      borderColor="coolGray.300"
-                      fontSize="lg"
-                      fontFamily="body"
-                      color={colors.text[400]}
-                      justifyContent="space-between"
-                      alignItems="space-between"
+              /> */}
+              <FormControl.Label _text={{bold: true}} mt={2}>Início do tratamento:</FormControl.Label>
+              <Button
+                onPress={() => setStartDateOpen(true)}
+                variant="outline"
+                size="md"
+                borderWidth={1}
+                borderColor="coolGray.300"
+                fontSize="lg"
+                fontFamily="body"
+                color={colors.text[400]}
+                justifyContent="space-between"
+                alignItems="space-between"
 
-                      _text={{
-                        color: !stringStartDate ? colors.text[400] : colors.text[600],
-                        fontSize: "md",
-                        fontFamily: "body"
-                      }}
-                    >
-                      {
-                        !stringStartDate ?
-                          `Escolha a data`
-                        :
-                          `${String(startDate.getDate()).padStart(2, "0")}/${String(startDate.getMonth() + 1).padStart(2, "0")}/${String(startDate.getFullYear())}`
-                      }
-                    </Button>
-                    <DatePicker
-                      title="Escolha a data de início do tratamento"
-                      confirmText="confirmar"
-                      cancelText="cancelar"
-                      minimumDate={new Date()}
-                      modal
-                      mode='date'
-                      open={startDateOpen}
-                      date={startDate}
-                      onConfirm={(startDate) => {
-                        setStartDateOpen(false)
-                        setStringStartDate(`${String(startDate.getFullYear())}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`)
-                        setStartDate(startDate)
-                      }}
-                      onCancel={() => {
-                        setStartDateOpen(false)
-                      }}
-                    />
-                  </VStack>
-                  <VStack w="46%" ml={3}>
-                    <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
-                    <InputForm
-                      name="quantity_of_days"
-                      control={control}
-                      placeholder="Insira a quantidade"
-                      autoCorrect={false}
-                      keyboardType="numeric"
-                    />
-                  </VStack>
-                </HStack>
-              }
+                _text={{
+                  color: !stringStartDate ? colors.text[400] : colors.text[600],
+                  fontSize: "md",
+                  fontFamily: "body"
+                }}
+              >
+                {
+                  !stringStartDate ?
+                    `Escolha a data`
+                  :
+                    `${String(startDate.getDate()).padStart(2, "0")}/${String(startDate.getMonth() + 1).padStart(2, "0")}/${String(startDate.getFullYear())}`
+                }
+              </Button>
+              <DatePicker
+                title="Escolha a data de início do tratamento"
+                confirmText="confirmar"
+                cancelText="cancelar"
+                minimumDate={new Date()}
+                modal
+                mode='date'
+                open={startDateOpen}
+                date={startDate}
+                onConfirm={(startDate) => {
+                  setStartDateOpen(false)
+                  setStringStartDate(`${String(startDate.getFullYear())}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`)
+                  setStartDate(startDate)
+                }}
+                onCancel={() => {
+                  setStartDateOpen(false)
+                }}
+              />
+
+              <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
+              <InputForm
+                name="quantity_of_days"
+                control={control}
+                placeholder="Insira a quantidade"
+                autoCorrect={false}
+                keyboardType="numeric"
+              />
+              {/* {
+                showDatePickers &&
+                <>
+                </>
+              } */}
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
             </Section>
 
@@ -427,7 +435,7 @@ export function AddMedicine() {
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} mt={2}>Instruções diversas (Opcional):</FormControl.Label>
-                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInstructions(previousState => !previousState)}></Switch>
+                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInstructions(previousState => !previousState)} value={showInstructions}></Switch>
                 </HStack>
                 {
                   showInstructions &&
@@ -474,7 +482,7 @@ export function AddMedicine() {
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} >Estoque do medicamento (Opcional):</FormControl.Label>
-                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInventory(previousState => !previousState)} value={false}></Switch>
+                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInventory(previousState => !previousState)} value={showInventory}></Switch>
                 </HStack>
                 {
                   showInventory && 

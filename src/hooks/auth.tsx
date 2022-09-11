@@ -62,6 +62,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       await AsyncStorage.setItem('token', token)
       setData({ token })
     }).catch(error => {
+      console.log(error.response)
       error.response.data.error === "Unauthorized" ?
       Alert.alert("CPF ou Senha incorreta") : console.log(error.response.data.error)
     })

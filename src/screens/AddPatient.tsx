@@ -283,7 +283,7 @@ export function AddPatient() {
             </Section>
               <Box mx={4} mt={6} pb={2}>
                 <ButtonPrimary
-                  title="Criar minha conta"
+                  title="Cadastrar paciente"
                   textAlign="center"
                   w="full"
                   onPress={handleSubmit(onSubmit)}

@@ -8,6 +8,7 @@ type Props = StyledProps & {
 
 export function Header({ title, ...rest}: Props) {
   
+  
   const navigation = useNavigation()
 
   const { colors } = useTheme()

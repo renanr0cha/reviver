@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { HStack, Heading, VStack, useTheme, IconButton, Box } from "native-base";
 import { SignOut, ChartLine, Pill, Clipboard, UserCircle } from "phosphor-react-native"
@@ -7,6 +7,7 @@ import { ButtonSmall } from "../components/ButtonSmall";
 import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { deleteFormData } from "../lib/storage"
 
 export function Home() {
 
@@ -28,10 +29,17 @@ export function Home() {
   }
   getRole()
 
+
+  const clearData = async () => {
+    const resp = await deleteFormData()
+    return resp
+  }
+
   //check if is caregiver
   useFocusEffect(
     React.useCallback(() => {
       checkIfCaregiver()
+      clearData()
     }, []))
 
     const checkIfCaregiver = async () => {
@@ -55,9 +63,9 @@ export function Home() {
   function handleMedicineList() {
     navigation.navigate("medlist")
   }
-  function handleFingerTap() {
-    navigation.navigate("fingertap")
-  }
+  // function handleFingerTap() {
+  //   navigation.navigate("fingertap")
+  // }
   function handleChangePatient() {
     navigation.navigate("patientlist")
   }
@@ -102,7 +110,7 @@ export function Home() {
         <VStack justifyContent="space-between">
           <CardMenu title="Progresso" subtitle="Acompanhe sua evolução" buttonTitle="ver evolução" icon={ChartLine}>
             <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleFingerTap}/>
+              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleNewInspection}/>
             </HStack>
           </CardMenu>
           <CardMenu title="Medicamentos" subtitle="Veja seus medicamentos atuais e também adicione novos" buttonTitle="adicionar" secondButton="Ver lista" icon={Pill}>

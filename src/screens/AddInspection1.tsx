@@ -1,5 +1,5 @@
 import { VStack, useTheme, HStack, FormControl, Box, Heading, Switch, Text, Select, CheckIcon, ScrollView } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { getFormData, storeFormData } from '../lib/storage';
+import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
 
 
 type Nav = {
@@ -42,15 +42,10 @@ const schema = Yup.object().shape({
 
 export function AddInspection1() {
   
-
   const [showPressure, setShowPressure] = useState(false)
-  const  handlePressureShow = () => setShowPressure(previousState => !previousState)
   const [showFrequency, setShowFrequency] = useState(false)
-  const  handleFrequencyShow = () => setShowFrequency(previousState => !previousState)
   const [showSaturation, setShowSaturation] = useState(false)
-  const  handleSaturationShow = () => setShowSaturation(previousState => !previousState)
   const [showGlucose, setShowGlucose] = useState(false)
-  const  handleGlucoseShow = () => setShowGlucose(previousState => !previousState)
 
   const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation<Nav>()
@@ -61,16 +56,17 @@ export function AddInspection1() {
 
   const retrieveData = async () => {
     const resp = await getFormData()
+    console.log(resp)
     return resp
   }
 
   const onSubmit: SubmitHandler<AddInspection1FormData> = async (data) => {
     setIsLoading(true)
-    storeFormData({
-      pressure: data.blood_pressure_first_value && data.blood_pressure_second_value ? `${data.blood_pressure_first_value} por ${data.blood_pressure_second_value}` : undefined,
-      heart_rate: data.heart_frequency ? `${data.heart_frequency}bpm` : undefined,
-      saturation: data.saturation ? `${data.saturation}%` : undefined,
-      blood_glucose: data.blood_glucose ? parseInt(data.blood_glucose) : undefined,
+    await storeFormData({
+      pressure: data.blood_pressure_first_value && data.blood_pressure_second_value ? `${data.blood_pressure_first_value} por ${data.blood_pressure_second_value}` : "Sem registro",
+      heart_rate: data.heart_frequency ? `${data.heart_frequency}bpm` : "Sem registro",
+      saturation: data.saturation ? `${data.saturation}%` : "Sem registro",
+      blood_glucose: data.blood_glucose ? parseInt(data.blood_glucose) : 0,
       emoji: parseInt(data.feeling),
       motivation: parseInt(data.motivation),
       depression: parseInt(data.depression)
@@ -98,7 +94,7 @@ export function AddInspection1() {
               <HStack alignItems="center">
                   <Heading fontSize="xl" mb={2}>Pressão arterial</Heading>
                   <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                  <Switch size="md" colorScheme="primary" onValueChange={handlePressureShow} value={false}></Switch>
+                  <Switch size="md" colorScheme="primary" onToggle={() =>setShowPressure(previousState => !previousState)} value={!showPressure}></Switch>
               </HStack>
               {
                 !showPressure &&
@@ -132,7 +128,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Frequência cardíaca</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onValueChange={handleFrequencyShow} value={false}></Switch>
+                <Switch size="md" colorScheme="primary" onToggle={() =>setShowFrequency(previousState => !previousState)} value={!showFrequency}></Switch>
               </HStack>
                 {
                   !showFrequency &&
@@ -153,7 +149,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Saturação do Sangue</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onValueChange={handleSaturationShow} value={false}></Switch>
+                <Switch size="md" colorScheme="primary" onToggle={() =>setShowSaturation(previousState => !previousState)} value={!showSaturation}></Switch>
               </HStack>
               {
                 !showSaturation &&
@@ -173,7 +169,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Glicemia</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onValueChange={handleGlucoseShow} value={false}></Switch>
+                <Switch size="md" colorScheme="primary" onToggle={() =>setShowGlucose(previousState => !previousState)} value={!showGlucose}></Switch>
               </HStack>
               {
                 !showGlucose &&

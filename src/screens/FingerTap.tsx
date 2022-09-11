@@ -3,8 +3,18 @@ import { Box, Button, Heading, HStack, Modal, Text, useTheme, VStack } from 'nat
 import { Header } from '../components/Header';
 import { BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
+import api from '../services/api';
+import { useNavigation } from '@react-navigation/native';
+
+type Nav = {
+  navigate: (value: string) => void;
+}
 
 export function FingerTap() {
+
+  const navigation = useNavigation<Nav>()
   const { colors } = useTheme()
 
   //state to modal countdown
@@ -24,8 +34,6 @@ export function FingerTap() {
     setShowModal(true)
   }, [])
 
-  showSubmitButton && console.log(count)
-
   const Timer = () =>{
     let time = 0;
     const resp = setInterval(()=>{
@@ -39,9 +47,9 @@ export function FingerTap() {
     }, 1000)
   }
   const Count = () =>{
-    setVisibleCount(true)
     let time = 4;
     const resp = setInterval(()=>{
+      setVisibleCount(true)
         time -= 1;
         setSecondsShow(time)
         if(time <= 0){
@@ -52,6 +60,45 @@ export function FingerTap() {
         }
     }, 1000)
   }
+
+  const retrieveData = async () => {
+    const resp = await getFormData()
+    console.log(resp)
+    return resp
+  }
+
+  const deleteData = async () => {
+    await deleteFormData()
+  }
+
+  function handleReturnToHome() {
+    navigation.navigate("home")
+    deleteData()
+
+  }
+
+
+  //formsubmit
+  const onSubmit = async (data: any) => {
+    await storeFormData({
+      finger_tap: data
+    })
+
+    const inspectionData = await retrieveData()
+    const token = await AsyncStorage.getItem('token')
+    const isCaregiver = await AsyncStorage.getItem("uuidPatient")
+    
+    console.log( `Data: ${inspectionData}`)
+    console.log( `Token: ${token}`)
+    console.log( `Caregiver?: ${isCaregiver}`)
+    await api.post(`/${token}/inspection/create${isCaregiver ? isCaregiver : ""}`, inspectionData)
+    .then((response) => {
+      console.log(response.data.error)
+      handleReturnToHome()
+      
+    })
+    .catch(error => console.log(error.response))
+    }
 
   return (
     <>
@@ -85,7 +132,7 @@ export function FingerTap() {
           </HStack>
           <Button
             size="lg"
-            rounded="43%"
+            rounded="full"
             w={250}
             bg={colors.blue[500]}
             _text={{ fontWeight: 'bold', fontSize: "2xl"}}
@@ -102,7 +149,10 @@ export function FingerTap() {
           <>
             <Text w={300} textAlign="center" color={colors.text[600]} mb={2}> Parabéns, você finalizou o teste, aperte o botão abaixo para gravar seu registro</Text>
             <Box px={4} mt={2} pb={2} w="100%">
-              <ButtonPrimary title="Finalizar registro" />
+              <ButtonPrimary
+                title="Finalizar registro"
+                onPress={() => onSubmit(count)}
+              />
 
             </Box>
           </>
@@ -110,7 +160,7 @@ export function FingerTap() {
       </VStack>
       {visibleCount ? 
         (
-          <Modal isOpen={visibleCount} onClose={() => setVisibleCount(false)}>
+          <Modal isOpen={visibleCount} closeOnOverlayClick={false} onClose={() => setVisibleCount(false)}>
 
           <Modal.Content maxWidth="400px">
             <Modal.Header _text={{ fontWeight:"bold"}} >Carregando...</Modal.Header>
@@ -127,7 +177,7 @@ export function FingerTap() {
         )
       :
         (
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <Modal isOpen={showModal} closeOnOverlayClick={false} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
                   <Modal.Header _text={{ fontWeight:"bold"}} >Teste de Finger Tap</Modal.Header>
                   <Modal.Body>

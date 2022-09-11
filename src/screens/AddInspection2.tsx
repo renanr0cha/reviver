@@ -67,19 +67,10 @@ export function AddInspection2() {
       posture: parseInt(data.posture),
       march: parseInt(data.marching),
       slowness: parseInt(data.slowness)
-})
+    })
 
-  console.log(await retrieveData())
-  const inspectionData = await retrieveData()
-  const token = await AsyncStorage.getItem('token')
-  const isCaregiver = await AsyncStorage.getItem("uuidPatient")
-
-  api.post(`/${token}/inspection/create${isCaregiver ? isCaregiver : ""}`, inspectionData)
-  .then((response) => {
-    console.log(response.data)
-  })
-  .catch(error => console.log(error))
-}
+    handleGoFingerTap()
+  }
 
   function handleGoFingerTap() {
     navigation.navigate('fingertap')

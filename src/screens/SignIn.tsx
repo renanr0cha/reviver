@@ -42,6 +42,8 @@ export function SignIn() {
       cpf: data.cpf,
       password: data.password
     })
+    console.log(data)
+
     setIsLoading(false)
     
   }, [signIn])

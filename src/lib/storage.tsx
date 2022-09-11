@@ -20,6 +20,16 @@ export const storeFormData = async (value: any) => {
   }
 }
 
+export const deleteFormData = async () => {
+  try {
+    await AsyncStorage.removeItem('form_data')
+    
+  } catch (e) {
+    console.log(e)
+  }
+  console.log("Done")
+}
+
 export const getFormData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem('form_data')

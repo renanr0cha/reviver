@@ -91,7 +91,7 @@ export function SignUp() {
       console.log(response.data)
 
       const { uuid } = response.data
-
+      
       try {
         AsyncStorage.setItem('uuid', uuid)
       } catch (e) {
@@ -100,8 +100,9 @@ export function SignUp() {
 
       navigation.goBack()
     })
-    .catch(error => console.log(error))
-};
+    .catch(error => {
+      console.log(error.response) })
+  };
   const { colors } = useTheme()
 
   const [show, setShow] = React.useState(false);

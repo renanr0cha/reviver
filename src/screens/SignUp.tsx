@@ -200,6 +200,7 @@ export function SignUp() {
                         </Button>
                         <DatePicker
                           title="Escolha a sua data de nascimento"
+                          textColor="#000000"
                           confirmText="confirmar"
                           cancelText="cancelar"
                           maximumDate={new Date()}

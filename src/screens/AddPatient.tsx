@@ -205,6 +205,7 @@ export function AddPatient() {
                         </Button>
                         <DatePicker
                           title="Escolha a data de nascimento"
+                          textColor="#000000"
                           confirmText="confirmar"
                           cancelText="cancelar"
                           maximumDate={new Date()}

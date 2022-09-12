@@ -398,6 +398,7 @@ export function AddMedicine() {
               </Button>
               <DatePicker
                 title="Escolha a data de início do tratamento"
+                textColor="#000000"
                 confirmText="confirmar"
                 cancelText="cancelar"
                 minimumDate={new Date()}

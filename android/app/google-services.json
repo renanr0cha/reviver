@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "903414283935",
+    "project_id": "reviver-c4889",
+    "storage_bucket": "reviver-c4889.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903414283935:android:c1183b9c5603526ff0ecaa",
+        "android_client_info": {
+          "package_name": "com.reviver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "903414283935-2f2un8blgbgubsg5ofb68dla2e0n2m3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIxRC7sSdAEAyZJfemyoGzNfvwicU4-xU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "903414283935-2f2un8blgbgubsg5ofb68dla2e0n2m3c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

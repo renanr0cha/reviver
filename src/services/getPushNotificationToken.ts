@@ -8,7 +8,7 @@ export async function getPushNotificationToken() {
   }
 
   if (granted) {
-    const pushToken = await Notifications.getExpoPushTokenAsync()
+    const pushToken = await Notifications.getExpoPushTokenAsync({experienceId: '@carlosrenan/reviver'})
     console.log('NOTIFICATION TOKEN => ', pushToken.data)
 
     return pushToken.data

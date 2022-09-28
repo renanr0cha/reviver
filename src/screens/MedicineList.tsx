@@ -33,7 +33,7 @@ export function MedicineList() {
     const userToken = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
-    api.get(`/${userToken}/medicine/list${isCaregiver ? isCaregiver : ""}`)
+    await api.get(`/${userToken}/medicine/list${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
       const allMedicines = response.data
       console.log(allMedicines)

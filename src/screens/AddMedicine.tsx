@@ -1,18 +1,23 @@
-import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView } from 'native-base';
 import React, { useEffect, useState } from 'react';
+import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import DatePicker from 'react-native-date-picker'
+
+import * as Notifications from 'expo-notifications';
 
 import * as Yup from "yup"
-import { yupResolver } from '@hookform/resolvers/yup';
-import api from '../services/api';
-import { useNavigation } from '@react-navigation/native';
+import DatePicker from 'react-native-date-picker'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+
+import api from '../services/api';
+import { setScheduledNotifications } from '../services/setScheduledNotifications';
 
 
 type Nav = {
@@ -51,13 +56,9 @@ const schema = Yup.object().shape({
 
 export function AddMedicine() {
 
-  // useEffect(() => {
-  //   reset({
-  //     data: 'test'
-  //   })
-  // }, [isSubmitSuccessful])
-
   const navigation = useNavigation<Nav>()
+
+  const [medicineId, setMedicineId] = useState("")
 
   const [startDate, setStartDate] = useState(new Date())
   const [stringStartDate, setStringStartDate] = useState("")
@@ -92,6 +93,8 @@ export function AddMedicine() {
     setIsLoading(false)
     
 
+    
+
     //tratando dados
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
@@ -100,22 +103,9 @@ export function AddMedicine() {
     const frequency = parseInt(data.frequency)
     const instruction = data.instructions === "Outro" && data.instructions !== undefined ? data.other_instruction : data.instructions
 
-    console.log({
-      name: data.medicine,
-      prescription,
-      dosage,
-      frequency,
-      start_date: stringStartDate,
-      start_time: stringStartTime,
-      days: choosenDays,
-      instruction,
-      inventory
-    })
-
     const token = await AsyncStorage.getItem('token')
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
-    console.log(token, isCaregiver)
     api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
       name: data.medicine,
       prescription,
@@ -128,10 +118,23 @@ export function AddMedicine() {
       inventory
     })
     .then((response) => {
-      console.log(response.data)
-      navigation.navigate("medlist")
+      console.log(response.data.id);
+      setMedicineId(response.data.id)
+      
+      // navigation.navigate("medlist")
     })
     .catch(error => console.log(error))
+
+    await api.get(`/${token}/medicine/${medicineId}${isCaregiver ? isCaregiver : ""}`)
+    .then((response) => {
+      const medicineData = response.data
+      console.log(medicineData)
+
+      setScheduledNotifications(medicineData.name, medicineData.dosage, medicineData.hours)
+      
+    })
+    .catch(error => console.error(`Error: ${error}`))
+    
   };
   
   const { colors } = useTheme()

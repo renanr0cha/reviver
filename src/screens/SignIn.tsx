@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import { Heading, VStack, useTheme, Icon, HStack, Text, Button, CheckIcon, Select, FormControl } from 'native-base';
-import { Key, User } from 'phosphor-react-native';
+import { Heading, VStack, useTheme, Icon, HStack, Text, Button, CheckIcon, Select, FormControl, Pressable } from 'native-base';
+import { Eye, EyeSlash, Key, User } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Logo from "../assets/logo-primary.svg"
@@ -25,6 +25,8 @@ const schema = Yup.object().shape({
 })
 
 export function SignIn() {
+
+  const [showConfirm, setShowConfirm] = React.useState(false);
 
   const {
     control,
@@ -61,7 +63,6 @@ export function SignIn() {
 
   return(
     <>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <VStack alignItems="flex-start" bg="white" w="100%" h="100%" px={4} pt={24}>
           <Logo />
           <Heading color={colors.text[800]} alignSelf="center" fontSize="xl" mt={20} mb={6} >
@@ -74,7 +75,7 @@ export function SignIn() {
                 keyboardType="numeric"
                 mb={1}
                 placeholder="CPF"
-                InputLeftElement={ <Icon as={<User color={colors.gray[300]}/>} ml={4}/>}
+                InputLeftElement={ <Icon as={<User color={colors.text[400]}/>} ml={4}/>}
                 error={errors.cpf && errors.cpf.message}
               />
               <InputForm
@@ -83,9 +84,13 @@ export function SignIn() {
                 placeholder="Senha"
                 mt={2}
                 mb={1}
-                InputLeftElement={ <Icon as={<Key color={colors.gray[300]}/>} ml={4}/>}
-                secureTextEntry
+                type={showConfirm ? "text" : "password"}
+                InputLeftElement={ <Icon as={<Key color={colors.text[400]}/>} ml={4}/>}
                 error={errors.password && errors.password.message}
+                InputRightElement={
+                  <Pressable onPress={() => setShowConfirm(!showConfirm)}>
+                    <Icon as={showConfirm ? <Eye size={26} color={colors.text[400]}/> : <EyeSlash size={26} color={colors.text[400]}/>} size={5} mr="4" />
+                  </Pressable>}
               />
               <Controller
                 control={control}
@@ -130,7 +135,6 @@ export function SignIn() {
               </Button>
             </HStack>
         </VStack>
-      </TouchableWithoutFeedback>
     </>
   )
 }

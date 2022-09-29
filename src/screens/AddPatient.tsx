@@ -240,7 +240,7 @@ export function AddPatient() {
                           onChange(itemValue);
                         }}
                         _selectedItem={{
-                        bg: "teal.600",
+                        bg: "primary.200",
                         endIcon: <CheckIcon size="5" />
                       }} size="md" fontSize="md">
                           <Select.Item label="Masculino" value="m" />

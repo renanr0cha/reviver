@@ -39,6 +39,9 @@ const schema = Yup.object().shape({
 
 
 export function SignUp() {
+  const [isCPFHighlighted, setCPFIsHighlighted] = useState(false)
+  const [isPhoneHighlighted, setPhoneIsHighlighted] = useState(false)
+  
   const [phone, setPhone ] = useState('')
   const [cpf, setCpf] = React.useState('');
 
@@ -133,10 +136,20 @@ export function SignUp() {
                     <MaskInput
                     keyboardType='numeric'
                     placeholder='999.999.999-99'
-                    style={{
+                    onFocus={() => { setCPFIsHighlighted(true)}}
+                    onBlur={() => {setCPFIsHighlighted(false)}}
+                    style={ !isCPFHighlighted ? {
                       fontSize: 16,
                       borderWidth: 1,
                       borderColor: colors.coolGray[300],
+                      padding: 8,
+                      paddingLeft: 12,
+                      borderRadius: 4
+                    } : {
+                      fontSize: 16,
+                      borderWidth: 1,
+                      borderColor: colors.primary[500],
+                      backgroundColor: colors.primary[100],
                       padding: 8,
                       paddingLeft: 12,
                       borderRadius: 4
@@ -235,7 +248,7 @@ export function SignUp() {
                             onChange(itemValue);
                           }}
                           _selectedItem={{
-                          bg: "teal.600",
+                          bg: "primary.200",
                           endIcon: <CheckIcon size="5" />
                         }} size="md" fontSize="md">
                             <Select.Item label="Masculino" value="m" />
@@ -256,10 +269,20 @@ export function SignUp() {
                     <MaskInput
                     keyboardType='numeric'
                     placeholder='(99)99999-9999'
-                    style={{
+                    onFocus={() => { setPhoneIsHighlighted(true)}}
+                    onBlur={() => {setPhoneIsHighlighted(false)}}
+                    style={ !isPhoneHighlighted ? {
                       fontSize: 16,
                       borderWidth: 1,
                       borderColor: colors.coolGray[300],
+                      padding: 8,
+                      paddingLeft: 12,
+                      borderRadius: 4
+                    } : {
+                      fontSize: 16,
+                      borderWidth: 1,
+                      borderColor: colors.primary[500],
+                      backgroundColor: colors.primary[100],
                       padding: 8,
                       paddingLeft: 12,
                       borderRadius: 4
@@ -267,10 +290,8 @@ export function SignUp() {
                       value={phone}
                       onChangeText={(masked, unmasked) => {
                         onChange(phone)
-                        setPhone(masked); // you can use the unmasked value as well
-                        // assuming you typed "9" all the way:
-                        console.log(masked); // (99)99999-9999
-                        console.log(unmasked); // 99999999999
+                        setPhone(masked); 
+                        
                       }}
                       mask={['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                     />

@@ -27,7 +27,6 @@ export const deleteFormData = async () => {
   } catch (e) {
     console.log(e)
   }
-  console.log("Done")
 }
 
 export const getFormData = async () => {

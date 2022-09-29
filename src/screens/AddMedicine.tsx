@@ -106,7 +106,7 @@ export function AddMedicine() {
     const token = await AsyncStorage.getItem('token')
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
-    api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
+    await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
       name: data.medicine,
       prescription,
       dosage,
@@ -125,24 +125,22 @@ export function AddMedicine() {
     .catch(error => console.log(error))
 
 
-    let filter = {
-      where: {
-        id: medicineId
-      }
-   };
-   await api.get(`/${token}/medicine/list${isCaregiver ? isCaregiver : ""}`)
+  
+    await api.get(`/${token}/medicine/list${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
-      const medicineData = response.data
-      // console.log(medicineData)
+      const medicines = response.data
+      const medicineData = medicines.find((medicine: { id: string; }) => medicine.id === medicineId)
+      console.log(medicineData)
 
+      setScheduledNotifications(medicineData.name, medicineData.hours, medicineData.dosage)
   
       
     })
     .catch(error => console.error(`Error: ${error}`))
     
-    const hours = ["22:51", "22:54"]
+    
 
-    setScheduledNotifications(data.medicine, hours, dosage)
+    
   };
   
   const { colors } = useTheme()

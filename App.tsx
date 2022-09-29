@@ -13,6 +13,7 @@ import { getPushNotificationToken } from './src/services/getPushNotificationToke
 import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
+import { setScheduledNotifications } from "./src/services/setScheduledNotifications";
 
 
 

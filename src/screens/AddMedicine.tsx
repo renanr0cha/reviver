@@ -118,23 +118,31 @@ export function AddMedicine() {
       inventory
     })
     .then((response) => {
-      console.log(response.data.id);
       setMedicineId(response.data.id)
       
       // navigation.navigate("medlist")
     })
     .catch(error => console.log(error))
 
-    await api.get(`/${token}/medicine/${medicineId}${isCaregiver ? isCaregiver : ""}`)
+
+    let filter = {
+      where: {
+        id: medicineId
+      }
+   };
+   await api.get(`/${token}/medicine/list${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
       const medicineData = response.data
-      console.log(medicineData)
+      // console.log(medicineData)
 
-      setScheduledNotifications(medicineData.name, medicineData.dosage, medicineData.hours)
+  
       
     })
     .catch(error => console.error(`Error: ${error}`))
     
+    const hours = ["22:51", "22:54"]
+
+    setScheduledNotifications(data.medicine, hours, dosage)
   };
   
   const { colors } = useTheme()

@@ -13,13 +13,20 @@ interface Props {
 export async function setScheduledNotifications( name: string, hours: string[], dosage: string) {
 
   hours.forEach(hour => {
-    const trigger = new Date(hour).getTime()
+    const date = hour.split(":")
+    console.log(`${date[0]}:${date[1]}`)
     Notifications.scheduleNotificationAsync({
-      content: { 
+      content: {
+        autoDismiss: false,
         title: `Você tem medicamento às ${hour}`,
         body: `${name} ${dosage}`,
+        priority: 'max'
       },
-      trigger,
+      trigger: {
+        hour: Number(date[0]),
+        minute: Number(date[1]),
+        repeats: true,
+      },
     });
   });
   

@@ -1,6 +1,6 @@
 import * as Notifications from "expo-notifications";
 
-export async function setUpCategoryForNotificationReponse() {
+export async function setUpCategoryForNotificationResponse() {
   Notifications.setNotificationCategoryAsync("buttons", [
     {
       identifier: "yes",

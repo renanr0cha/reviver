@@ -14,7 +14,7 @@ import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { setScheduledNotifications } from "./src/services/setScheduledNotifications";
-import { setUpCategoryForNotificationReponse } from "./src/services/setUpCategoryForNotificationReponse";
+import { setUpCategoryForNotificationResponse } from "./src/services/setUpCategoryForNotificationResponse";
 
 
 
@@ -45,7 +45,7 @@ export default function App() {
     }
   }, [])
 
-  setUpCategoryForNotificationReponse()
+  setUpCategoryForNotificationResponse()
   
   
 

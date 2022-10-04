@@ -350,7 +350,6 @@ export function AddMedicine() {
                             confirmText="confirmar"
                             cancelText="cancelar"
                             modal
-                            minuteInterval={15}
                             mode='time'
                             open={startTimeOpen}
                             date={startTime}

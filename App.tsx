@@ -14,6 +14,7 @@ import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { setScheduledNotifications } from "./src/services/setScheduledNotifications";
+import { setUpCategoryForNotificationReponse } from "./src/services/setUpCategoryForNotificationReponse";
 
 
 
@@ -43,6 +44,10 @@ export default function App() {
       }
     }
   }, [])
+
+  setUpCategoryForNotificationReponse()
+  
+  
 
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold})
   return (

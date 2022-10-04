@@ -11,6 +11,12 @@ interface Props {
 }
 
 export async function setScheduledNotifications( name: string, hours: string[], dosage: string) {
+  Notifications.setNotificationChannelAsync(name, {
+    name: name,
+    importance: Notifications.AndroidImportance.MAX,
+    lightColor: "#FF231F7C",
+  })
+  
 
   hours.forEach(hour => {
     const date = hour.split(":")
@@ -20,7 +26,8 @@ export async function setScheduledNotifications( name: string, hours: string[], 
         autoDismiss: false,
         title: `Você tem medicamento às ${hour}`,
         body: `${name} ${dosage}`,
-        priority: 'max'
+        priority: 'max',
+        categoryIdentifier: 'buttons'
       },
       trigger: {
         hour: Number(date[0]),

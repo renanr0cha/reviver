@@ -10,8 +10,7 @@
       "**/*"
     ],
     "android": {
-      "package": "com.reviver"
-    },
+      "package": "com.reviver"    },
     "ios": {
       "bundleIdentifier": "com.reviver-project"
     },

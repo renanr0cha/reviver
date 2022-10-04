@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView } from 'native-base';
+import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
 
-import * as Notifications from 'expo-notifications';
 
 import * as Yup from "yup"
 import DatePicker from 'react-native-date-picker'
@@ -22,6 +21,12 @@ import { setScheduledNotifications } from '../services/setScheduledNotifications
 
 type Nav = {
   navigate: (value: string) => void;
+}
+
+interface ListProps {
+  token: string,
+  isCaregiver: boolean,
+  medId: number
 }
 interface MedicineFormData {
   medicine: string,
@@ -56,9 +61,41 @@ const schema = Yup.object().shape({
 
 export function AddMedicine() {
 
-  const navigation = useNavigation<Nav>()
+  const toast = useToast()
 
-  const [medicineId, setMedicineId] = useState("")
+  function navigate() {
+    setIsLoading(false)
+    navigation.navigate("medlist")
+  }
+
+  function getMedicineList(token: string | null, isCaregiver: string | null, medId: number | null) {
+    api.get(`/${token}/medicine/list${isCaregiver ? isCaregiver : ""}`)
+      .then((response) => {
+        const medicines = response.data
+        const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
+        console.log(medicineData)
+
+        setScheduledNotifications(medicineData.name,["21:58", "22:00"], medicineData.dosage)
+        addNotifications()
+        setTimeout( navigate, 3000)
+      })
+      .catch(error => console.error(`Error: ${error}`))
+  }
+
+  function addNotifications() {
+    toast.show({
+      padding: 4,
+      
+      title: "Medicamento adicionado com sucesso!",
+      placement: "bottom",
+      duration: 2000,
+      onCloseComplete: () => {
+        Alert.alert("Notificações cadastradas com sucesso!", "Você será alertado toda vez quem chegar a hora de tomar o medicamento")
+      },
+    })
+      
+  }
+  const navigation = useNavigation<Nav>()
 
   const [startDate, setStartDate] = useState(new Date())
   const [stringStartDate, setStringStartDate] = useState("")
@@ -80,9 +117,6 @@ export function AddMedicine() {
 
   const [showOtherInstruction, setShowOtherInstruction] = useState(false)
 
-  const [showDatePickers, setShowDatePickers] = useState(false)
-
-
   //mostrar campo para adicionar estoque
   const [showInventory, setShowInventory] = useState(false)
 
@@ -90,7 +124,7 @@ export function AddMedicine() {
     resolver: yupResolver(schema)
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
-    setIsLoading(false)
+    setIsLoading(true)
     
 
     
@@ -118,28 +152,11 @@ export function AddMedicine() {
       inventory
     })
     .then((response) => {
-      setMedicineId(response.data.id)
-      
-      // navigation.navigate("medlist")
-    })
-    .catch(error => console.log(error))
-
-
-  
-    await api.get(`/${token}/medicine/list${isCaregiver ? isCaregiver : ""}`)
-    .then((response) => {
-      const medicines = response.data
-      const medicineData = medicines.find((medicine: { id: string; }) => medicine.id === medicineId)
-      console.log(medicineData)
-
-      setScheduledNotifications(medicineData.name, medicineData.hours, medicineData.dosage)
-  
+      const medId = response.data.id
+      getMedicineList(token, isCaregiver, medId)
       
     })
     .catch(error => console.error(`Error: ${error}`))
-    
-    
-
     
   };
   
@@ -333,7 +350,7 @@ export function AddMedicine() {
                             confirmText="confirmar"
                             cancelText="cancelar"
                             modal
-                            minuteInterval={30}
+                            minuteInterval={15}
                             mode='time'
                             open={startTimeOpen}
                             date={startTime}

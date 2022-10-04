@@ -75,7 +75,7 @@ export function AddMedicine() {
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
         console.log(medicineData)
 
-        setScheduledNotifications(medicineData.name,["21:58", "22:00"], medicineData.dosage)
+        setScheduledNotifications(medicineData.name,medicineData.hours, medicineData.dosage)
         addNotifications()
         setTimeout( navigate, 3000)
       })

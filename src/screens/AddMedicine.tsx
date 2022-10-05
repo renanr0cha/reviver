@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert, Platform } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -11,6 +11,7 @@ import { InputForm } from '../components/InputForm';
 
 import * as Yup from "yup"
 import DatePicker from 'react-native-date-picker'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
@@ -98,13 +99,49 @@ export function AddMedicine() {
   const navigation = useNavigation<Nav>()
 
   const [startDate, setStartDate] = useState(new Date())
-  const [stringStartDate, setStringStartDate] = useState("")
-  const [startDateOpen, setStartDateOpen] = useState(false)
-
   const [startTime, setStartTime] = useState(new Date())
-  const [stringStartTime, setStringStartTime] = useState("")
-  const [startTimeOpen, setStartTimeOpen] = useState(false)
 
+  function setDateToStringDatabaseFormat(date:Date) {
+    return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+  }
+
+  function setDateToStringLocalFormat(date:Date) {
+    return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getFullYear())}`
+  }
+
+  function setTimeToString(time:Date) {
+    return `${String(time.getHours()).padStart(2, "0")}:${String(time.getMinutes()).padStart(2, "0")}`
+  }
+
+  const onChangeDate = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setStartDate(currentDate);
+  };
+
+  const onChangeTime = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setStartTime(currentDate);
+  };
+
+  const showMode = (currentMode: any) => {
+    DateTimePickerAndroid.open({
+      value: currentMode === 'time' ? startTime : startDate,
+      onChange: currentMode === 'time' ? onChangeTime : onChangeDate,
+      mode: currentMode,
+      is24Hour: true,
+      minimumDate : new Date(),
+      minuteInterval: 15,
+      display: 'spinner'
+    });
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -125,9 +162,6 @@ export function AddMedicine() {
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
     setIsLoading(true)
-    
-
-    
 
     //tratando dados
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
@@ -145,8 +179,8 @@ export function AddMedicine() {
       prescription,
       dosage,
       frequency,
-      start_date: stringStartDate,
-      start_time: stringStartTime,
+      start_date: setDateToStringDatabaseFormat(startDate),
+      start_time: setTimeToString(startTime),
       days: choosenDays,
       instruction,
       inventory
@@ -322,7 +356,7 @@ export function AddMedicine() {
                     <VStack>
                       <FormControl.Label _text={{bold: true}} mt={2}>Horário que começou a tomar:</FormControl.Label>
                           <Button
-                            onPress={() => setStartTimeOpen(true)}
+                            onPress={showTimepicker}
                             variant="outline"
                             size="md"
                             borderWidth={1}
@@ -333,35 +367,13 @@ export function AddMedicine() {
                             justifyContent="space-between"
                             alignItems="space-between"
                             _text={{
-                              color: !stringStartTime ? colors.text[400] : colors.text[600],
+                              color: colors.text[600],
                               fontSize: "md",
                               fontFamily: "body"
                             }}
                           >
-                            {
-                              !stringStartTime ?
-                                `Escolha o horário`
-                              :
-                                `${String(startTime.getHours()).padStart(2, "0")}:${String(startTime.getMinutes()).padStart(2, "0")}`
-                            }
+                                {setTimeToString(startTime)}
                           </Button>
-                          <DatePicker
-                            title="Escolha a data de início do tratamento"
-                            confirmText="confirmar"
-                            cancelText="cancelar"
-                            modal
-                            mode='time'
-                            open={startTimeOpen}
-                            date={startTime}
-                            onConfirm={(startTime) => {
-                              setStartTimeOpen(false)
-                              setStringStartTime(`${String(startTime.getHours()).padStart(2, "0")}:${String(startTime.getMinutes()).padStart(2, "0")}`)
-                              setStartTime(startTime)
-                            }}
-                            onCancel={() => {
-                              setStartTimeOpen(false)
-                            }}
-                          />
                     </VStack>
                   }
             </Section>
@@ -397,7 +409,7 @@ export function AddMedicine() {
               /> */}
               <FormControl.Label _text={{bold: true}} mt={2}>Início do tratamento:</FormControl.Label>
               <Button
-                onPress={() => setStartDateOpen(true)}
+                onPress={showDatepicker}
                 variant="outline"
                 size="md"
                 borderWidth={1}
@@ -409,37 +421,13 @@ export function AddMedicine() {
                 alignItems="space-between"
 
                 _text={{
-                  color: !stringStartDate ? colors.text[400] : colors.text[600],
+                  color: colors.text[600],
                   fontSize: "md",
                   fontFamily: "body"
                 }}
               >
-                {
-                  !stringStartDate ?
-                    `Escolha a data`
-                  :
-                    `${String(startDate.getDate()).padStart(2, "0")}/${String(startDate.getMonth() + 1).padStart(2, "0")}/${String(startDate.getFullYear())}`
-                }
+                {setDateToStringLocalFormat(startDate)}
               </Button>
-              <DatePicker
-                title="Escolha a data de início do tratamento"
-                textColor="#000000"
-                confirmText="confirmar"
-                cancelText="cancelar"
-                minimumDate={new Date()}
-                modal
-                mode='date'
-                open={startDateOpen}
-                date={startDate}
-                onConfirm={(startDate) => {
-                  setStartDateOpen(false)
-                  setStringStartDate(`${String(startDate.getFullYear())}-${String(startDate.getMonth() + 1).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`)
-                  setStartDate(startDate)
-                }}
-                onCancel={() => {
-                  setStartDateOpen(false)
-                }}
-              />
 
               <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
               <InputForm
@@ -449,11 +437,6 @@ export function AddMedicine() {
                 autoCorrect={false}
                 keyboardType="numeric"
               />
-              {/* {
-                showDatePickers &&
-                <>
-                </>
-              } */}
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
             </Section>
 

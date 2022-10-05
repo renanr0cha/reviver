@@ -1,4 +1,4 @@
-import { VStack, useTheme, Icon, HStack, Button, FormControl, Select, CheckIcon, Box, Pressable, ScrollView } from 'native-base';
+import { VStack, useTheme, Icon, HStack, Button, FormControl, Select, CheckIcon, Box, Pressable, ScrollView, useToast } from 'native-base';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Eye, EyeSlash } from 'phosphor-react-native';
@@ -29,9 +29,9 @@ interface SignUpFormData {
 //form validation
 const schema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
-  cpf: Yup.string().required('Insira seu CPF').min(11, 'Insira todos os 11 digitos').max(15, 'Insira todos os 11 digitos'),
+  cpf: Yup.string().required('Insira seu CPF').min(11, 'Insira todos os 11 digitos'),
   email: Yup.string().email('Favor inserir um endereço de email válido').required('Email é obrigatório'),
-  phone: Yup.string().required('Insira seu contato').min(11, 'Insira o número do telefone completo').max(14, 'Insira o número do telefone completo'),
+  phone: Yup.string().required('Insira seu contato').min(14, 'Insira o número do telefone completo').max(14, 'Insira o número do telefone completo'),
   sex: Yup.string().required('Selecione o sexo'),
   password: Yup.string().required('A senha é obrigatória'),
   password_confirmation: Yup.string().required('A confirmação da senha é obrigatória'),
@@ -40,6 +40,18 @@ const schema = Yup.object().shape({
 
 export function SignUp() {
 
+  const toast = useToast()
+
+  function addNotifications() {
+    toast.show({
+      padding: 4,
+      title: "Sua conta foi criado com sucesso! Agora basta inserir os dados para fazer login",
+      placement: "bottom",
+      duration: 5000,
+      
+    })
+      
+  }
 
   function setDateToStringDatabaseFormat(date:Date) {
     return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
@@ -125,7 +137,9 @@ export function SignUp() {
       } catch (e) {
         console.log(e)
       }
-
+      
+      addNotifications()
+      setIsLoading(false)
       navigation.goBack()
     })
     .catch(error => {
@@ -181,11 +195,10 @@ export function SignUp() {
                     }}
                       value={cpf}
                       onChangeText={(masked, unmasked) => {
-                        onChange(cpf)
+                        onChange(unmasked)
                         setCpf(unmasked); 
                         
-                        console.log(masked); 
-                        console.log(unmasked); 
+                        console.log(cpf); 
                       }}
                       mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
                     />
@@ -294,7 +307,7 @@ export function SignUp() {
                     }}
                       value={phone}
                       onChangeText={(masked, unmasked) => {
-                        onChange(phone)
+                        onChange(masked)
                         setPhone(masked); 
                         
                       }}

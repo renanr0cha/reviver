@@ -83,7 +83,6 @@ export function AddMedicine() {
   function addNotifications() {
     toast.show({
       padding: 4,
-      
       title: "Medicamento adicionado com sucesso!",
       placement: "bottom",
       duration: 2000,
@@ -484,7 +483,6 @@ export function AddMedicine() {
               <ButtonPrimary
                 title="Adicionar medicamento"
                 w="full"
-                mb={4}
                 onPress={handleSubmit(onSubmit)}
                 isLoading={isLoading}
               />

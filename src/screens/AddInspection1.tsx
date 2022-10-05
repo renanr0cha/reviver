@@ -281,7 +281,6 @@ export function AddInspection1() {
           <ButtonPrimary
             title="Continuar para adicionar sintomas"
             w="full"
-            mb={4}
             onPress={handleSubmit(onSubmit)}
             isLoading={isLoading}
           />

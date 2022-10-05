@@ -374,7 +374,6 @@ export function AddInspection2() {
           <ButtonPrimary
             title="Avançar para Finger tap"
             w="full"
-            mb={4}
             onPress={handleSubmit(onSubmit)}
           />
 

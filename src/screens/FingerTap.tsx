@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Heading, HStack, Modal, Text, useTheme, VStack } from 'native-base';
-import { Header } from '../components/Header';
-import { BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
@@ -27,7 +25,6 @@ export function FingerTap() {
   const [ count, setCount ] = useState(0);
     const [ seconds, setSeconds ] = useState(0);
 
-    const [ loading, setLoading ] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {

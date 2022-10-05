@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box, Switch, Divider, ScrollView, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard, Alert, Platform } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -10,7 +10,6 @@ import { InputForm } from '../components/InputForm';
 
 
 import * as Yup from "yup"
-import DatePicker from 'react-native-date-picker'
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -35,7 +34,6 @@ interface MedicineFormData {
   frequency: string,
   dosage_quantity: string,
   dosage_unit: string,
-  // duration: string,
   start_date?: string,
   end_date?: string,
   quantity_of_days: string,
@@ -51,10 +49,9 @@ const schema = Yup.object().shape({
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
-  // duration: Yup.string().required('Informe a duração que vai tomar o medicamento'),
   start_date: Yup.string(),
   end_date: Yup.string(),
-  quantity_of_days: Yup.string(),
+  quantity_of_days: Yup.string().required('Informe a quantidade de dias'),
   instructions: Yup.string(),
   inventory: Yup.string()
 })
@@ -157,7 +154,7 @@ export function AddMedicine() {
   //mostrar campo para adicionar estoque
   const [showInventory, setShowInventory] = useState(false)
 
-  const { control, reset, handleSubmit, formState: { errors } } = useForm<MedicineFormData>({
+  const { control, handleSubmit, formState: { errors } } = useForm<MedicineFormData>({
     resolver: yupResolver(schema)
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
@@ -378,35 +375,6 @@ export function AddMedicine() {
                   }
             </Section>
             <Section title="Sobre a duração do tratamento" mt={6}>
-              {/* <FormControl.Label _text={{bold: true}} mt={2}>Período do tratamento:</FormControl.Label>
-              <Controller
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Select
-                    accessibilityLabel="Escolha"
-                    placeholder="Escolha"
-                    selectedValue={value}
-                    onValueChange={(itemValue: string) => {
-                      onChange(itemValue);
-                      if(itemValue == "Sem data de término") {
-                        setShowDatePickers(false)
-                        setStringStartDate("")
-                      } else {
-                        setShowDatePickers(true)
-                      } 
-                    }}
-                    _selectedItem={{
-                      bg: "primary.200",
-                      endIcon: <CheckIcon size="5" />
-                    }} size="md" fontSize="md">
-                      <Select.Item label="Sem data de término" value="Sem data de término" />
-                      <Select.Item label="Até uma data específica" value="Até uma data específica" />
-                  </Select>
-                )}
-                name="duration"
-                rules={{ required: 'Field is required' }}
-                defaultValue=""
-              /> */}
               <FormControl.Label _text={{bold: true}} mt={2}>Início do tratamento:</FormControl.Label>
               <Button
                 onPress={showDatepicker}

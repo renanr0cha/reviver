@@ -13,7 +13,7 @@ import { InputForm } from '../components/InputForm';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskInput from 'react-native-mask-input';
-import DatePicker from 'react-native-date-picker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 interface SignUpFormData {
   name: string,
@@ -29,9 +29,9 @@ interface SignUpFormData {
 //form validation
 const schema = Yup.object().shape({
   name: Yup.string().required('Nome é obrigatório'),
-  cpf: Yup.string().required('Insira seu CPF'),
-  email: Yup.string().required('Email é obrigatório'),
-  phone: Yup.string().required('Insira seu contato'),
+  cpf: Yup.string().required('Insira seu CPF').min(11, 'Insira todos os 11 digitos').max(15, 'Insira todos os 11 digitos'),
+  email: Yup.string().email('Favor inserir um endereço de email válido').required('Email é obrigatório'),
+  phone: Yup.string().required('Insira seu contato').min(11, 'Insira o número do telefone completo').max(14, 'Insira o número do telefone completo'),
   sex: Yup.string().required('Selecione o sexo'),
   password: Yup.string().required('A senha é obrigatória'),
   password_confirmation: Yup.string().required('A confirmação da senha é obrigatória'),
@@ -39,6 +39,38 @@ const schema = Yup.object().shape({
 
 
 export function SignUp() {
+
+
+  function setDateToStringDatabaseFormat(date:Date) {
+    return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+  }
+
+  function setDateToStringLocalFormat(date:Date) {
+    return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getFullYear())}`
+  }
+
+  
+  const onChangeDate = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setBirthDate(currentDate);
+    setBirtDateIsSelected(true)
+  };
+
+  const showMode = (currentMode: any) => {
+    DateTimePickerAndroid.open({
+      value: birthDate,
+      onChange: onChangeDate,
+      mode: currentMode,
+      is24Hour: true,
+      maximumDate : new Date(),
+      display: 'spinner'
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
   const [isCPFHighlighted, setCPFIsHighlighted] = useState(false)
   const [isPhoneHighlighted, setPhoneIsHighlighted] = useState(false)
   
@@ -46,8 +78,7 @@ export function SignUp() {
   const [cpf, setCpf] = React.useState('');
 
   const [birthDate, setBirthDate] = useState(new Date())
-  const [stringBirthDate, setStringBirthDate] = useState("")
-  const [birthDateOpen, setBirthDateOpen] = useState(false)
+  const [birtDateIsSelected, setBirtDateIsSelected] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -63,12 +94,8 @@ export function SignUp() {
   const onSubmit: SubmitHandler<SignUpFormData>  = (data) => {
     setIsLoading(true)
 
-    data.birth_date = stringBirthDate
+    data.birth_date = setDateToStringDatabaseFormat(birthDate)
 
-
-    console.log(data.birth_date)
-
-    console.log(data)
     if (!data.birth_date) {
       setIsLoading(false)
 
@@ -84,15 +111,13 @@ export function SignUp() {
       name: data.name,
       cpf,
       email: data.email,
-      birth_date: stringBirthDate,
+      birth_date: data.birth_date,
       phone,
       sex: data.sex,
       password: data.password,
       password_confirmation: data.password_confirmation
     })
     .then(response => {
-      console.log(response.data)
-
       const { uuid } = response.data
       
       try {
@@ -106,6 +131,7 @@ export function SignUp() {
     .catch(error => {
       console.log(error.response) })
   };
+
   const { colors } = useTheme()
 
   const [show, setShow] = React.useState(false);
@@ -121,7 +147,6 @@ export function SignUp() {
               <Section title='Informações do utilizador' mt={6}>
                 <FormControl.Label _text={{bold: true}} mt={2}>Nome:</FormControl.Label>
                 <InputForm
-              
                   name="name"
                   control={control}
                   placeholder="João da Silva"
@@ -187,7 +212,7 @@ export function SignUp() {
                     render={({}) => (
                       <>
                         <Button
-                          onPress={() => setBirthDateOpen(true)}
+                          onPress={showDatepicker}
                           variant="outline"
                           size="md"
                           borderWidth={1}
@@ -199,37 +224,17 @@ export function SignUp() {
                           alignItems="space-between"
 
                           _text={{
-                            color: !stringBirthDate ? colors.text[400] : colors.text[600],
+                            color: birtDateIsSelected ? colors.text[600] : colors.text[400],
                             fontSize: "md",
                             fontFamily: "body"
                           }}
                         >
                           {
-                            !stringBirthDate ?
-                              `Escolha a data`
-                            :
-                              `${String(birthDate.getDate()).padStart(2, "0")}/${String(birthDate.getMonth() + 1).padStart(2, "0")}/${String(birthDate.getFullYear())}`
+                            birtDateIsSelected ?
+                            setDateToStringLocalFormat(birthDate) :
+                            'Escolha a data'
                           }
                         </Button>
-                        <DatePicker
-                          title="Escolha a sua data de nascimento"
-                          textColor="#000000"
-                          confirmText="confirmar"
-                          cancelText="cancelar"
-                          maximumDate={new Date()}
-                          modal
-                          mode='date'
-                          open={birthDateOpen}
-                          date={birthDate}
-                          onConfirm={(birthDate) => {
-                            setBirthDateOpen(false)
-                            setStringBirthDate(`${String(birthDate.getFullYear())}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`)
-                            setBirthDate(birthDate)
-                          }}
-                          onCancel={() => {
-                            setBirthDateOpen(false)
-                          }}
-                        />
                       </>
                     )}
                   />

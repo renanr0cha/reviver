@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Heading, VStack, useTheme, Icon, HStack, Text, Button, CheckIcon, Select, FormControl, Pressable } from 'native-base';
+import { Heading, VStack, useTheme, Icon, HStack, Text, Button, CheckIcon, Select, FormControl, Pressable, Box } from 'native-base';
 import { Eye, EyeSlash, Key, User } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
@@ -63,7 +63,10 @@ export function SignIn() {
   return(
     <>
         <VStack alignItems="flex-start" bg="white" w="100%" h="100%" px={4} pt={24}>
-          <Logo />
+          <Box alignSelf="center">
+            <Logo />
+
+          </Box>
           <Heading color={colors.text[800]} alignSelf="center" fontSize="xl" mt={20} mb={6} >
             Acesse sua conta
           </Heading>

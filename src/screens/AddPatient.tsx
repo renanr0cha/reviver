@@ -1,4 +1,14 @@
-import { VStack, useTheme, HStack, Button, FormControl, Select, CheckIcon, Box } from 'native-base';
+import {
+  VStack,
+  useTheme,
+  HStack,
+  Button,
+  FormControl,
+  Select,
+  CheckIcon,
+  Box,
+  useToast
+} from 'native-base';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
 import React, { useState } from 'react';
@@ -12,7 +22,7 @@ import { InputForm } from '../components/InputForm';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskInput from 'react-native-mask-input';
-import DatePicker from 'react-native-date-picker'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 
 type Nav = {
@@ -31,12 +41,11 @@ interface AddPatientFormData {
 
 //form validation
 const schema = Yup.object().shape({
-  name: Yup.string().required('Nome é obrigatório'),
-  cpf: Yup.string().required('Insira seu CPF'),
-  email: Yup.string(),
-  //falta validar a data
-  phone: Yup.string().required('Telefone é obrigatório'),
-  sex: Yup.string().required('Selecione o sexo'),
+  name: Yup.string().required('O nome do paciente é obrigatório'),
+   cpf: Yup.string().required('Insira o CPF do paciente').min(11, 'Insira todos os 11 digitos'),
+  email: Yup.string().email('Favor inserir um endereço de email válido').required('Email é obrigatório'),
+  phone: Yup.string().required('Insira o contato do paciente').min(14, 'Insira o número do telefone completo').max(14, 'Insira o número do telefone completo'),
+  sex: Yup.string().required('Selecione o sexo do paciente'),
 })
 
 
@@ -46,13 +55,54 @@ export function AddPatient() {
   const [cpf, setCpf] = React.useState('');
 
   const [birthDate, setBirthDate] = useState(new Date())
-  const [stringBirthDate, setStringBirthDate] = useState("")
-  const [birthDateOpen, setBirthDateOpen] = useState(false)
+  const [birthDateIsSelected, setBirthDateIsSelected] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
   const navigation = useNavigation<Nav>()
 
+  const toast = useToast()
+
+  function addNotifications() {
+    toast.show({
+      padding: 4,
+      title: "Você cadastrou o paciente com sucesso!",
+      placement: "bottom",
+      duration: 5000,
+      
+    })
+      
+  }
+
+  function setDateToStringDatabaseFormat(date:Date) {
+    return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
+  }
+
+  function setDateToStringLocalFormat(date:Date) {
+    return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getFullYear())}`
+  }
+
+  
+  const onChangeDate = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setBirthDate(currentDate);
+    setBirthDateIsSelected(true)
+  };
+
+  const showMode = (currentMode: any) => {
+    DateTimePickerAndroid.open({
+      value: birthDate,
+      onChange: onChangeDate,
+      mode: currentMode,
+      is24Hour: true,
+      maximumDate : new Date(),
+      display: 'spinner'
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
 
   //métodos do form
   const { control, handleSubmit, formState: { errors } } = useForm<AddPatientFormData>({
@@ -63,9 +113,8 @@ export function AddPatient() {
   const onSubmit: SubmitHandler<AddPatientFormData>  = async (data) => {
     setIsLoading(true)
 
-    data.birth_date = stringBirthDate
+    data.birth_date = setDateToStringDatabaseFormat(birthDate)
 
-    console.log(data)
     if (!data.birth_date) {
       setIsLoading(false)
 
@@ -103,7 +152,8 @@ export function AddPatient() {
       // } catch (e) {
       //   console.log(e)
       // }
-
+      addNotifications()
+      setIsLoading(false)
       navigation.navigate("patientlist")
     }).catch(error => {
       error.response.data.error === "Você não pode se adicionar como paciente" ?
@@ -149,11 +199,8 @@ export function AddPatient() {
                   }}
                     value={cpf}
                     onChangeText={(masked, unmasked) => {
-                      onChange(cpf)
-                      setCpf(unmasked); 
-                      
-                      console.log(masked); 
-                      console.log(unmasked); 
+                      onChange(unmasked)
+                      setCpf(unmasked)
                     }}
                     mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
                   />
@@ -179,7 +226,7 @@ export function AddPatient() {
                     render={({}) => (
                       <>
                         <Button
-                          onPress={() => setBirthDateOpen(true)}
+                          onPress={showDatepicker}
                           variant="outline"
                           size="md"
                           borderWidth={1}
@@ -191,37 +238,17 @@ export function AddPatient() {
                           alignItems="space-between"
 
                           _text={{
-                            color: !stringBirthDate ? colors.text[400] : colors.text[600],
+                            color: birthDateIsSelected ?  colors.text[600] : colors.text[400],
                             fontSize: "md",
                             fontFamily: "body"
                           }}
                         >
                           {
-                            !stringBirthDate ?
-                              `Escolha a data`
-                            :
-                              `${String(birthDate.getDate()).padStart(2, "0")}/${String(birthDate.getMonth() + 1).padStart(2, "0")}/${String(birthDate.getFullYear())}`
+                            birthDateIsSelected ?
+                            setDateToStringLocalFormat(birthDate) :
+                            'Escolha a data'
                           }
                         </Button>
-                        <DatePicker
-                          title="Escolha a data de nascimento"
-                          textColor="#000000"
-                          confirmText="confirmar"
-                          cancelText="cancelar"
-                          maximumDate={new Date()}
-                          modal
-                          mode='date'
-                          open={birthDateOpen}
-                          date={birthDate}
-                          onConfirm={(birthDate) => {
-                            setBirthDateOpen(false)
-                            setStringBirthDate(`${String(birthDate.getFullYear())}-${String(birthDate.getMonth() + 1).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`)
-                            setBirthDate(birthDate)
-                          }}
-                          onCancel={() => {
-                            setBirthDateOpen(false)
-                          }}
-                        />
                       </>
                     )}
                   />
@@ -270,11 +297,8 @@ export function AddPatient() {
                   }}
                     value={phone}
                     onChangeText={(masked, unmasked) => {
-                      onChange(phone)
-                      setPhone(masked); // you can use the unmasked value as well
-                      // assuming you typed "9" all the way:
-                      console.log(masked); // (99)99999-9999
-                      console.log(unmasked); // 99999999999
+                      onChange(masked)
+                      setPhone(masked)
                     }}
                     mask={['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                   />

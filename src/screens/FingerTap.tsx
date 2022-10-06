@@ -1,5 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Heading, HStack, Modal, Text, useTheme, VStack } from 'native-base';
+import
+  React,
+  { useEffect,
+    useState
+  } from 'react';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Modal,
+  Text,
+  useTheme,
+  VStack
+} from 'native-base';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
@@ -60,7 +73,6 @@ export function FingerTap() {
 
   const retrieveData = async () => {
     const resp = await getFormData()
-    console.log(resp)
     return resp
   }
 
@@ -85,9 +97,7 @@ export function FingerTap() {
     const token = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     
-    console.log( `Data: ${inspectionData}`)
-    console.log( `Token: ${token}`)
-    console.log( `Caregiver?: ${isCaregiver}`)
+
     await api.post(`/${token}/inspection/create${isCaregiver ? isCaregiver : ""}`, inspectionData)
     .then((response) => {
       console.log(response.data.error)
@@ -116,7 +126,9 @@ export function FingerTap() {
       <VStack alignItems="center" justifyContent="space-between" flex={1} w="100%">
         <VStack alignItems="center" justifyContent="center" >
           <Heading color={colors.text[600]}mb={4} >Finger Tap</Heading>
-          <Text w={300} textAlign="center" color={colors.text[600]} mb={8}>Usando seu dedo indicador, aperte o botão azul <Text fontWeight="bold">seguidamente o mais rápido que você puder</Text></Text>
+          <Text w={300} textAlign="center" color={colors.text[600]} mb={8}>
+            Usando seu dedo indicador, aperte o botão azul<Text fontWeight="bold">seguidamente o mais rápido que você puder</Text>
+          </Text>
           <HStack px={20} mb={20} alignItems="center"justifyContent="space-around" w="100%">
             <HStack >
               <Text fontWeight="bold" mr={2}>CLIQUES:</Text>
@@ -144,13 +156,14 @@ export function FingerTap() {
         { 
           showSubmitButton && 
           <>
-            <Text w={300} textAlign="center" color={colors.text[600]} mb={2}> Parabéns, você finalizou o teste, aperte o botão abaixo para gravar seu registro</Text>
+            <Text w={300} textAlign="center" color={colors.text[600]} mb={2}>
+              Parabéns, você finalizou o teste, aperte o botão abaixo para gravar seu registro
+            </Text>
             <Box px={4} mt={2} pb={2} w="100%">
               <ButtonPrimary
                 title="Finalizar registro"
                 onPress={() => onSubmit(count)}
               />
-
             </Box>
           </>
         }
@@ -158,41 +171,40 @@ export function FingerTap() {
       {visibleCount ? 
         (
           <Modal isOpen={visibleCount} closeOnOverlayClick={false} onClose={() => setVisibleCount(false)}>
-
-          <Modal.Content maxWidth="400px">
-            <Modal.Header _text={{ fontWeight:"bold"}} >Carregando...</Modal.Header>
-            <Modal.Body>
-              <Text textAlign="center" fontSize="2xl">
-                {secondsShow}
-              </Text>
-            </Modal.Body>
-            <Modal.Footer>
-              
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
+            <Modal.Content maxWidth="400px">
+              <Modal.Header _text={{ fontWeight:"bold"}} >Carregando...</Modal.Header>
+              <Modal.Body>
+                <Text textAlign="center" fontSize="2xl">
+                  {secondsShow}
+                </Text>
+              </Modal.Body>
+              <Modal.Footer>
+                
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
         )
       :
         (
           <Modal isOpen={showModal} closeOnOverlayClick={false} onClose={() => setShowModal(false)}>
-                <Modal.Content maxWidth="400px">
-                  <Modal.Header _text={{ fontWeight:"bold"}} >Teste de Finger Tap</Modal.Header>
-                  <Modal.Body>
-                    <Text>
-                      Este teste consiste em apertar com o dedo indicador seguidamente e o mais rápido que conseguir na área delimitada da tela (neste caso o botão azul) durante 15 segundos
-                    </Text>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button.Group space={2}>
-                      <Button onPress={() => {
-                        Count()
-                      }}>
-                        INICIAR
-                      </Button>
-                    </Button.Group>
-                  </Modal.Footer>
-                </Modal.Content>
-              </Modal>
+            <Modal.Content maxWidth="400px">
+              <Modal.Header _text={{ fontWeight:"bold"}} >Teste de Finger Tap</Modal.Header>
+              <Modal.Body>
+                <Text>
+                  Este teste consiste em apertar com o dedo indicador seguidamente e o mais rápido que conseguir na área delimitada da tela (neste caso o botão azul) durante 15 segundos
+                </Text>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button onPress={() => {
+                    Count()
+                  }}>
+                    INICIAR
+                  </Button>
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
         )
       }
       

@@ -12,4 +12,25 @@
   <style name="Theme.App.SplashScreen" parent="AppTheme">
     <item name="android:windowBackground">@drawable/splashscreen</item>
   </style>
+   <style name="SpinnerDatePickerDialog" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/ButtonBarStyle.Positive</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/ButtonBarStyle.Negative</item>
+    </style>
+
+    <style name="CustomDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <style name="ButtonBarStyle">
+        <item name="android:background">@drawable/theme_button_level2_selector</item>
+        <item name="android:textAppearance">?attr/theme_text_Emphasized2_OnFill</item>
+    </style>
+
+    <style name="ButtonBarStyle.Positive">
+        <item name="android:textColor">@color/theme_onBrandLevel2Fill</item>
+    </style>
+    <style name="ButtonBarStyle.Negative">
+        <item name="android:textColor">@color/theme_layoutDisabled</item>
+    </style>
 </resources>

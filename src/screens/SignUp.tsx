@@ -45,7 +45,7 @@ export function SignUp() {
   function addNotifications() {
     toast.show({
       padding: 4,
-      title: "Sua conta foi criado com sucesso! Agora basta inserir os dados para fazer login",
+      title: "Sua conta foi criada com sucesso! Agora basta inserir os dados para fazer login",
       placement: "bottom",
       duration: 5000,
       
@@ -65,7 +65,7 @@ export function SignUp() {
   const onChangeDate = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setBirthDate(currentDate);
-    setBirtDateIsSelected(true)
+    setBirthDateIsSelected(true)
   };
 
   const showMode = (currentMode: any) => {
@@ -90,7 +90,7 @@ export function SignUp() {
   const [cpf, setCpf] = React.useState('');
 
   const [birthDate, setBirthDate] = useState(new Date())
-  const [birtDateIsSelected, setBirtDateIsSelected] = useState(false)
+  const [birthDateIsSelected, setBirthDateIsSelected] = useState(false)
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -198,7 +198,6 @@ export function SignUp() {
                         onChange(unmasked)
                         setCpf(unmasked); 
                         
-                        console.log(cpf); 
                       }}
                       mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
                     />
@@ -237,13 +236,13 @@ export function SignUp() {
                           alignItems="space-between"
 
                           _text={{
-                            color: birtDateIsSelected ? colors.text[600] : colors.text[400],
+                            color: birthDateIsSelected ? colors.text[600] : colors.text[400],
                             fontSize: "md",
                             fontFamily: "body"
                           }}
                         >
                           {
-                            birtDateIsSelected ?
+                            birthDateIsSelected ?
                             setDateToStringLocalFormat(birthDate) :
                             'Escolha a data'
                           }

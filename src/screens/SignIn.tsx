@@ -1,11 +1,22 @@
+import {
+  Heading,
+  VStack,
+  useTheme,
+  Icon,
+  HStack,
+  Text,
+  Button,
+  CheckIcon,
+  Select,
+  FormControl,
+  Pressable,
+  Box
+} from 'native-base';
 import { useNavigation } from '@react-navigation/native';
-import { Heading, VStack, useTheme, Icon, HStack, Text, Button, CheckIcon, Select, FormControl, Pressable, Box } from 'native-base';
 import { Eye, EyeSlash, Key, User } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Logo from "../assets/logo-primary.svg"
 import { Controller, useForm } from "react-hook-form"
-import { Alert } from "react-native"
 import { useAuth } from '../hooks/auth';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
@@ -53,11 +64,8 @@ export function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation<Nav>()
 
-
-  
   function handleSignUp() {
     navigation.navigate('register')
-
   }
 
   return(

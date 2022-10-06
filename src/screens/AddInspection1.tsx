@@ -1,5 +1,17 @@
-import { VStack, useTheme, HStack, FormControl, Box, Heading, Switch, Text, Select, CheckIcon, ScrollView } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import {
+  VStack,
+  useTheme,
+  HStack,
+  FormControl,
+  Box,
+  Heading,
+  Switch,
+  Text,
+  Select,
+  CheckIcon,
+  ScrollView
+} from 'native-base';
+import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -9,7 +21,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
+import { getFormData, storeFormData } from '../lib/storage';
 
 
 type Nav = {

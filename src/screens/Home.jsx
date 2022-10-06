@@ -1,6 +1,13 @@
-import React, { useState, useEffect} from "react";
+import {
+  HStack,
+  Heading,
+  VStack,
+  useTheme,
+  IconButton,
+  Box
+} from "native-base";
+import React, { useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { HStack, Heading, VStack, useTheme, IconButton, Box } from "native-base";
 import { SignOut, ChartLine, Pill, Clipboard, UserCircle } from "phosphor-react-native"
 import { ButtonPrimary } from "../components/ButtonPrimary";
 import { ButtonSmall } from "../components/ButtonSmall";
@@ -63,9 +70,7 @@ export function Home() {
   function handleMedicineList() {
     navigation.navigate("medlist")
   }
-  // function handleFingerTap() {
-  //   navigation.navigate("fingertap")
-  // }
+  
   function handleChangePatient() {
     navigation.navigate("patientlist")
   }

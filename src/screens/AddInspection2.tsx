@@ -1,17 +1,23 @@
-import { VStack, useTheme, FormControl, Box, Heading, Select, CheckIcon, ScrollView } from 'native-base';
+import {
+  VStack,
+  useTheme,
+  FormControl,
+  Box,
+  Heading,
+  Select,
+  CheckIcon,
+  ScrollView
+} from 'native-base';
 import React from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { getFormData, storeFormData } from '../lib/storage';
-import api from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Nav = {
   navigate: (value: string) => void;

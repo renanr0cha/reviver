@@ -2,6 +2,7 @@ import { Input as NativeBaseInput, IInputProps, useTheme, Container, Text } from
 import { TextInputProps, TextInput } from 'react-native';
 import React, { useRef, useEffect } from 'react';
 import { Control, Controller, UseControllerProps } from 'react-hook-form';
+import { THEME } from '../styles/theme';
 
 interface InputProps extends TextInputProps {
   name: string;
@@ -35,8 +36,8 @@ export function InputForm({ name, control, error,...rest}: IInputProps & InputPr
             placeholderTextColor={colors.text[400]}
             _focus={{
               borderWidth: 1,
-              borderColor: colors.primary[500],
-              bg: colors.primary[100]
+              borderColor: THEME.color.primary,
+              bg: THEME.color.primary_200
             }}
             { ...rest}
           />

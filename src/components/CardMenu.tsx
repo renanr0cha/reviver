@@ -1,7 +1,8 @@
-import { VStack, Box, Icon, useTheme, Heading, Text, HStack  } from 'native-base';
+import { VStack, Box, useTheme, Heading, Text, HStack  } from 'native-base';
 import { IconProps } from 'phosphor-react-native';
 import React, { ReactNode } from 'react';
-import { ButtonSmall } from './ButtonSmall';
+import { THEME } from '../styles/theme';
+
 
 type Props = {
   title: string,
@@ -27,7 +28,7 @@ export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButto
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box backgroundColor={colors.primary[500]} p={2} mr={4}rounded={50} justifyItems="flex-start">
+        <Box backgroundColor={THEME.color.primary} p={2} mr={4}rounded={50} justifyItems="flex-start">
             <Icon size={36} color={colors.white} />
         </Box>
         <VStack

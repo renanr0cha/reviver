@@ -9,6 +9,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f0f0f0"
+    },
     "android": {
       "package": "com.reviver"    },
     "ios": {

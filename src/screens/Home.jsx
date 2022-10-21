@@ -15,6 +15,8 @@ import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteFormData } from "../lib/storage"
+import { THEME } from '../styles/theme';
+
 
 export function Home() {
 
@@ -81,7 +83,7 @@ export function Home() {
         w="full"
         justifyContent="space-between"
         alignItems="center"
-        bg={colors.primary[600]}
+        bg={THEME.color.primary}
         pb={4}
         pt={10}
         px={4}
@@ -95,9 +97,9 @@ export function Home() {
               icon={<UserCircle size={26} color={colors.white} />}
               onPress={handleChangePatient}
               borderRadius="full"
-              bgColor={colors.primary[600]}
+              bgColor={THEME.color.primary}
               _pressed={{
-                bg: colors.primary[700]
+                bg: THEME.color.primary_800
               }}
             />
         }
@@ -105,9 +107,9 @@ export function Home() {
           icon={<SignOut size={26} color={colors.white} />}
           onPress={signOut}
           borderRadius="full"
-          bgColor={colors.primary[600]}
+          bgColor={THEME.color.primary}
           _pressed={{
-            bg: colors.primary[700]
+            bg: THEME.color.primary_800
           }}
         />
       </HStack>

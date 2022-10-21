@@ -15,7 +15,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Eye, EyeSlash, Key, User } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
-import Logo from "../assets/logo-primary.svg"
 import { Controller, useForm } from "react-hook-form"
 import { useAuth } from '../hooks/auth';
 
@@ -24,6 +23,8 @@ import { InputForm } from '../components/InputForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from "yup"
+import { Image } from 'react-native';
+import { THEME } from '../styles/theme';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -72,7 +73,10 @@ export function SignIn() {
     <>
         <VStack alignItems="flex-start" bg="white" w="100%" h="100%" px={4} pt={24}>
           <Box alignSelf="center">
-            <Logo />
+            <Image
+              style={{ width: 280, height: 180 }}
+              source={require('../assets/logo-reviver.png')}
+            />
 
           </Box>
           <Heading color={colors.text[800]} alignSelf="center" fontSize="xl" mt={20} mb={6} >
@@ -140,7 +144,10 @@ export function SignIn() {
 
             <HStack mt={4} alignItems="center" alignSelf="center">
               <Text fontSize="md">Novo usuário?</Text>
-              <Button variant="ghost" size="lg" _text={{ fontWeight: 700, fontSize: 18}} onPress={handleSignUp}>
+              <Button variant="ghost" size="lg" _text={{ fontWeight: 700, fontSize: 18, color: THEME.color.primary}}
+              _focus={{ bg: THEME.color.primary_200}}
+              _pressed={{ bg: THEME.color.primary_200 }}
+              onPress={handleSignUp}>
                 Cadastre-se
               </Button>
             </HStack>

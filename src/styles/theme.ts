@@ -1,4 +1,5 @@
 import { extendTheme } from 'native-base';
+import { color } from 'native-base/lib/typescript/theme/styled-system';
 
 export const THEME = extendTheme({
   fonts: {
@@ -10,5 +11,10 @@ export const THEME = extendTheme({
     sm: 14,
     md: 16,
     lg: 20,
+  },
+  color: {
+    primary: "#F5A648",
+    primary_800: "#BF6D0B",
+    primary_200: "#FCECDA"
   }
 });

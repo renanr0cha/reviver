@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Card, Heading, HStack, IconButton, Text, useTheme, VStack } from 'native-base';
 import { BellSimple, Pill } from 'phosphor-react-native';
 import { string } from 'yup';
+import { THEME } from '../styles/theme';
 
 type MedicineCardProps = {
   medicineName: string,
@@ -50,20 +51,20 @@ export function MedicineCard({medicineName, frequency, startTime, secondTime, th
                 </HStack>
             </VStack>
             <HStack alignItems="center" justifyContent="space-between" w="full">
-              <Box bgColor={colors.primary[100]} borderRadius="full">
+              <Box bgColor={THEME.color.primary_200} borderRadius="full">
                 <Text p={2} >Até {endDate}</Text>
                 
               </Box>
-              <Box bgColor={colors.primary[100]} borderRadius="full" >
+              <Box bgColor={THEME.color.primary_200} borderRadius="full" >
                 { inventory && <Text p={2}>Possuí {String(inventory)} em estoque</Text>}
               </Box>
               <Box alignSelf="flex-end">
                 <IconButton
                   icon={<BellSimple size={18} color={colors.white} weight="bold"/>}
                   borderRadius="full"
-                  bgColor={colors.primary[400]}
+                  bgColor={THEME.color.primary}
                   _pressed={{
-                    bg: colors.primary[700]
+                    bg: THEME.color.primary_800
                   }}
                   
                 />

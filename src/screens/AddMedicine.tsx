@@ -67,7 +67,7 @@ const schema = Yup.object().shape({
   end_date: Yup.string(),
   quantity_of_days: Yup.string().required('Informe a quantidade de dias'),
   instructions: Yup.string(),
-  inventory: Yup.string()
+  inventory: Yup.string().required('Informe o estoque do medicamento')
 })
 
 
@@ -140,7 +140,6 @@ export function AddMedicine() {
       mode: currentMode,
       is24Hour: true,
       minimumDate : new Date(),
-      minuteInterval: 15
     });
   };
 
@@ -232,6 +231,7 @@ export function AddMedicine() {
                     selectedValue={value}
                     onValueChange={(itemValue: string) => {
                       onChange(itemValue);
+                      setShowInventory(itemValue === "yes" ? true : false)
                     }}
                     _selectedItem={{
                       bg: THEME.color.primary_200,
@@ -246,6 +246,19 @@ export function AddMedicine() {
                 defaultValue=""
               />
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.prescription && errors.prescription.message}</FormControl.Label>
+              {
+                  showInventory &&
+                  <VStack >
+                    <FormControl.Label _text={{bold: true}} >Estoque do medicamento:</FormControl.Label>
+                    <InputForm
+                    name="inventory"
+                    control={control}
+                    placeholder="Digite o estoque do medicamento"
+                    my={2}
+                    keyboardType="numeric"
+                  />
+                  </VStack> 
+                }
             </Section>
             
             <Section title="Sobre a frequência e dosagem" mt={6}>
@@ -418,9 +431,8 @@ export function AddMedicine() {
                 keyboardType="numeric"
               />
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
-            </Section>
 
-            <Section title="Informações adicionais" mt={6}>
+
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} mt={2}>Instruções diversas (Opcional):</FormControl.Label>
@@ -466,26 +478,7 @@ export function AddMedicine() {
                   />
                 }
               </VStack>
-              <Divider my={4}/>
-                  
-              <VStack>
-                <HStack alignItems="center">
-                  <FormControl.Label _text={{bold: true}} >Estoque do medicamento (Opcional):</FormControl.Label>
-                  <Switch size="sm" colorScheme="orange" onToggle={() => setShowInventory(previousState => !previousState)} value={showInventory}></Switch>
-                </HStack>
-                {
-                  showInventory && 
-                  <InputForm
-                    name="inventory"
-                    control={control}
-                    placeholder="Digite o estoque do medicamento"
-                    my={2}
-                    keyboardType="numeric"
-                  />
-                }
-              </VStack>
             </Section>
-              
 
           </FormControl>
               </TouchableWithoutFeedback>

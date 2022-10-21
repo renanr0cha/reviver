@@ -75,8 +75,7 @@ export function SignUp() {
       onChange: onChangeDate,
       mode: currentMode,
       is24Hour: true,
-      maximumDate : new Date(),
-      display: 'spinner'
+      maximumDate : new Date()
     });
   };
 

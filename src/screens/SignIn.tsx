@@ -31,9 +31,9 @@ type Nav = {
 }
 
 const schema = Yup.object().shape({
-  cpf: Yup.string().required('É necessesário informar o cpf'),
-  password: Yup.string().required('É necessesário informar a senha'),
-  signChoice: Yup.string().required('É necessesário selecionar como quer logar')
+  cpf: Yup.string().required('É preciso informar o cpf'),
+  password: Yup.string().required('É preciso informar a senha'),
+  signChoice: Yup.string().required('É preciso selecionar como quer logar')
 })
 
 export function SignIn() {

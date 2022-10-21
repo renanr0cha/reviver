@@ -140,8 +140,7 @@ export function AddMedicine() {
       mode: currentMode,
       is24Hour: true,
       minimumDate : new Date(),
-      minuteInterval: 15,
-      display: 'spinner'
+      minuteInterval: 15
     });
   };
 

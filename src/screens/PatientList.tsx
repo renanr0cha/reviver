@@ -19,6 +19,7 @@ import { useNavigation, NavigationAction, useFocusEffect } from '@react-navigati
 import { PatientCard } from '../components/PatientCard';
 import { SignOut } from 'phosphor-react-native';
 import { useAuth } from '../hooks/auth';
+import { THEME } from '../styles/theme';
 
 type Nav = NavigationAction & {
   goBack(): void;
@@ -76,7 +77,7 @@ export function PatientList() {
         w="full"
         justifyContent="space-between"
         alignItems="center"
-        bg={colors.primary[600]}
+        bg={THEME.color.primary}
         pb={4}
         pt={10}
         px={4}
@@ -88,9 +89,9 @@ export function PatientList() {
           icon={<SignOut size={26} color={colors.white} />}
           onPress={signOut}
           borderRadius="full"
-          bgColor={colors.primary[600]}
+          bgColor={THEME.color.primary}
           _pressed={{
-            bg: colors.primary[700]
+            bg: THEME.color.primary_800
           }}
         />
       </HStack>
@@ -142,14 +143,18 @@ export function PatientList() {
           </Modal.Body>
           <Modal.Footer>
             <Button.Group space={2}>
-              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+              <Button variant="ghost" colorScheme="coolGray" onPress={() => {
               setShowModal(false);
               deletePatientUuid()
             }}>
                 CANCELAR
               </Button>
-              <Button onPress={() => {
+              <Button
+              bg={THEME.color.primary}
+              _pressed={{ bg: THEME.color.primary_800}}
+              onPress={() => {
               setShowModal(false);
+              
               handleSelectPatient()
             }}>
                 CONFIRMAR

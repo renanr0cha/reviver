@@ -121,7 +121,7 @@ export function SignIn() {
                     onChange(itemValue);
                   }}
                   _selectedItem={{
-                    bg: "primary.200",
+                    bg: THEME.color.primary_200,
                     endIcon: <CheckIcon size="5" />
                   }} size="md" fontSize="md">
                     <Select.Item label="Paciente" value="paciente" />

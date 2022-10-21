@@ -22,6 +22,7 @@ import * as Yup from "yup"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { getFormData, storeFormData } from '../lib/storage';
+import { THEME } from '../styles/theme';
 
 
 type Nav = {
@@ -106,7 +107,7 @@ export function AddInspection1() {
               <HStack alignItems="center">
                   <Heading fontSize="xl" mb={2}>Pressão arterial</Heading>
                   <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                  <Switch size="md" colorScheme="primary" onToggle={() =>setShowPressure(previousState => !previousState)} value={!showPressure}></Switch>
+                  <Switch size="md" colorScheme="orange" onToggle={() =>setShowPressure(previousState => !previousState)} value={!showPressure}></Switch>
               </HStack>
               {
                 !showPressure &&
@@ -140,7 +141,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Frequência cardíaca</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onToggle={() =>setShowFrequency(previousState => !previousState)} value={!showFrequency}></Switch>
+                <Switch size="md" colorScheme="orange" onToggle={() =>setShowFrequency(previousState => !previousState)} value={!showFrequency}></Switch>
               </HStack>
                 {
                   !showFrequency &&
@@ -161,7 +162,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Saturação do Sangue</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onToggle={() =>setShowSaturation(previousState => !previousState)} value={!showSaturation}></Switch>
+                <Switch size="md" colorScheme="orange" onToggle={() =>setShowSaturation(previousState => !previousState)} value={!showSaturation}></Switch>
               </HStack>
               {
                 !showSaturation &&
@@ -181,7 +182,7 @@ export function AddInspection1() {
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Glicemia</Heading>
                 <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
-                <Switch size="md" colorScheme="primary" onToggle={() =>setShowGlucose(previousState => !previousState)} value={!showGlucose}></Switch>
+                <Switch size="md" colorScheme="orange" onToggle={() =>setShowGlucose(previousState => !previousState)} value={!showGlucose}></Switch>
               </HStack>
               {
                 !showGlucose &&
@@ -211,7 +212,7 @@ export function AddInspection1() {
                       onChange(itemValue);
                     }}
                     _selectedItem={{
-                      bg: "primary.200",
+                      bg: THEME.color.primary_200,
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="🤩  -  Radiante" value="1" />
@@ -241,14 +242,14 @@ export function AddInspection1() {
                       onChange(itemValue);
                     }}
                     _selectedItem={{
-                    bg: "primary.200",
+                    bg: THEME.color.primary_200,
                     endIcon: <CheckIcon size="5" />
                   }} size="md" fontSize="md">
-                    <Select.Item label="😁  -  Normal" value="1" />
-                    <Select.Item label="🙂  -  Está menos interessado que o normal, sentindo-se mais desanimado" value="2" />
-                    <Select.Item label="😔  -  Sem vontade de realizar tarefas ou desinteresse por atividades não rotineiras" value="3" />
-                    <Select.Item label="😟  -  Sem vontade de realizar tarefas ou desinteresse por atividades do dia-a-dia" value="4"/>
-                    <Select.Item label="😩  -  Sentindo-se retraído, perda completa de motivação" value="5" />
+                    <Select.Item label="😁  -  Normal" value="0" />
+                    <Select.Item label="🙂  -  Está menos interessado que o normal, sentindo-se mais desanimado" value="1" />
+                    <Select.Item label="😔  -  Sem vontade de realizar tarefas ou desinteresse por atividades não rotineiras" value="2" />
+                    <Select.Item label="😟  -  Sem vontade de realizar tarefas ou desinteresse por atividades do dia-a-dia" value="3"/>
+                    <Select.Item label="😩  -  Sentindo-se retraído, perda completa de motivação" value="4" />
                   </Select>
                 )}
                 name="motivation"
@@ -269,14 +270,14 @@ export function AddInspection1() {
                       onChange(itemValue);
                     }}
                     _selectedItem={{
-                    bg: "primary.200",
+                    bg: THEME.color.primary_200,
                     endIcon: <CheckIcon size="5" />
                   }} size="md" fontSize="md">
-                    <Select.Item label="😃  -  Ausente" value="1" />
-                    <Select.Item label="🙁  -  Períodos de tristeza ou culpa acima do normal, nunca por dias ou semanas" value="2" />
-                    <Select.Item label="😢  -  Depressão permanente, período de uma semana ou mais" value="3" />
-                    <Select.Item label="😰  -  Depressão mantida com alguns sintomas como insônia, anorexia, perda de peso, desinteresse" value="4"/>
-                    <Select.Item label="😭  -  Depressão mantida com sintomas como insônia, anorexia, perda de peso, desinteresse e até pensamento ou tentativa de suicídio" value="5" />
+                    <Select.Item label="😃  -  Ausente" value="0" />
+                    <Select.Item label="🙁  -  Períodos de tristeza ou culpa acima do normal, nunca por dias ou semanas" value="1" />
+                    <Select.Item label="😢  -  Depressão permanente, período de uma semana ou mais" value="2" />
+                    <Select.Item label="😰  -  Depressão mantida com alguns sintomas como insônia, anorexia, perda de peso, desinteresse" value="3"/>
+                    <Select.Item label="😭  -  Depressão mantida com sintomas como insônia, anorexia, perda de peso, desinteresse e até pensamento ou tentativa de suicídio" value="4" />
                   </Select>
                   )}
                   name="depression"

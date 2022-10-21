@@ -30,6 +30,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import api from '../services/api';
 import { setScheduledNotifications } from '../services/setScheduledNotifications';
+import { THEME } from '../styles/theme';
 
 
 type Nav = {
@@ -234,7 +235,7 @@ export function AddMedicine() {
                       onChange(itemValue);
                     }}
                     _selectedItem={{
-                      bg: "primary.200",
+                      bg: THEME.color.primary_200,
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                     <Select.Item label="Sim, precisa de receita" value="yes" />
@@ -264,7 +265,7 @@ export function AddMedicine() {
                         onChange(itemValue);
                       }}
                       _selectedItem={{
-                        bg: "primary.200",
+                        bg: THEME.color.primary_200,
                         endIcon: <CheckIcon size="5" />
                       }} size="md" fontSize="md">
                         <Select.Item label="1" value="1" />
@@ -297,7 +298,7 @@ export function AddMedicine() {
                         onChange(itemValue);
                       }}
                       _selectedItem={{
-                        bg: "primary.200",
+                        bg: THEME.color.primary_200,
                         endIcon: <CheckIcon size="5" />
                       }} size="md" fontSize="md">
                         <Select.Item label="Mais comuns" value="" disabled/>
@@ -345,7 +346,7 @@ export function AddMedicine() {
                     setShowInputHours(true);
                   }}
                   _selectedItem={{
-                    bg: "primary.200",
+                    bg: THEME.color.primary_200,
                     endIcon: <CheckIcon size="5" />
                   }} size="md" fontSize="md">
                     <Select.Item label="Uma vez ao dia" value="24" />
@@ -424,7 +425,7 @@ export function AddMedicine() {
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} mt={2}>Instruções diversas (Opcional):</FormControl.Label>
-                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInstructions(previousState => !previousState)} value={showInstructions}></Switch>
+                  <Switch size="sm" colorScheme="orange" onToggle={() => setShowInstructions(previousState => !previousState)} value={showInstructions}></Switch>
                 </HStack>
                 {
                   showInstructions &&
@@ -440,7 +441,7 @@ export function AddMedicine() {
                       itemValue === "Outro" ? setShowOtherInstruction(true) : setShowOtherInstruction(false)
                     }}
                     _selectedItem={{
-                      bg: "primary.200",
+                      bg: THEME.color.primary_200,
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Antes das refeições" value="Antes das refeições" />
@@ -471,7 +472,7 @@ export function AddMedicine() {
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} >Estoque do medicamento (Opcional):</FormControl.Label>
-                  <Switch size="sm" colorScheme="primary" onToggle={() => setShowInventory(previousState => !previousState)} value={showInventory}></Switch>
+                  <Switch size="sm" colorScheme="orange" onToggle={() => setShowInventory(previousState => !previousState)} value={showInventory}></Switch>
                 </HStack>
                 {
                   showInventory && 

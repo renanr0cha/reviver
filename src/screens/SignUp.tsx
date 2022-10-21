@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskInput from 'react-native-mask-input';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { THEME } from '../styles/theme';
 
 interface SignUpFormData {
   name: string,
@@ -187,8 +188,8 @@ export function SignUp() {
                     } : {
                       fontSize: 16,
                       borderWidth: 1,
-                      borderColor: colors.primary[500],
-                      backgroundColor: colors.primary[100],
+                      borderColor: THEME.color.primary,
+                      backgroundColor: THEME.color.primary_200,
                       padding: 8,
                       paddingLeft: 12,
                       borderRadius: 4
@@ -298,8 +299,8 @@ export function SignUp() {
                     } : {
                       fontSize: 16,
                       borderWidth: 1,
-                      borderColor: colors.primary[500],
-                      backgroundColor: colors.primary[100],
+                      borderColor: THEME.color.primary,
+                      backgroundColor: THEME.color.primary_200,
                       padding: 8,
                       paddingLeft: 12,
                       borderRadius: 4

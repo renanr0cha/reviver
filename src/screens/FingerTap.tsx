@@ -11,6 +11,7 @@ import {
   Modal,
   Text,
   useTheme,
+  useToast,
   VStack
 } from 'native-base';
 import { ButtonPrimary } from '../components/ButtonPrimary';
@@ -18,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
 import api from '../services/api';
 import { useNavigation } from '@react-navigation/native';
+import { THEME } from '../styles/theme';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -25,6 +27,7 @@ type Nav = {
 
 export function FingerTap() {
 
+  const toast = useToast()
   const navigation = useNavigation<Nav>()
   const { colors } = useTheme()
 
@@ -80,10 +83,20 @@ export function FingerTap() {
     await deleteFormData()
   }
 
+  function showToast() {
+    toast.show({
+      padding: 4,
+      title: "Registro adicionado com sucesso!",
+      placement: "bottom",
+      duration: 2000 
+    })
+      
+  }
+
   function handleReturnToHome() {
     navigation.navigate("home")
     deleteData()
-
+    showToast()
   }
 
 
@@ -113,7 +126,7 @@ export function FingerTap() {
         w="full"
         justifyContent="center"
         alignItems="center"
-        bg={colors.primary[600]}
+        bg={THEME.color.primary}
         pb={4}
         pt={16}
         px={4}
@@ -143,9 +156,10 @@ export function FingerTap() {
             size="lg"
             rounded="full"
             w={250}
-            bg={colors.blue[500]}
+            bg={THEME.color.primary}
             _text={{ fontWeight: 'bold', fontSize: "2xl"}}
             h={250}
+            _pressed={{ bg: THEME.color.primary_800}}
             onPress={()=> seconds===15 ? null : setCount(count + 1)}
             disabled={seconds === 15 ? true : false }
           >
@@ -196,7 +210,11 @@ export function FingerTap() {
               </Modal.Body>
               <Modal.Footer>
                 <Button.Group space={2}>
-                  <Button onPress={() => {
+                  <Button
+                  bg={THEME.color.primary}
+                  _focus={{ bg: THEME.color.primary_800}}
+                  _pressed={{ bg: THEME.color.primary_800}}
+                  onPress={() => {
                     Count()
                   }}>
                     INICIAR

@@ -23,6 +23,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaskInput from 'react-native-mask-input';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { THEME } from '../styles/theme';
 
 
 type Nav = {
@@ -267,7 +268,7 @@ export function AddPatient() {
                           onChange(itemValue);
                         }}
                         _selectedItem={{
-                        bg: "primary.200",
+                        bg: THEME.color.primary_200,
                         endIcon: <CheckIcon size="5" />
                       }} size="md" fontSize="md">
                           <Select.Item label="Masculino" value="m" />

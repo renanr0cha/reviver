@@ -133,17 +133,6 @@ export function Home() {
           </CardMenu>
           
         </VStack>
-        <VStack justifyContent="space-between">
-          <Box px={4} mt={2} pb={2} w="100%">
-            <ButtonPrimary
-              title="Gerenciar Notificações"
-              mt={4}
-              bg={colors.red[500]}
-              onPress={handleMedicineList}
-            />
-
-          </Box>
-        </VStack>
       </VStack>
     </>
   );

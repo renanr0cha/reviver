@@ -3,31 +3,37 @@ import api from './api';
 
 interface Props {
   name: string,
+  id: number,
   notifications: string[],
   hours: string[],
   dosage: string,
+  inventory: number,
   end_date?: string,
   medicine: Object,
 }
 
-export async function setScheduledNotifications( name: string, hours: string[], dosage: string) {
-  Notifications.setNotificationChannelAsync(name, {
-    name: name,
+export async function setScheduledNotifications(medicine: Props) {
+  Notifications.setNotificationChannelAsync(medicine.name, {
+    name: medicine.name,
     importance: Notifications.AndroidImportance.MAX,
     lightColor: "#FF231F7C",
   })
   
 
-  hours.forEach(hour => {
+  medicine.hours.forEach(hour => {
     const date = hour.split(":")
     console.log(`${date[0]}:${date[1]}`)
     Notifications.scheduleNotificationAsync({
       content: {
         autoDismiss: false,
-        title: `Você tem medicamento às ${hour}`,
-        body: `${name} ${dosage}`,
+        title: `Você tem medicamento às ${hour} `,
+        body: `${medicine.name} ${medicine.dosage}`,
         priority: 'max',
-        categoryIdentifier: 'buttons'
+        categoryIdentifier: 'buttons',
+        data: {
+          id: medicine.id,
+          inventory: medicine.inventory
+        }
       },
       trigger: {
         hour: Number(date[0]),

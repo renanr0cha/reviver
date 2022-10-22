@@ -1,6 +1,6 @@
 {
   "name": "reviver",
-  "displayName": "reviver",
+  "displayName": "Reviver",
   "expo": {
     "name": "reviver",
     "slug": "reviver",
@@ -8,6 +8,18 @@
     "sdkVersion": "45.0.0",
     "assetBundlePatterns": [
       "**/*"
+    ],
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/pill-icon.png",
+          "color": "#F5A648",
+          "sounds": [
+            "./src/assets/alarm-sound.wav"
+          ]
+        }
+      ]
     ],
     "icon": "./assets/icon.png",
     "splash": {

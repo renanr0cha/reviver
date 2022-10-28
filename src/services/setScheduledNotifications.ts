@@ -13,12 +13,6 @@ interface Props {
 }
 
 export async function setScheduledNotifications(medicine: Props) {
-  Notifications.setNotificationChannelAsync(medicine.name, {
-    name: medicine.name,
-    importance: Notifications.AndroidImportance.MAX,
-    lightColor: "#FF231F7C",
-  })
-  
 
   medicine.hours.forEach(hour => {
     const date = hour.split(":")

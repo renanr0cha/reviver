@@ -8,6 +8,7 @@ import { MedicineList } from "../screens/MedicineList";
 import { PatientList } from "../screens/PatientList";
 import { AddPatient } from "../screens/AddPatient";
 import { FingerTap } from "../screens/FingerTap";
+import { MedicineTakenInfo } from "../screens/MedicineTakenInfo";
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -21,6 +22,8 @@ export function AppRoutes() {
       <Screen name="fingertap" component={FingerTap}/>
       <Screen name="addpatient" component={AddPatient}/>
       <Screen name="addmed" component={AddMedicine}/>
+      <Screen name="medtaken" component={MedicineTakenInfo}/>
+
       <Screen name="medlist" component={MedicineList}/>
       <Screen name="patientlist" component={PatientList}/>
 

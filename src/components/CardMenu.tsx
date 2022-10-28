@@ -7,13 +7,11 @@ import { THEME } from '../styles/theme';
 type Props = {
   title: string,
   subtitle: string,
-  buttonTitle: string,
   icon: React.ElementType<IconProps>,
-  secondButton: string,
   children: ReactNode
 }
 
-export function CardMenu({ title, subtitle, buttonTitle, icon: Icon, secondButton, children,...rest}: Props) {
+export function CardMenu({ title, subtitle, icon: Icon, children,...rest}: Props) {
   const { colors } = useTheme()
   return (
     <VStack {...rest}>

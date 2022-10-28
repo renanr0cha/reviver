@@ -8,7 +8,6 @@ import {
   CheckIcon,
   Box,
   Switch,
-  Divider,
   ScrollView,
   useToast
 } from 'native-base';

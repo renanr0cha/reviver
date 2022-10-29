@@ -1,5 +1,4 @@
 import * as Notifications from 'expo-notifications';
-import api from './api';
 
 interface Props {
   name: string,
@@ -20,13 +19,12 @@ export async function setScheduledNotifications(medicine: Props) {
     Notifications.scheduleNotificationAsync({
       content: {
         autoDismiss: false,
-        title: `Você tem medicamento às ${hour} `,
-        body: `${medicine.name} ${medicine.dosage}`,
+        title: `Você tem medicamento agora às ${hour} `,
+        body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,
         priority: 'max',
-        categoryIdentifier: 'buttons',
+        sound: "../assets/alarm-sound.wav",
         data: {
-          id: medicine.id,
-          inventory: medicine.inventory
+          medicine
         }
       },
       trigger: {
@@ -34,6 +32,7 @@ export async function setScheduledNotifications(medicine: Props) {
         minute: Number(date[1]),
         repeats: true,
       },
+      
     });
   });
   

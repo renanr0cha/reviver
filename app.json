@@ -1,8 +1,8 @@
 {
   "name": "reviver",
-  "displayName": "Reviver",
+  "displayName": "reviver",
   "expo": {
-    "name": "reviver",
+    "name": "Reviver",
     "slug": "reviver",
     "version": "1.0.0",
     "sdkVersion": "45.0.0",

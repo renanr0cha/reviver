@@ -84,7 +84,6 @@ export function AddMedicine() {
       .then((response) => {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
-        console.log(medicineData)
 
         setScheduledNotifications(medicineData)
         addNotifications()

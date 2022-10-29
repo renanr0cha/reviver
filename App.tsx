@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 import { THEME } from "./src/styles/theme"
@@ -13,11 +13,6 @@ import { getPushNotificationToken } from './src/services/getPushNotificationToke
 import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
-import { setScheduledNotifications } from "./src/services/setScheduledNotifications";
-import { setUpCategoryForNotificationResponse } from "./src/services/setUpCategoryForNotificationResponse";
-
-
-
 
 export default function App() {
 
@@ -44,8 +39,6 @@ export default function App() {
       }
     }
   }, [])
-
-  setUpCategoryForNotificationResponse()
   
   
 

@@ -3,13 +3,11 @@ import {
   Heading,
   VStack,
   useTheme,
-  IconButton,
-  Box
+  IconButton
 } from "native-base";
 import React, { useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { SignOut, ChartLine, Pill, ListDashes, Clipboard, UserCircle } from "phosphor-react-native"
-import { ButtonPrimary } from "../components/ButtonPrimary";
 import { ButtonSmall } from "../components/ButtonSmall";
 import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";

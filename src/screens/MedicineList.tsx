@@ -43,7 +43,6 @@ export function MedicineList() {
     await api.get(`/${userToken}/medicine/list${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
       const allMedicines = response.data
-      console.log(allMedicines)
       getMedicines(allMedicines)
     })
     .catch(error => console.error(`Error: ${error}`))

@@ -6,6 +6,7 @@ import { THEME } from '../styles/theme';
 export function MedicineTakenInfo() {
 
   
+  
   return (
     <VStack>
       <Header title="" />

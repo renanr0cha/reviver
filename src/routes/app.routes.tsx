@@ -1,5 +1,4 @@
 import { createNativeStackNavigator  } from "@react-navigation/native-stack";
-import { useNavigationContainerRef, NavigationContainer } from "@react-navigation/native"
 
 import { Home } from "../screens/Home";
 import { AddInspection1 } from "../screens/AddInspection1";
@@ -11,6 +10,7 @@ import { AddPatient } from "../screens/AddPatient";
 import { FingerTap } from "../screens/FingerTap";
 import { MedicineTakenInfo } from "../screens/MedicineTakenInfo";
 import React from "react";
+import { InspectionReminders } from "../screens/InspectionReminders";
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -24,7 +24,7 @@ export function AppRoutes() {
         <Screen name="addpatient" component={AddPatient}/>
         <Screen name="addmed" component={AddMedicine}/>
         <Screen name="medtaken" component={MedicineTakenInfo}/>
-
+        <Screen name="inforeminder" component={InspectionReminders}/>
         <Screen name="medlist" component={MedicineList}/>
         <Screen name="patientlist" component={PatientList}/>
 

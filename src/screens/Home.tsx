@@ -79,6 +79,10 @@ export function Home() {
     navigation.navigate("patientlist")
   }
 
+  function handleInspectionNotifications() {
+    navigation.navigate("inforeminder")
+  }
+
   //mudar para lista depois
   function handleScheduleList() {
     navigation.navigate("medtaken")
@@ -147,7 +151,9 @@ export function Home() {
             icon={Clipboard}
           >
             <HStack alignSelf="flex-end">
-              <ButtonSmall title="adicionar registros" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+              <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+              <ButtonSmall title="lembretes" h={12} mt={2} p={4} ml={4} onPress={handleInspectionNotifications}/>
+
             </HStack>
           </CardMenu>
           <CardMenu

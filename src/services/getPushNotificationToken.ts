@@ -7,6 +7,11 @@ export async function getPushNotificationToken() {
     importance: Notifications.AndroidImportance.MAX,
     lightColor: "#FF231F7C",
   })
+  Notifications.setNotificationChannelAsync("inspection", {
+    name: "Inspection Reminder",
+    importance: Notifications.AndroidImportance.MAX,
+    lightColor: "#FF231F7C",
+  })
   const { granted } = await Notifications.getPermissionsAsync()
 
   if (!granted) {

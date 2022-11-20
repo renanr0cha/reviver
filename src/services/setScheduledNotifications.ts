@@ -18,6 +18,7 @@ export async function setScheduledNotifications(medicine: Props) {
     console.log(`${date[0]}:${date[1]}`)
     Notifications.scheduleNotificationAsync({
       content: {
+        categoryIdentifier: "medicine",
         autoDismiss: false,
         title: `Você tem medicamento agora às ${hour} `,
         body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,

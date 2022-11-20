@@ -19,6 +19,7 @@ export function InspectionReminders() {
     <VStack
       w="full"
       backgroundColor="white"
+      flex={1}
     >
       <Header title="Lembretes de Registros" />
       <Heading p={4} mt={8}>
@@ -84,7 +85,13 @@ export function InspectionReminders() {
         </Pressable>
 
     </HStack>
-    <Box px={4} mt={8} pb={2} w="100%">
+    <Text
+        p={4}
+        fontSize="sm"
+      >
+        Os lembretes serão feitos as 10:30 da manhã, e caso a escolha seja semanalmente, toda segunda-feira
+      </Text>
+    <Box px={4} mt={10} pb={2} w="100%">
         <ButtonPrimary
           title="Salvar escolha"
           w="full"

@@ -3,8 +3,8 @@ import * as Notifications from 'expo-notifications';
 export async function setInspectionNotifications(mode: "daily" | "weekly") {
   
   Notifications.scheduleNotificationAsync({
+    identifier: "inspection",
     content: {
-      categoryIdentifier: "inspection",
       autoDismiss: false,
       title: `Não esqueça de adicionar seus registros`,
       body: `Aperte aqui para adicionar um registro com seus dados de saúde`,

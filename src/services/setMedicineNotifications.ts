@@ -11,14 +11,14 @@ interface Props {
   medicine: Object,
 }
 
-export async function setScheduledNotifications(medicine: Props) {
+export async function setMedicineNotifications(medicine: Props) {
 
   medicine.hours.forEach(hour => {
     const date = hour.split(":")
     console.log(`${date[0]}:${date[1]}`)
     Notifications.scheduleNotificationAsync({
+      identifier: "medicine",
       content: {
-        categoryIdentifier: "medicine",
         autoDismiss: false,
         title: `Você tem medicamento agora às ${hour} `,
         body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,

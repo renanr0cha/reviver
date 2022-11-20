@@ -28,7 +28,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import api from '../services/api';
-import { setScheduledNotifications } from '../services/setScheduledNotifications';
+import { setMedicineNotifications } from '../services/setMedicineNotifications';
 import { THEME } from '../styles/theme';
 
 
@@ -85,7 +85,7 @@ export function AddMedicine() {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
 
-        setScheduledNotifications(medicineData)
+        setMedicineNotifications(medicineData)
         addNotifications()
         setTimeout( navigate, 3000)
       })

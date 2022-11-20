@@ -1,18 +1,37 @@
-import { Box, Heading, HStack, Pressable, Text, VStack } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { Box, Heading, HStack, Pressable, Text, useToast, VStack } from 'native-base';
 import { CheckCircle } from 'phosphor-react-native';
 import React, { useState } from 'react';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
+import { setInspectionNotifications } from '../services/setInspectionNotifications';
 import { THEME } from '../styles/theme';
+
+type Frequency = "daily" | "weekly"
 
 export function InspectionReminders() {
 
+  const toast = useToast()
+  const navigation = useNavigation()
+
   const [isLoading, setIsLoading] = useState(false)
-  const [mode, setMode] = useState("weekly")
+  const [mode, setMode] = useState<Frequency>("weekly")
 
-  function handleInspectionReminder(mode: string) {
+  function handleInspectionReminder(mode: "daily" | "weekly") {
     setIsLoading(true)
+    setInspectionNotifications(mode)
+    addToast()
+    setIsLoading(false)
+    navigation.goBack()
+  }
 
+  function addToast() {
+    toast.show({
+      padding: 4,
+      title: `Suas preferências foram salvas. Os lembretes serão enviados ${mode === "daily" ? "Uma vez por dia" : "Uma vez por semana"}!`,
+      placement: "bottom",
+      duration: 2000,
+    })
   }
 
   return (

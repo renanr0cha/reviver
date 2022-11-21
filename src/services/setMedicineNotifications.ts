@@ -15,20 +15,21 @@ export async function setMedicineNotifications(medicine: Props) {
 
   medicine.hours.forEach(hour => {
     const date = hour.split(":")
-    console.log(`${date[0]}:${date[1]}`)
+    
     Notifications.scheduleNotificationAsync({
-      identifier: "medicine",
+      identifier: `${medicine.name}`,
       content: {
         autoDismiss: false,
         title: `Você tem medicamento agora às ${hour} `,
         body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,
         priority: 'max',
-        sound: "../assets/alarm-sound.wav",
+        sound: "alarm_sound.wav",
         data: {
           medicine
         }
       },
       trigger: {
+        channelId: "medicine",
         hour: Number(date[0]),
         minute: Number(date[1]),
         repeats: true,

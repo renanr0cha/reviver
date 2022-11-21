@@ -7,7 +7,7 @@ import {
 } from "native-base";
 import React, { useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { SignOut, ChartLine, Pill, ListDashes, Clipboard, UserCircle } from "phosphor-react-native"
+import { SignOut, ChartLine, Pill, Clipboard, UserCircle } from "phosphor-react-native"
 import { ButtonSmall } from "../components/ButtonSmall";
 import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";
@@ -156,15 +156,7 @@ export function Home() {
 
             </HStack>
           </CardMenu>
-          <CardMenu
-            title="Próximos medicamentos"
-            subtitle="Acompanhe sua lista de horários" 
-            icon={ListDashes}
-          >
-            <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver próximos medicamentos" h={12} mt={2} p={4} onPress={handleScheduleList}/>
-            </HStack>
-          </CardMenu>
+          
         </VStack>
             
     

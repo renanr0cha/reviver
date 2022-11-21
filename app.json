@@ -1,9 +1,9 @@
 {
-  "name": "reviver",
-  "displayName": "reviver",
+  "name": "Reviver",
+  "displayName": "Reviver",
   "expo": {
     "name": "Reviver",
-    "slug": "reviver",
+    "slug": "Reviver",
     "version": "1.0.0",
     "sdkVersion": "45.0.0",
     "assetBundlePatterns": [
@@ -28,7 +28,8 @@
       "backgroundColor": "#f0f0f0"
     },
     "android": {
-      "package": "com.reviver"    },
+      "package": "com.reviver"
+    },
     "ios": {
       "bundleIdentifier": "com.reviver-project"
     },

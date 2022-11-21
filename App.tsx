@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { NativeBaseProvider, StatusBar } from "native-base";
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 import { THEME } from "./src/styles/theme"
@@ -15,6 +15,8 @@ import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 
 export default function App() {
+
+  
 
   const getNotificationListener = useRef<Subscription>()
   const responseNotificationListener = useRef<Subscription>()

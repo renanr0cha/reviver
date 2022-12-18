@@ -4,6 +4,7 @@
   "expo": {
     "name": "Reviver",
     "slug": "Reviver",
+    "scheme": "reviver",
     "version": "1.0.0",
     "sdkVersion": "45.0.0",
     "assetBundlePatterns": [

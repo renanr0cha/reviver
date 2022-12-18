@@ -7,6 +7,17 @@ import { AuthRoutes } from "./auth.routes"
 
 import { useAuth } from "../hooks/auth"
 
+const linking = {
+  prefixes: ['reviver://'],
+  config: {
+    screens: {
+      medtaken: {
+        path: 'medtaken/:id',
+      }
+    }
+  }
+}
+
 export function Routes() {
   
   const { token, loading } = useAuth()
@@ -17,7 +28,7 @@ export function Routes() {
   }
 
   return(
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       { token ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   )

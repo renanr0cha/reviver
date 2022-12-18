@@ -8,13 +8,16 @@ import { Subscription } from 'expo-modules-core'
 import * as Notifications from 'expo-notifications'
 import './src/services/notificationConfigs'
 import { getPushNotificationToken } from './src/services/getPushNotificationToken'
-
+import { createURL } from 'expo-linking'
 
 import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 
 export default function App() {
+
+  const url = createURL('medicine', {})
+  console.log(url)
 
   
 

@@ -132,7 +132,7 @@ export function Home() {
             icon={ChartLine}
           >
             <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleScheduleList}/>
             </HStack>
           </CardMenu>
           <CardMenu

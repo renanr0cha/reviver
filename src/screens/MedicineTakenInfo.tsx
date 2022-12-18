@@ -3,9 +3,9 @@ import { Heading, Text, VStack } from 'native-base';
 import { Header } from '../components/Header';
 import { THEME } from '../styles/theme';
 
-export function MedicineTakenInfo() {
+export function MedicineTakenInfo({route}) {
 
-  
+  console.log(route.params?.id)
   
   return (
     <VStack>

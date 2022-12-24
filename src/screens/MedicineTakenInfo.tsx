@@ -131,7 +131,7 @@ export function MedicineTakenInfo({route}: any) {
                           <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Instruções especiais: </Text>{medicineTaken.instruction}</Text>
                       }
 
-                      <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Você deve parar dia: </Text>{setDateToStringLocalFormat(new Date(medicineTaken.end_date.replace(/-/g, '\/')))}</Text>
+                      <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Você deve parar dia: </Text>{setDateToStringLocalFormat(new Date(medicineTaken.end_date.slice(0, 10).replace(/-/g, '\/')))}</Text>
                     </View>
                     
 

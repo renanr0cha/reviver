@@ -51,22 +51,22 @@ interface MedicineFormData {
   end_date?: string,
   quantity_of_days: string,
   instructions?: string,
-  inventory?: string,
+  inventory: string,
   start_time?: string,
   other_instruction?: string
 }
 
 const schema = Yup.object().shape({
-  medicine: Yup.string().required('É necessesário informar o nome do medicamento'),
-  prescription: Yup.string().required('É necessesário informar o nome do medicamento'),
-  frequency: Yup.string().required('É necessesário informar a frequência'),
+  medicine: Yup.string().required('INforme o nome do medicamento'),
+  prescription: Yup.string().required('Marque se precisa de receita ou não'),
+  frequency: Yup.string().required('Informe a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
   start_date: Yup.string(),
   end_date: Yup.string(),
-  quantity_of_days: Yup.string().required('Informe a quantidade de dias'),
+  quantity_of_days: Yup.string(),
   instructions: Yup.string(),
-  inventory: Yup.string().required('Informe o estoque do medicamento')
+  inventory: Yup.string()
 })
 
 
@@ -109,6 +109,9 @@ export function AddMedicine() {
 
   const [startDate, setStartDate] = useState(new Date())
   const [startTime, setStartTime] = useState(new Date())
+
+  const [showChooseDays, setShowChooseDays] = useState(true)
+
 
   function setDateToStringDatabaseFormat(date:Date) {
     return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
@@ -170,17 +173,40 @@ export function AddMedicine() {
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
     setIsLoading(true)
 
+    if (showChooseDays === true && data.quantity_of_days === undefined) {
+      setIsLoading(false)
+
+      return Alert.alert("Insira a quantidade de dias do tratamento")
+    }
+
+    if (data.prescription === 'yes' && data.inventory === null) {
+      setIsLoading(false)
+
+      return Alert.alert("Insira o estoque do seu medicamento")
+    }
+
     //tratando dados
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
-    const inventory =  data.inventory ? parseInt(data.inventory) : undefined
-    const choosenDays = parseInt(data.quantity_of_days)
+    const inventory = data.prescription === "no" && data.inventory === undefined ? null : parseInt(data.inventory)
+    const choosenDays = showChooseDays === false && data.quantity_of_days !== null ? 365 : parseInt(data.quantity_of_days)
     const frequency = parseInt(data.frequency)
     const instruction = data.instructions === "Outro" && data.instructions !== undefined ? data.other_instruction : data.instructions
 
     const token = await AsyncStorage.getItem('token')
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
+    console.log({
+      name: data.medicine,
+      prescription,
+      dosage,
+      frequency,
+      start_date: setDateToStringDatabaseFormat(startDate),
+      start_time: setTimeToString(startTime),
+      days: choosenDays,
+      instruction,
+      inventory
+    })
     await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
       name: data.medicine,
       prescription,
@@ -399,39 +425,47 @@ export function AddMedicine() {
                   }
             </Section>
             <Section title="Sobre a duração do tratamento" mt={6}>
+              <HStack alignItems='center' >
+                <FormControl.Label _text={{bold: true}} mt={4}>É um medicamento de uso contínuo?:</FormControl.Label>
+                <FormControl.Label ml={4} mt={4}>Não</FormControl.Label><Switch size="md" colorScheme="orange" mt={4} mx={2} onToggle={() =>setShowChooseDays(previousState => !previousState)} value={!showChooseDays}></Switch><FormControl.Label mt={4}>Sim</FormControl.Label>
+
+              </HStack>
               <FormControl.Label _text={{bold: true}} mt={2}>Início do tratamento:</FormControl.Label>
-              <Button
-                onPress={showDatepicker}
-                variant="outline"
-                size="md"
-                borderWidth={1}
-                borderColor="coolGray.300"
-                fontSize="lg"
-                fontFamily="body"
-                color={colors.text[400]}
-                justifyContent="space-between"
-                alignItems="space-between"
+                <Button
+                  onPress={showDatepicker}
+                  variant="outline"
+                  size="md"
+                  borderWidth={1}
+                  borderColor="coolGray.300"
+                  fontSize="lg"
+                  fontFamily="body"
+                  color={colors.text[400]}
+                  justifyContent="space-between"
+                  alignItems="space-between"
 
-                _text={{
-                  color: colors.text[600],
-                  fontSize: "md",
-                  fontFamily: "body"
-                }}
-              >
-                {setDateToStringLocalFormat(startDate)}
-              </Button>
-
-              <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
-              <InputForm
-                name="quantity_of_days"
-                control={control}
-                placeholder="Insira a quantidade"
-                autoCorrect={false}
-                keyboardType="numeric"
-              />
-              <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
-
-
+                  _text={{
+                    color: colors.text[600],
+                    fontSize: "md",
+                    fontFamily: "body"
+                  }}
+                >
+                  {setDateToStringLocalFormat(startDate)}
+                </Button>
+              {
+                showChooseDays &&
+                <>
+                  <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
+                  <InputForm
+                    name="quantity_of_days"
+                    control={control}
+                    placeholder="Insira a quantidade"
+                    autoCorrect={false}
+                    keyboardType="numeric"
+                  />
+                  <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
+                </>
+              }
+              
               <VStack>
                 <HStack alignItems="center">
                   <FormControl.Label _text={{bold: true}} mt={2}>Instruções diversas (Opcional):</FormControl.Label>

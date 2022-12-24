@@ -85,6 +85,7 @@ export function AddMedicine() {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
 
+        console.log(medicineData)
         setMedicineNotifications(medicineData)
         addNotifications()
         setTimeout( navigate, 3000)

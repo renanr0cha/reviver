@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Container, Heading, Text, useTheme, View, VStack } from 'native-base';
+import { Box, Heading, Text, useTheme, useToast, View, VStack } from 'native-base';
 import { Header } from '../components/Header';
 import { THEME } from '../styles/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../services/api';
 import { Loading } from '../components/Loading';
 import { ButtonPrimary } from '../components/ButtonPrimary';
+import * as Notifications from 'expo-notifications'
+import { useNavigation } from '@react-navigation/native';
 
 type Medicine = {
   days: 1,
@@ -17,18 +19,31 @@ type Medicine = {
   instruction: string | null,
   inventory: number,
   name: string,
-  notifications: Array<string>[]
+  notifications: Array<string>,
+  new_notifications: Array<newNotifications>,
   prescription: number,
   start_date: string,
   start_time: string,
   user_id: number,
   uuid: string,
 }
+interface newNotifications {
+  date: string,
+  time: string
+}
+
+type Nav = {
+  navigate: (value: string) => void;
+}
 
 export function MedicineTakenInfo({route}: any) {
   const { colors } = useTheme()
+  const toast = useToast()
+  const navigation = useNavigation<Nav>()
+
 
   const id = Number(route.params?.id)
+  const notificationIdentifier = route.params?.identifier
 
   function setDateToStringLocalFormat(date:Date) {
     return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getFullYear())}`
@@ -39,6 +54,8 @@ export function MedicineTakenInfo({route}: any) {
     }, [])
 
   const [medicineTaken, getMedicineTaken] = useState<Medicine>();
+  const [isLoading, setIsLoading] = useState(false)
+
   
   const getAllMedicines = async () => {
 
@@ -54,21 +71,43 @@ export function MedicineTakenInfo({route}: any) {
     .catch(error => console.error(`Error: ${error}`))
   }
 
-  // const medicineTakenConfirmation = async () => {
+  const medicineTakenConfirmation = async () => {
 
-  //   const isCaregiver = await AsyncStorage.getItem("uuidPatient")
+    const token = await AsyncStorage.getItem('token')
+    const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
-  //   await api.get(`/notification/create/${medicineTaken?.uuid}/${}/${isCaregiver ? isCaregiver : ""}`)
-  //   .then((response) => {
-  //     const medicines:Array<Medicine> = response.data
-  //     const medicine = medicines.find(element => element.id === id)
-  //     getMedicineTaken(medicine)
-  //   })
-  //   .catch(error => console.error(`Error: ${error}`))
-  // }
+    await api.get(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`)
+    .then((response) => {
+      response.data.used === 1 ? showToast() : console.log(response.data) 
+    })
+    .catch(error => console.error(`Error: ${error}`))
+  }
+
+  function showToast() {
+    toast.show({
+      padding: 4,
+      title: `Sucesso na confirmação da dose das ${medicineTaken?.new_notifications[0].time}!`,
+      placement: "bottom",
+      duration: 2000,
+    })
+      
+  }
+
+  function dismissMedicineTakenNotification() {
+    Notifications.dismissNotificationAsync(notificationIdentifier)
+  }
+
+  function navigate() {
+    setIsLoading(false)
+    navigation.navigate("home")
+  }
 
   function handleConfirmationOfMedicineTaken() {
     //botar aqui a rota de que tomou o medicamento
+    setIsLoading(true)
+    medicineTakenConfirmation()
+    dismissMedicineTakenNotification()
+    navigate()
   }
   
   return (
@@ -122,6 +161,7 @@ export function MedicineTakenInfo({route}: any) {
                       textAlign="center"
                       w="100%"
                       onPress={handleConfirmationOfMedicineTaken}
+                      isLoading={isLoading}
                     />
                   </Box>
                 </VStack>

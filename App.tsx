@@ -51,8 +51,8 @@ export default function App() {
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.content.data.medicine.id
     ){
-      Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medicine.id}`)
-
+      console.log(lastNotificationResponse.notification.request.identifier)
+      Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medicine.id}/${lastNotificationResponse.notification.request.identifier}`)
     }
   }, [lastNotificationResponse])
   

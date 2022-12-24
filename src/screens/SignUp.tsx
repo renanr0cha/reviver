@@ -221,7 +221,7 @@ export function SignUp() {
                     <Controller
                     control={control}
                     name="birth_date"
-                    render={({}) => (
+                    render={() => (
                       <>
                         <Button
                           onPress={showDatepicker}

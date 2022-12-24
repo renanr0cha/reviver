@@ -109,6 +109,8 @@ export function MedicineTakenInfo({route}: any) {
     dismissMedicineTakenNotification()
     navigate()
   }
+
+  console.log(medicineTaken?.end_date.slice(0, 10))
   
   return (
     <>
@@ -131,7 +133,11 @@ export function MedicineTakenInfo({route}: any) {
                           <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Instruções especiais: </Text>{medicineTaken.instruction}</Text>
                       }
 
-                      <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Você deve parar dia: </Text>{setDateToStringLocalFormat(new Date(medicineTaken.end_date.replace(/-/g, '\/')))}</Text>
+                      {
+                        medicineTaken.end_date !== null && medicineTaken.end_date < '2023-11-25T00:00:00.000000Z' ?
+                          <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}><Text fontWeight='medium' color={colors.coolGray[800]}>Você deve parar dia: </Text>{setDateToStringLocalFormat(new Date(medicineTaken?.end_date.slice(0, 10).replace(/-/g, '\/')))}</Text>
+                          :<Text></Text>
+                      }
                     </View>
                     
 
@@ -140,19 +146,25 @@ export function MedicineTakenInfo({route}: any) {
                 </View>
                 <VStack w="100%" bg={colors.white}>
                   <View px={4} mb={4}>
-                    <Box
-                      alignItems='center'
-                      borderStyle='solid'
-                      borderWidth={2}
-                      p={2}
-                      my={2}
-                      borderColor={THEME.color.primary}
-                      borderRadius='2xl'
-                      bg={colors.white}
-                    >
-                      <Heading pb={1} fontWeight='bold' color={colors.coolGray[700]}>Seu estoque hoje: <Heading color={THEME.color.primary_800}>{medicineTaken.inventory}</Heading></Heading>
-                    </Box>
-                    <Text fontSize='md' fontWeight='medium' mb={10}><Text fontWeight='bold' color='#F13C46'>Atenção: </Text>Lembre de sempre renovar seu estoque quando estiver próximo ao fim!</Text>
+                    {
+                      medicineTaken.inventory !== null &&
+                      <>
+                        <Box
+                          alignItems='center'
+                          borderStyle='solid'
+                          borderWidth={2}
+                          p={2}
+                          my={2}
+                          borderColor={THEME.color.primary}
+                          borderRadius='2xl'
+                          bg={colors.white}
+                        >
+                          <Heading pb={1} fontWeight='bold' color={colors.coolGray[700]}>Seu estoque hoje: <Heading color={THEME.color.primary_800}>{medicineTaken.inventory}</Heading></Heading>
+                        </Box>
+                        <Text fontSize='md' fontWeight='medium' mb={10}><Text fontWeight='bold' color='#F13C46'>Atenção: </Text>Lembre de sempre renovar seu estoque quando estiver próximo ao fim!</Text>
+                      </>
+                    }
+                    
                     <Text fontSize='lg' fontWeight='bold'>Você confirma que tomou a dose do seu medicamento ainda pouco?</Text>
                   </View>
                   <Box px={4} mt={2} pb={2} w="100%">

@@ -6,7 +6,7 @@ interface Props {
   notifications: string[],
   hours: string[],
   dosage: string,
-  inventory: number,
+  inventory: number | null,
   end_date?: string,
   medicine: Object,
 }

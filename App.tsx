@@ -8,7 +8,6 @@ import { Subscription } from 'expo-modules-core'
 import * as Notifications from 'expo-notifications'
 import './src/services/notificationConfigs'
 import { getPushNotificationToken } from './src/services/getPushNotificationToken'
-import { createURL } from 'expo-linking'
 
 import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
@@ -29,7 +28,6 @@ export default function App() {
   useEffect(() => {
     getNotificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       console.log(notification)
-      //adicionar aqui rota pra dizer que recebeu a notificação e tá com status aberto
     })
 
     responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
@@ -51,7 +49,6 @@ export default function App() {
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.content.data.medicine.id
     ){
-      console.log(lastNotificationResponse.notification.request.identifier)
       Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medicine.id}/${lastNotificationResponse.notification.request.identifier}`)
     }
   }, [lastNotificationResponse])

@@ -88,7 +88,7 @@ export function MedicineTakenInfo({route}: any) {
       padding: 4,
       title: `Sucesso na confirmação da dose das ${medicineTaken?.new_notifications[0].time}!`,
       placement: "bottom",
-      duration: 2000,
+      duration: 3000,
     })
       
   }
@@ -103,7 +103,7 @@ export function MedicineTakenInfo({route}: any) {
   }
 
   function handleConfirmationOfMedicineTaken() {
-    //botar aqui a rota de que tomou o medicamento
+
     setIsLoading(true)
     medicineTakenConfirmation()
     dismissMedicineTakenNotification()

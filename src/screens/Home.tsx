@@ -85,7 +85,7 @@ export function Home() {
 
   //mudar para lista depois
   function handleScheduleList() {
-    navigation.navigate("medtaken")
+    // navigation.navigate("medtaken")
   }
 
   return (

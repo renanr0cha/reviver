@@ -20,6 +20,7 @@ export async function setMedicineNotifications(medicine: Props) {
       identifier: `${medicine.name}`,
       content: {
         autoDismiss: false,
+        sticky: true,
         title: `Você tem medicamento agora às ${hour} `,
         body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,
         priority: 'max',

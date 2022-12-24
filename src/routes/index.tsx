@@ -12,7 +12,9 @@ const linking = {
   config: {
     screens: {
       medtaken: {
+        
         path: 'medtaken/:id',
+        
       }
     }
   }

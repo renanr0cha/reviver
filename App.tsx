@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { NativeBaseProvider, StatusBar } from "native-base";
-import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import { useFonts, Roboto_400Regular, Roboto_700Bold, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import { THEME } from "./src/styles/theme"
 
 
@@ -13,16 +13,14 @@ import { createURL } from 'expo-linking'
 import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
+import { Linking } from "react-native";
 
 export default function App() {
-
-  const url = createURL('medicine', {})
-  console.log(url)
-
-  
-
   const getNotificationListener = useRef<Subscription>()
-  const responseNotificationListener = useRef<Subscription>()
+  const responseNotificationListener:any = useRef<Subscription>()
+  const lastNotificationResponse:any = Notifications.useLastNotificationResponse()
+
+  console.log(new Date(1671833700007))
 
   useEffect(() => {
     getPushNotificationToken()
@@ -31,11 +29,14 @@ export default function App() {
   useEffect(() => {
     getNotificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       console.log(notification)
+      //adicionar aqui rota pra dizer que recebeu a notificação e tá com status aberto
     })
 
     responseNotificationListener.current = Notifications.addNotificationResponseReceivedListener(response => {
       console.log(response)
     })
+
+
 
     return () => {
       if (getNotificationListener.current && responseNotificationListener.current) {
@@ -44,10 +45,20 @@ export default function App() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification.request.content.data.medicine.id
+    ){
+      Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medicine.id}`)
+
+    }
+  }, [lastNotificationResponse])
   
   
 
-  const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold})
+  const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   return (
     <NativeBaseProvider theme={THEME}>
       <StatusBar 

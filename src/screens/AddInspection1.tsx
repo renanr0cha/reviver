@@ -106,7 +106,7 @@ export function AddInspection1() {
             <Section title='' >
               <HStack alignItems="center">
                   <Heading fontSize="xl" mb={2}>Pressão arterial</Heading>
-                  <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
+                  <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
                   <Switch size="md" colorScheme="orange" onToggle={() =>setShowPressure(previousState => !previousState)} value={!showPressure}></Switch>
               </HStack>
               {
@@ -140,7 +140,7 @@ export function AddInspection1() {
             <Section title=''>
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Frequência cardíaca</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowFrequency(previousState => !previousState)} value={!showFrequency}></Switch>
               </HStack>
                 {
@@ -161,7 +161,7 @@ export function AddInspection1() {
             <Section title=''>
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Saturação do Sangue</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowSaturation(previousState => !previousState)} value={!showSaturation}></Switch>
               </HStack>
               {
@@ -181,7 +181,7 @@ export function AddInspection1() {
             <Section title=''>
               <HStack  alignItems="center">
                 <Heading alignSelf="center" fontSize="xl" mb={2}>Glicemia</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Não informar</Text>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowGlucose(previousState => !previousState)} value={!showGlucose}></Switch>
               </HStack>
               {

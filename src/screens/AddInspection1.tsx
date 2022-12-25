@@ -76,7 +76,7 @@ export function AddInspection1() {
   const onSubmit: SubmitHandler<AddInspection1FormData> = async (data) => {
     setIsLoading(true)
     await storeFormData({
-      pressure: data.blood_pressure_first_value && data.blood_pressure_second_value ? `${data.blood_pressure_first_value} por ${data.blood_pressure_second_value}` : "",
+      pressure: data.blood_pressure_first_value && data.blood_pressure_second_value ? `${data.blood_pressure_first_value} por ${data.blood_pressure_second_value}` : "Sem registro",
       heart_rate: data.heart_frequency ? parseInt(data.heart_frequency) : 0,
       saturation: data.saturation ? parseInt(data.saturation) : 0,
       blood_glucose: data.blood_glucose ? parseInt(data.blood_glucose) : 0,

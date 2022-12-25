@@ -140,7 +140,7 @@ export function FingerTap() {
         <VStack alignItems="center" justifyContent="center" >
           <Heading color={colors.text[600]}mb={4} >Finger Tap</Heading>
           <Text w={300} textAlign="center" color={colors.text[600]} mb={8}>
-            Usando seu dedo indicador, aperte o botão azul<Text fontWeight="bold">seguidamente o mais rápido que você puder</Text>
+            Usando seu dedo indicador, aperte o botão laranja <Text fontWeight="bold">seguidamente o mais rápido que você puder</Text>
           </Text>
           <HStack px={20} mb={20} alignItems="center"justifyContent="space-around" w="100%">
             <HStack >
@@ -205,7 +205,7 @@ export function FingerTap() {
               <Modal.Header _text={{ fontWeight:"bold"}} >Teste de Finger Tap</Modal.Header>
               <Modal.Body>
                 <Text>
-                  Este teste consiste em apertar com o dedo indicador seguidamente e o mais rápido que conseguir na área delimitada da tela (neste caso o botão azul) durante 15 segundos
+                  Este teste consiste em apertar com o dedo indicador seguidamente e o mais rápido que conseguir na área delimitada da tela (neste caso o botão laranja) durante 15 segundos
                 </Text>
               </Modal.Body>
               <Modal.Footer>

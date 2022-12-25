@@ -114,7 +114,6 @@ export function AddInspection2() {
                     </Select>
                   )}
                   name="speech"
-                  defaultValue="0"
                 />
                 <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.speech && errors.speech.message}</FormControl.Label>
               </Section>
@@ -143,8 +142,6 @@ export function AddInspection2() {
                     </Select>
                   )}
                   name="swallowing"
-                  defaultValue="0"
-
                 />
                 <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.swallowing && errors.swallowing.message}</FormControl.Label>
               </Section>

@@ -23,7 +23,7 @@ import * as Notifications from 'expo-notifications';
 
 
 type Nav = {
-  navigate: (value: string) => void;
+  navigate: (value: string, params: object) => void;
 }
 
 export function MedicineList() {
@@ -40,7 +40,13 @@ export function MedicineList() {
 
 
   function handleAddMedicine() {
-    navigation.navigate("addmed")
+    navigation.navigate("addmed", {})
+  }
+
+  function handleEditMedicine(medicineUuid: string) {
+    navigation.navigate("editmed", {
+      medicineUuid
+    })
   }
 
   const handleDeleteMedicine = (medicineUuid: string, medicineName: string) => {
@@ -125,6 +131,7 @@ export function MedicineList() {
                         key={index}
                         inventory={medicine.inventory}
                         onPressDelete={() => handleDeleteMedicine(medicine.uuid, medicine.name)}
+                        onPressUpdate={() => handleEditMedicine(medicine.uuid)}
                       />
                     )
                   })

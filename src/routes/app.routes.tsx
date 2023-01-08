@@ -4,6 +4,7 @@ import { Home } from "../screens/Home";
 import { AddInspection1 } from "../screens/AddInspection1";
 import { AddInspection2 } from "../screens/AddInspection2"
 import { AddMedicine } from "../screens/AddMedicine";
+import { EditMedicine } from "../screens/EditMedicine";
 import { MedicineList } from "../screens/MedicineList";
 import { PatientList } from "../screens/PatientList";
 import { AddPatient } from "../screens/AddPatient";
@@ -23,6 +24,7 @@ export function AppRoutes() {
         <Screen name="fingertap" component={FingerTap}/>
         <Screen name="addpatient" component={AddPatient}/>
         <Screen name="addmed" component={AddMedicine}/>
+        <Screen name="editmed" component={EditMedicine}/>
         <Screen name="medtaken" component={MedicineTakenInfo}/>
         <Screen name="inforeminder" component={InspectionReminders}/>
         <Screen name="medlist" component={MedicineList}/>

@@ -15,9 +15,10 @@ type MedicineCardProps = {
   endDate: string,
   inventory: number,
   onPressDelete: any,
+  onPressUpdate: any,
 }
 
-export function MedicineCard({medicineName, frequency, startTime, secondTime, thirdTime, fourthTime, dosage, endDate, inventory, onPressDelete}: MedicineCardProps) {
+export function MedicineCard({medicineName, frequency, startTime, secondTime, thirdTime, fourthTime, dosage, endDate, inventory, onPressDelete, onPressUpdate}: MedicineCardProps) {
   const { colors } = useTheme()
 
     return (
@@ -41,7 +42,7 @@ export function MedicineCard({medicineName, frequency, startTime, secondTime, th
               <Text ml={2} fontSize="lg" fontWeight="bold" maxWidth='full' w={260} isTruncated>{medicineName}</Text>
             </HStack>
             <HStack>
-              <Pressable alignItems="center" rounded="full" p={2} mr={2}>
+              <Pressable alignItems="center" rounded="full" p={2} mr={2} onPress={onPressUpdate}>
                   <PencilSimple size={22} color={colors.text[600]}/>
               </Pressable>
               <Pressable alignItems="center" rounded="full" p={2} onPress={onPressDelete}>

@@ -56,6 +56,7 @@ export default function App() {
   
 
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
+
   return (
     <NativeBaseProvider theme={THEME}>
       <StatusBar 

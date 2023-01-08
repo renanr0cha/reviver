@@ -32,6 +32,8 @@ export function MedicineList() {
   const { colors } = useTheme()
   const navigation = useNavigation<Nav>()
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const [showModal, setShowModal] = useState(false);
   const [medicineToDeleteUuid, setMedicineToDeleteUuid] = useState<string>('');
   const [medicineToDeleteName, setMedicineToDeleteName] = useState<string>('');
@@ -68,6 +70,9 @@ export function MedicineList() {
       Notifications.cancelScheduledNotificationAsync(medicineToDeleteName)
       Notifications.dismissNotificationAsync(medicineToDeleteName)
       showToast()
+      setIsLoading(false)
+      setShowModal(false)
+
     })
     .catch(error => console.error(`Error: ${error}`))
 
@@ -174,9 +179,10 @@ export function MedicineList() {
                   bg={colors.error[500]}
                   _focus={{ bg: colors.error[800]}}
                   _pressed={{ bg: colors.error[200]}}
+                  isLoading={isLoading}
                   onPress={() => {
+                    setIsLoading(true)
                     removeMedicine()
-                    setShowModal(false)
                   }}
                   >
                     EXCLUIR

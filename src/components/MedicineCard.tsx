@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Card, Heading, HStack, IconButton, Text, useTheme, VStack } from 'native-base';
-import { BellSimple, Pill } from 'phosphor-react-native';
+import { Box, Card, Heading, HStack, IconButton, Pressable, Text, useTheme, VStack } from 'native-base';
+import { BellSimple, Pill, Eyedropper, Alarm, Trash, PencilSimple } from 'phosphor-react-native';
 import { string } from 'yup';
 import { THEME } from '../styles/theme';
 
@@ -22,33 +22,48 @@ export function MedicineCard({medicineName, frequency, startTime, secondTime, th
 
   // const displayMedicine = (medicines: any) => {
       return (
-        <VStack alignItems="center" px={4} w="100%" >
+        <VStack alignItems="center" px={2} w="100%" >
           <Box
-            p={4}
-            marginX={4}
-            marginTop={4}
+            p={2}
+            marginX={2}
+            marginTop={2}
             rounded="lg"
             borderWidth={1}
-            borderColor="coolGray.300"
+            borderColor="coolGray.50"
             alignItems="flex-start"
             justifyContent="space-between"
+            backgroundColor='white'
+            shadow={1}
             w="100%"
           >
-            <HStack alignItems="center" textAlign="left" mb={2}>
-              <Pill size={28} color={colors.text[600]}/>
-              <Text ml={2} fontSize="md" fontWeight="bold">{medicineName}</Text>
+            <HStack justifyContent="space-between" w='100%'>
+              <HStack alignItems="center" textAlign="left" mb={4}>
+                <Pill size={24} color={THEME.color.primary_800}/>
+                <Text ml={2} fontSize="lg" fontWeight="bold" maxWidth='full' w={260} isTruncated>{medicineName}</Text>
+              </HStack>
+              <HStack>
+                <Pressable alignItems="center" rounded="full" p={2} mr={2}>
+                    <PencilSimple size={22} color={colors.text[600]}/>
+                </Pressable>
+                <Pressable alignItems="center" rounded="full" p={2}>
+                    <Trash size={22} color={colors.error[500]}/>
+                </Pressable>
+              </HStack>
             </HStack>
             <VStack alignItems="flex-start" space={1} textAlign="left" mb={4}>
-              
-                <Text fontWeight="bold" mb={1}>{dosage} {frequency} vezes por dia</Text>
-    
-                <HStack>
-                  <Text>{startTime}</Text>
-                  { secondTime && <Text>, {secondTime}</Text>}
-                  { thirdTime && <Text>, {thirdTime}</Text>}
-                  { fourthTime && <Text>, {fourthTime}</Text>}
-    
-                </HStack>
+              <HStack alignItems="center" textAlign="left" mb={2}>
+                <Eyedropper size={20} color={colors.text[500]}/>
+                <Text ml={2} fontSize="md" fontWeight="medium">{dosage}</Text>
+                <Text fontWeight="medium" fontSize="md" > - {frequency} vezes por dia</Text>
+              </HStack>
+              <HStack alignItems="center" textAlign="left">
+                <Alarm size={20} color={colors.text[500]}/>
+                <Text ml={2} fontWeight="medium" fontSize="md">{startTime}</Text>
+                { secondTime && <Text fontWeight="medium" fontSize="md"> , {secondTime}</Text>}
+                { thirdTime && <Text fontWeight="medium" fontSize="md"> , {thirdTime}</Text>}
+                { fourthTime && <Text fontWeight="medium" fontSize="md"> , {fourthTime}</Text>}
+  
+              </HStack>
             </VStack>
             <HStack alignItems="center" justifyContent="space-between" w="full">
               <Box bgColor={THEME.color.primary_200} borderRadius="full">

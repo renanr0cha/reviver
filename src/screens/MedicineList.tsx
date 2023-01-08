@@ -66,13 +66,13 @@ export function MedicineList() {
 
     await api.delete(`/${userToken}/medicine/delete/${medicineToDeleteUuid}${isCaregiver ? "/" + isCaregiver : ""}`)
     .then((response) => {
-      console.log(response.data)
       Notifications.cancelScheduledNotificationAsync(medicineToDeleteName)
       Notifications.dismissNotificationAsync(medicineToDeleteName)
       showToast()
       setIsLoading(false)
       setShowModal(false)
-
+      setMedicineToDeleteName("")
+      setMedicineToDeleteUuid("")
     })
     .catch(error => console.error(`Error: ${error}`))
 
@@ -84,7 +84,7 @@ export function MedicineList() {
   useFocusEffect(
     React.useCallback(() => {
       getAllMedicines()
-    }, [removeMedicine]))
+    }, []))
 
   const [medicines, getMedicines] = useState([]);
   

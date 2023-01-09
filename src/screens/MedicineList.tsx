@@ -149,7 +149,7 @@ export function MedicineList() {
           </VStack>
         </TouchableWithoutFeedback>
       </ScrollView>
-      <VStack w="100%" bg={colors.white}>
+      <VStack w="100%" bg={colors.white} borderTopLeftRadius={34} borderTopRightRadius={34}>
         <Box px={4} mt={2} pb={2} w="100%">
           <ButtonPrimary
             title="Adicionar novo medicamento"

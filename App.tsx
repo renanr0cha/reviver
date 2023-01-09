@@ -45,15 +45,22 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+
     if (
       lastNotificationResponse &&
-      lastNotificationResponse.notification.request.content.data.medicine.id
+      lastNotificationResponse.notification.request.content.data.medId
     ){
-      Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medicine.id}/${lastNotificationResponse.notification.request.identifier}`)
+      Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medId}/${lastNotificationResponse.notification.request.identifier}`)
     }
   }, [lastNotificationResponse])
   
-  
+  async function getAllNotifications() {
+    const notifications = await Notifications.getAllScheduledNotificationsAsync()
+    console.log(notifications)
+
+  }
+
+  getAllNotifications()
 
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   

@@ -12,34 +12,34 @@ interface Props {
 }
 
 export async function setMedicineNotifications(medicine: Props) {
+  console.log(medicine)
 
+  const medId = medicine.id
   medicine.hours.forEach(hour => {
-    const date = hour.split(":")
+
+    const notificationHour = hour.slice(0, 2)
+    const notificationMinute = hour.slice(3)
     
     Notifications.scheduleNotificationAsync({
-      identifier: `${medicine.name}`,
+      identifier: `${medicine.name}-${hour}`,
       content: {
         autoDismiss: false,
-        sticky: true,
         title: `Você tem medicamento agora às ${hour} `,
         body: `${medicine.name} ${medicine.dosage} - Confirme que tomou apertando aqui`,
         priority: 'max',
         sound: "alarm_sound.wav",
         data: {
-          medicine
+          medId
         }
       },
       trigger: {
         channelId: "medicine",
-        hour: Number(date[0]),
-        minute: Number(date[1]),
+        hour: Number(notificationHour),
+        minute: Number(notificationMinute),
         repeats: true,
       },
       
     });
   });
   
-
 }
-
-

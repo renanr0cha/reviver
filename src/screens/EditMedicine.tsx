@@ -39,12 +39,6 @@ type Nav = {
   addListener: any;
   dispatch: any
 }
-
-interface ListProps {
-  token: string,
-  isCaregiver: boolean,
-  medId: number
-}
 interface MedicineFormData {
   medicine: string,
   prescription: string,
@@ -60,18 +54,6 @@ interface MedicineFormData {
   other_instruction?: string
 }
 
-type Medicine = {
-  name: string,
-  prescription: number,
-  start_date: string,
-  start_time: string,
-  inventory: number,
-  instructions: string,
-  days: number,
-  dosage: string,
-  frequency: number,
-  other_instruction?: string
-}
 
 const schema = Yup.object().shape({
   medicine: Yup.string().required('É necessesário informar o nome do medicamento'),
@@ -92,7 +74,9 @@ export function EditMedicine({ route }: any) {
   const toast = useToast()
   const navigation = useNavigation<Nav>()
 
+  const [oldMedicineNotificationHours, setOldMedicineNotificationHours] = useState<string[]>([])
 
+  console.log(oldMedicineNotificationHours);
   const medicineUuid = route.params?.medicineUuid
 
   function navigate() {
@@ -106,12 +90,10 @@ export function EditMedicine({ route }: any) {
       .then((response) => {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
-
-        console.log(medicineData.name)
-        cancelNotifications(medicineData.name)
-        console.log(medicineData)
+        
+        cancelNotifications(medicineData.name, oldMedicineNotificationHours)
         setMedicineNotifications(medicineData)
-        addNotifications()
+        showToast()
         setTimeout( navigate, 3000)
       })
       .catch(error => console.error(`Error: ${error}`))
@@ -131,9 +113,9 @@ export function EditMedicine({ route }: any) {
         const dosageQuantity = medicineData?.dosage.slice(0, 1)
         const dosageUnit = medicineData?.dosage.slice(2)
         const prescriptionValue = medicineData?.prescription === 1 ? "yes" : "no"
+
+        setOldMedicineNotificationHours(medicineData.hours)
         
-
-
         const instructions = [
           "Antes das refeições",
           "Durante as refeições",
@@ -141,8 +123,6 @@ export function EditMedicine({ route }: any) {
           "Antes de dormir",
           "Ao acordar",
       ]
-
-  
 
         const verifiedInstructions = instructions.map(instruction => {
             if (instruction !== medicineData.instruction) {
@@ -186,7 +166,7 @@ export function EditMedicine({ route }: any) {
       .catch(error => console.error(`Error: ${error}`))
   }
 
-  function addNotifications() {
+  function showToast() {
     toast.show({
       padding: 4,
       title: "Medicamento alterado com sucesso!",
@@ -262,6 +242,7 @@ export function EditMedicine({ route }: any) {
       dosage_quantity: "",
       dosage_unit: "",
       start_date: "",
+      start_time: "",
       end_date: "",
       quantity_of_days: "",
       instructions: "",
@@ -308,7 +289,7 @@ export function EditMedicine({ route }: any) {
   const { colors } = useTheme()
   return(
     <>
-          <Header title='Adicionar medicamento'/>
+          <Header title='Alterar medicamento'/>
           {
             !isLoadingScreen ?
               (

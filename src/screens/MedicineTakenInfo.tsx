@@ -20,14 +20,14 @@ type Medicine = {
   inventory: number,
   name: string,
   notifications: Array<string>,
-  new_notifications: Array<newNotifications>,
+  new_notifications: Array<NotificationsData>,
   prescription: number,
   start_date: string,
   start_time: string,
   user_id: number,
   uuid: string,
 }
-interface newNotifications {
+interface NotificationsData {
   date: string,
   time: string
 }

@@ -6,13 +6,16 @@ export async function getPushNotificationToken() {
     name: "Lembretes de medicamento",
     importance: Notifications.AndroidImportance.MAX,
     lightColor: "#FF231F7C",
-    sound: "alarm_sound.wav"
+    sound: "alarmsound.wav",
+    enableVibrate: true,
+    vibrationPattern: [0, 250, 250, 250],
   })
   Notifications.setNotificationChannelAsync("inspection", {
     name: "Lembretes para fazer registro de saúde",
     importance: Notifications.AndroidImportance.MAX,
     lightColor: "#FF231F7C",
-    sound: "alarm_sound.wav"
+    enableVibrate: true,
+    vibrationPattern: [0, 250, 250, 250],
     
   })
   const { granted } = await Notifications.getPermissionsAsync()

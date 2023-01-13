@@ -146,12 +146,6 @@ export function AddPatient() {
     .then(response => {
       console.log(response.data)
 
-      // const { uuidPatient } = response.data
-      // try {
-      //   AsyncStorage.setItem('uuidPatient', uuidPatient)
-      // } catch (e) {
-      //   console.log(e)
-      // }
       addNotifications()
       setIsLoading(false)
       navigation.navigate("patientlist")
@@ -223,7 +217,7 @@ export function AddPatient() {
                   <Controller
                     control={control}
                     name="birth_date"
-                    render={({}) => (
+                    render={() => (
                       <>
                         <Button
                           onPress={showDatepicker}

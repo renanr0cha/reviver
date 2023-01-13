@@ -9,7 +9,7 @@ export async function setInspectionNotifications(mode: "daily" | "weekly") {
       title: `Não esqueça de adicionar seus dados de saúde`,
       body: `Aperte aqui para adicionar um registro`,
       priority: 'max',
-      sound: "alarm_sound.wav",
+      sound: "default",
     },
     trigger: mode === "weekly" ? {
       channelId: 'inspection',

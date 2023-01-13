@@ -14,10 +14,10 @@
       [
         "expo-notifications",
         {
-          "icon": "./src/assets/pill-icon.png",
+          "icon": "./assets/pill-icon.png",
           "color": "#F5A648",
           "sounds": [
-            "./src/assets/alarm-sound.wav"
+            "./assets/alarmsound.wav"
           ]
         }
       ]

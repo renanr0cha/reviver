@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { setInspectionNotifications } from './setInspectionNotifications';
 import { setMedicineNotifications } from './setMedicineNotifications';
 
 interface Props {
@@ -11,31 +12,23 @@ interface Props {
   end_date?: string,
   medicine: Object,
 }
-export async function verifyIfMedicineNotificationsAreSet( allMedicines: Array<Props>) {
+export async function verifyIfInspectionNotificationsAreSet() {
   const notifications = await Notifications.getAllScheduledNotificationsAsync()
 
   if (notifications.length === 0) {
-    allMedicines.forEach(medicine => {
-      setMedicineNotifications(medicine)
-    })
+    setInspectionNotifications("weekly")
     return
   }
-
   if (notifications.length > 0) {
-    
-    const medicineNotifications = notifications.map(notification => {
-      if (notification.identifier !== "inspection-reminder")
+    const inspectionNotifications = notifications.map(notification => {
+      if (notification.identifier === "inspection-reminder")
         return notification
     })
-
-    if (medicineNotifications === undefined) {
-      allMedicines.forEach(medicine => {
-        setMedicineNotifications(medicine)
-      })
-      return
+    if (inspectionNotifications === undefined) {
+      setInspectionNotifications("weekly")
+    return
     }
   }
-  return 
 }
 
 

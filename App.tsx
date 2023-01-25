@@ -13,6 +13,7 @@ import { Loading } from './src/components/Loading';
 import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { Linking } from "react-native";
+import { verifyIfInspectionNotificationsAreSet } from "./src/services/verifyIfIspectionNotificationsAreSet";
 
 export default function App() {
   const getNotificationListener = useRef<Subscription>()
@@ -64,6 +65,8 @@ export default function App() {
     }
   }, [lastNotificationResponse])
 
+  verifyIfInspectionNotificationsAreSet()
+  
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   
   return (

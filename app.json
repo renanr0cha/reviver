@@ -16,9 +16,7 @@
         {
           "icon": "./assets/pill-icon.png",
           "color": "#F5A648",
-          "sounds": [
-            "./assets/alarmsound.wav"
-          ]
+          "sounds": ["./android/app/src/main/res/raw/alarmsound.wav"]
         }
       ]
     ],

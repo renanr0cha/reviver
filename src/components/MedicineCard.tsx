@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, HStack, Pressable, Text, useTheme, VStack } from 'native-base';
-import { Pill, Eyedropper, Alarm, Trash, PencilSimple, FirstAidKit, CalendarX } from 'phosphor-react-native';
+import { Pill, Eyedropper, Alarm, Trash, PencilSimple, FirstAidKit } from 'phosphor-react-native';
 import { THEME } from '../styles/theme';
 
 type MedicineCardProps = {
@@ -56,30 +56,22 @@ export function MedicineCard({medicineName, frequency, startTime, secondTime, th
               <Text ml={2} fontSize="md" fontWeight="medium">{dosage}</Text>
               <Text fontWeight="medium" fontSize="md" > - {frequency} vezes por dia</Text>
             </HStack>
-            <HStack alignItems="center" textAlign="left">
-              <Alarm size={20} color={colors.text[500]}/>
-              <Text ml={2} fontWeight="medium" fontSize="md">{startTime}</Text>
-              { secondTime && <Text fontWeight="medium" fontSize="md"> , {secondTime}</Text>}
-              { thirdTime && <Text fontWeight="medium" fontSize="md"> , {thirdTime}</Text>}
-              { fourthTime && <Text fontWeight="medium" fontSize="md"> , {fourthTime}</Text>}
-
-            </HStack>
-          </VStack>
-          <HStack alignItems="center" w="full" space={8} mt={3}>
+            <HStack alignItems="center" textAlign="left" width="100%" justifyContent="space-between">
+              <HStack alignItems="center" textAlign="left">
+                <Alarm size={20} color={colors.text[500]}/>
+                <Text ml={2} fontWeight="medium" fontSize="md">{startTime}</Text>
+                { secondTime && <Text fontWeight="medium" fontSize="md"> , {secondTime}</Text>}
+                { thirdTime && <Text fontWeight="medium" fontSize="md"> , {thirdTime}</Text>}
+                { fourthTime && <Text fontWeight="medium" fontSize="md"> , {fourthTime}</Text>}
+              </HStack>
               { inventory ? (
-                <HStack alignItems="center" textAlign="left">
+                <HStack alignItems="center" textAlign="left" pr={1}>
                   <FirstAidKit size={20} color={colors.text[500]}/>
                   <Text ml={2} fontWeight="medium" fontSize="md">{String(inventory)} em estoque</Text>
                 </HStack>
               ) : null}
-              { endDate ? (
-                <HStack alignItems="center" textAlign="left">
-                  <CalendarX size={20} color={colors.text[500]}/>
-                  <Text ml={2} fontWeight="medium" fontSize="md">Tomar até {String(endDate)}</Text>
-                </HStack>
-              ) : null}
-            
-          </HStack>
+            </HStack>
+          </VStack>
         </Box>
       </VStack>
     )

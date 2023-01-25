@@ -11,7 +11,7 @@ interface Props {
   end_date?: string,
   medicine: Object,
 }
-export async function verifyIfNotificationsAreSet( allMedicines: Array<Props>) {
+export async function verifyIfMedicineNotificationsAreSet( allMedicines: Array<Props>) {
   const notifications = await Notifications.getAllScheduledNotificationsAsync()
   console.log(notifications)
 

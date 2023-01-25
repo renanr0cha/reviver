@@ -9,7 +9,7 @@ import {
   useToast,
   Text
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -18,9 +18,8 @@ import api from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { THEME } from '../styles/theme';
-import * as Notifications from 'expo-notifications';
 import { cancelNotifications } from '../services/cancelNotifications';
-import { verifyIfNotificationsAreSet } from '../services/verifyIfNotificationsAreSet';
+import { verifyIfMedicineNotificationsAreSet } from '../services/verifyIfMedicineNotificationsAreSet';
 import { Loading } from '../components/Loading';
 
 
@@ -113,7 +112,7 @@ export function MedicineList() {
     .then((response) => {
       const allMedicines = response.data
       getMedicines(allMedicines)
-      verifyIfNotificationsAreSet(allMedicines)
+      verifyIfMedicineNotificationsAreSet(allMedicines)
       setIsLoadingScreen(false)
     })
     .catch(error => console.error(`Error: ${error}`))

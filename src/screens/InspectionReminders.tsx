@@ -53,7 +53,7 @@ export function InspectionReminders() {
       <HStack justifyContent="space-between" alignItems="flex-start" p={4} >
         <Pressable
           p={8}
-          w={180}
+          w={160}
           h={120}
           borderWidth={1}
           borderColor={THEME.color.primary_200}
@@ -79,7 +79,7 @@ export function InspectionReminders() {
         </Pressable>
         <Pressable
           p={8}
-          w={180}
+          w={160}
           h={120}
           borderWidth={1}
           borderColor={THEME.color.primary_200}
@@ -99,7 +99,7 @@ export function InspectionReminders() {
               mt={mode === "weekly" ? 2 : 0}
               underline={mode === "weekly" ? true : false}
             >
-              Semanalmente
+              Semanal
             </Text>
         </Pressable>
 

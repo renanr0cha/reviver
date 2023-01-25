@@ -48,19 +48,21 @@ export default function App() {
 
     if (
       lastNotificationResponse &&
-      lastNotificationResponse.notification.request.content.data.medId
+      lastNotificationResponse.notification.request.content.data.medId &&
+      lastNotificationResponse.notification.request.trigger.channelId === "medicine"
     ){
+      console.log(lastNotificationResponse.notification.request.content)
+
       Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medId}/${lastNotificationResponse.notification.request.identifier}`)
     }
+
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification.request.trigger.channelId === "inspection"
+    ){
+      Linking.openURL(`reviver://inforeminder`)
+    }
   }, [lastNotificationResponse])
-  
-  async function getAllNotifications() {
-    const notifications = await Notifications.getAllScheduledNotificationsAsync()
-    console.log(notifications)
-
-  }
-
-  getAllNotifications()
 
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   

@@ -13,6 +13,9 @@ const linking = {
     screens: {
       medtaken: {
         path: 'medtaken/:id/:identifier',
+      },
+      inforeminder: {
+        path: 'inforeminder'
       }
     }
   }

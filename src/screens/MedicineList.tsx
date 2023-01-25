@@ -9,7 +9,7 @@ import {
   useToast,
   Text
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -19,6 +19,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { THEME } from '../styles/theme';
 import * as Notifications from 'expo-notifications';
+import { cancelNotifications } from '../services/cancelNotifications';
+import { verifyIfNotificationsAreSet } from '../services/verifyIfNotificationsAreSet';
+import { Loading } from '../components/Loading';
 
 
 
@@ -33,10 +36,13 @@ export function MedicineList() {
   const navigation = useNavigation<Nav>()
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingScreen, setIsLoadingScreen] = useState(false)
+
 
   const [showModal, setShowModal] = useState(false);
   const [medicineToDeleteUuid, setMedicineToDeleteUuid] = useState<string>('');
   const [medicineToDeleteName, setMedicineToDeleteName] = useState<string>('');
+  const [medicineToDeleteHours, setMedicineToDeleteHours] = useState<Array<string>>([]);
 
 
   function handleAddMedicine() {
@@ -49,10 +55,12 @@ export function MedicineList() {
     })
   }
 
-  const handleDeleteMedicine = (medicineUuid: string, medicineName: string) => {
+  const handleDeleteMedicine = (medicineUuid: string, medicineName: string, medicineHours: Array<string>) => {
     setShowModal(true)
     setMedicineToDeleteUuid(medicineUuid)
     setMedicineToDeleteName(medicineName)
+    setMedicineToDeleteHours(medicineHours)
+
   }
 
 
@@ -72,13 +80,14 @@ export function MedicineList() {
 
     await api.delete(`/${userToken}/medicine/delete/${medicineToDeleteUuid}${isCaregiver ? "/" + isCaregiver : ""}`)
     .then((response) => {
-      Notifications.cancelScheduledNotificationAsync(medicineToDeleteName)
-      Notifications.dismissNotificationAsync(medicineToDeleteName)
+      cancelNotifications(medicineToDeleteName, medicineToDeleteHours)
       showToast()
       setIsLoading(false)
       setShowModal(false)
       setMedicineToDeleteName("")
       setMedicineToDeleteUuid("")
+      setMedicineToDeleteHours([])
+      getAllMedicines()
     })
     .catch(error => console.error(`Error: ${error}`))
 
@@ -95,6 +104,7 @@ export function MedicineList() {
   const [medicines, getMedicines] = useState([]);
   
   const getAllMedicines = async () => {
+    setIsLoadingScreen(true)
 
     const userToken = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
@@ -103,52 +113,66 @@ export function MedicineList() {
     .then((response) => {
       const allMedicines = response.data
       getMedicines(allMedicines)
+      verifyIfNotificationsAreSet(allMedicines)
+      setIsLoadingScreen(false)
     })
     .catch(error => console.error(`Error: ${error}`))
+    setIsLoadingScreen(false)
+
   }
   
   return(
     <>
       <Header title='Meus medicamentos'/>
-      <ScrollView >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <VStack alignItems="center" justifyContent="space-between" bg="coolGray.100" w="100%" h="full" pb={8}>
-            <VStack w="100%">
-              {
-                medicines.length > 0 ? 
-                  medicines.map((medicine: any, index: any) => {
-                    return (
-                      <MedicineCard
-                        medicineName={medicine.name}
-                        frequency={medicine.hours.length}
-                        startTime={medicine.hours.sort() && medicine.hours[0]}
-                        secondTime={medicine.hours[1]}
-                        thirdTime={medicine.hours[2]}
-                        fourthTime={medicine.hours[3]}
-                        dosage={medicine.dosage}
-                        days={medicine.days}
-                        endDate={`${String(new Date(medicine.end_date).getDate()).padStart(2, "0")}/${String(new Date(medicine.end_date).getMonth() + 1).padStart(2, "0")}/${String(new Date(medicine.end_date).getFullYear())}`}
-                        key={index}
-                        inventory={medicine.inventory}
-                        onPressDelete={() => handleDeleteMedicine(medicine.uuid, medicine.name)}
-                        onPressUpdate={() => handleEditMedicine(medicine.uuid)}
-                      />
+      {
+        isLoadingScreen ?
+        (
+          <Loading />
+        )
+        :
+        (
+          <ScrollView >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <VStack alignItems="center" justifyContent="space-between" bg="coolGray.100" w="100%" h="full" pb={8}>
+                <VStack w="100%">
+                  {
+                    medicines.length > 0 ? 
+                      medicines.map((medicine: any, index: any) => {
+                        return (
+                          <MedicineCard
+                            medicineName={medicine.name}
+                            frequency={medicine.hours.length}
+                            startTime={medicine.hours.sort() && medicine.hours[0]}
+                            secondTime={medicine.hours[1]}
+                            thirdTime={medicine.hours[2]}
+                            fourthTime={medicine.hours[3]}
+                            dosage={medicine.dosage}
+                            days={medicine.days}
+                            endDate={`${String(new Date(medicine.end_date).getDate()).padStart(2, "0")}/${String(new Date(medicine.end_date).getMonth() + 1).padStart(2, "0")}/${String(new Date(medicine.end_date).getFullYear())}`}
+                            key={index}
+                            inventory={medicine.inventory}
+                            onPressDelete={() => handleDeleteMedicine(medicine.uuid, medicine.name, medicine.hours)}
+                            onPressUpdate={() => handleEditMedicine(medicine.uuid)}
+                          />
+                        )
+                      })
+                    :
+                    (
+                      <>
+                        <VStack alignItems="center" justifyContent="center"  w="100%"  mt={75}>
+                          <Heading fontSize="lg" w={300} textAlign="center" mt={40}>Você não possui nenhum medicamento cadastrado</Heading>
+                          <Text fontSize="md" mt={6}>Cadastre um novo no botão abaixo</Text>
+                        </VStack>
+                      </>
                     )
-                  })
-                :
-                (
-                  <>
-                    <VStack alignItems="center" justifyContent="center"  w="100%"  mt={75}>
-                      <Heading fontSize="lg" w={300} textAlign="center" mt={40}>Você não possui nenhum medicamento cadastrado</Heading>
-                      <Text fontSize="md" mt={6}>Cadastre um novo no botão abaixo</Text>
-                    </VStack>
-                  </>
-                )
-              }
-            </VStack>
-          </VStack>
-        </TouchableWithoutFeedback>
-      </ScrollView>
+                  }
+                </VStack>
+              </VStack>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        )
+      }
+      
       <VStack w="100%" bg={colors.white} borderTopLeftRadius={34} borderTopRightRadius={34}>
         <Box px={4} mt={2} pb={2} w="100%">
           <ButtonPrimary

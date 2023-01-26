@@ -63,7 +63,7 @@ const schema = Yup.object().shape({
   dosage_unit: Yup.string().required('Informe a unidade'),
   start_date: Yup.string(),
   end_date: Yup.string(),
-  quantity_of_days: Yup.string().required('Informe a quantidade de dias'),
+  quantity_of_days: Yup.string(),
   instructions: Yup.string(),
   inventory: Yup.string().required('Informe o estoque do medicamento')
 })
@@ -173,7 +173,7 @@ export function EditMedicine({ route }: any) {
       placement: "bottom",
       duration: 2000,
       onCloseComplete: () => {
-        Alert.alert("Notificações re-cadastradas com sucesso!", "Você será alertado toda vez quem chegar a hora de tomar o medicamento")
+        Alert.alert("Notificações re-cadastradas com sucesso!", "Você será alertado toda vez que chegar a hora de tomar o medicamento")
       },
     })
       
@@ -210,7 +210,6 @@ export function EditMedicine({ route }: any) {
       onChange: currentMode === 'time' ? onChangeTime : onChangeDate,
       mode: currentMode,
       is24Hour: true,
-      minimumDate : new Date(),
     });
   };
 
@@ -256,7 +255,6 @@ export function EditMedicine({ route }: any) {
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
     const inventory =  data.inventory ? parseInt(data.inventory) : undefined
-    const choosenDays = parseInt(data.quantity_of_days)
     const frequency = parseInt(data.frequency)
     const instruction = data.instructions === "Outro" && data.instructions !== undefined ? data.other_instruction : data.instructions
 
@@ -270,7 +268,7 @@ export function EditMedicine({ route }: any) {
       frequency,
       start_date: setDateToStringDatabaseFormat(startDate),
       start_time: setTimeToString(startTime),
-      days: choosenDays,
+      days: 120, //removed when is no longer needed
       instruction,
       inventory
     })
@@ -500,17 +498,6 @@ export function EditMedicine({ route }: any) {
                       >
                         {setDateToStringLocalFormat(startDate)}
                       </Button>
-
-                      <FormControl.Label _text={{bold: true}} mt={2}>Número de dias:</FormControl.Label>
-                      <InputForm
-                        name="quantity_of_days"
-                        control={control}
-                        placeholder="Insira a quantidade"
-                        autoCorrect={false}
-                        keyboardType="numeric"
-                      />
-                      <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.quantity_of_days && errors.quantity_of_days.message}</FormControl.Label>
-
 
                       <VStack>
                         <HStack alignItems="center">

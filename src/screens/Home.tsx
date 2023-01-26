@@ -84,8 +84,8 @@ export function Home() {
   }
 
   //mudar para lista depois
-  function handleScheduleList() {
-    // navigation.navigate("medtaken")
+  function handleSeeInspectionHistory() {
+    navigation.navigate("infohistory")
   }
 
   return (
@@ -132,7 +132,7 @@ export function Home() {
             icon={ChartLine}
           >
             <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleScheduleList}/>
+              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleSeeInspectionHistory}/>
             </HStack>
           </CardMenu>
           <CardMenu

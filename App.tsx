@@ -20,8 +20,6 @@ export default function App() {
   const responseNotificationListener:any = useRef<Subscription>()
   const lastNotificationResponse:any = Notifications.useLastNotificationResponse()
 
-  console.log(new Date(1671833700007))
-
   useEffect(() => {
     getPushNotificationToken()
   }, [])
@@ -66,7 +64,7 @@ export default function App() {
   }, [lastNotificationResponse])
 
   verifyIfInspectionNotificationsAreSet()
-  
+
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   
   return (

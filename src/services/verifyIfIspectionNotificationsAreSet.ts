@@ -1,17 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { setInspectionNotifications } from './setInspectionNotifications';
-import { setMedicineNotifications } from './setMedicineNotifications';
 
-interface Props {
-  name: string,
-  id: number,
-  notifications: string[],
-  hours: string[],
-  dosage: string,
-  inventory: number,
-  end_date?: string,
-  medicine: Object,
-}
 export async function verifyIfInspectionNotificationsAreSet() {
   const notifications = await Notifications.getAllScheduledNotificationsAsync()
 

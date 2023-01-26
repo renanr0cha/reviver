@@ -12,6 +12,7 @@ import { FingerTap } from "../screens/FingerTap";
 import { MedicineTakenInfo } from "../screens/MedicineTakenInfo";
 import React from "react";
 import { InspectionReminders } from "../screens/InspectionReminders";
+import { InspectionHistory } from "../screens/InspectionHistory";
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -29,6 +30,7 @@ export function AppRoutes() {
         <Screen name="inforeminder" component={InspectionReminders}/>
         <Screen name="medlist" component={MedicineList}/>
         <Screen name="patientlist" component={PatientList}/>
+        <Screen name="infohistory" component={InspectionHistory}/>
 
       </Navigator>
   )

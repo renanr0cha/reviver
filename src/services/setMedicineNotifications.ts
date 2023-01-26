@@ -31,7 +31,8 @@ export async function setMedicineNotifications(medicine: Props) {
         sound: "alarmsound.wav",
         vibrate: [0, 250, 250, 250],
         data: {
-          medId
+          medId,
+          hour
         }
       },
       trigger: {

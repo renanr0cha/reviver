@@ -30,6 +30,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import api from '../services/api';
 import { setMedicineNotifications } from '../services/setMedicineNotifications';
 import { THEME } from '../styles/theme';
+import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
 
 
 type Nav = {
@@ -86,13 +87,14 @@ export function AddMedicine() {
 
         console.log(medicineData)
         setMedicineNotifications(medicineData)
-        addNotifications()
+        calcDaysOfMedicineLeft(medicineData.inventory, medicineData.hours)
+        showToast()
         setTimeout( navigate, 3000)
       })
       .catch(error => console.error(`Error: ${error}`))
   }
 
-  function addNotifications() {
+  function showToast() {
     toast.show({
       padding: 4,
       title: "Medicamento adicionado com sucesso!",

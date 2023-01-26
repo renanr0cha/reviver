@@ -73,9 +73,15 @@ export function MedicineTakenInfo({route}: any) {
     const token = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
+    console.log(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`);
     await api.get(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
-      response.data.used === 1 ? showToast() : console.log(response.data) 
+      if (response.data.used === 1) {
+        console.log(response.data);
+        showToast()
+        return
+      }
+      console.log(response.data) 
     })
     .catch(error => console.error(`Error: ${error}`))
   }

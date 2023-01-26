@@ -76,7 +76,6 @@ export function EditMedicine({ route }: any) {
 
   const [oldMedicineNotificationHours, setOldMedicineNotificationHours] = useState<string[]>([])
 
-  console.log(oldMedicineNotificationHours);
   const medicineUuid = route.params?.medicineUuid
 
   function navigate() {

@@ -44,14 +44,15 @@ export function MedicineTakenInfo({route}: any) {
 
   const id = Number(route.params?.id)
   const notificationIdentifier = route.params?.identifier
+  const hour = route.params?.identifier.slice(-5)
 
   useEffect(() => {
       getAllMedicines()
     }, [])
 
   const [medicineTaken, getMedicineTaken] = useState<Medicine>();
-  const [isLoading, setIsLoading] = useState(false)
 
+  const [isLoading, setIsLoading] = useState(false)
   
   const getAllMedicines = async () => {
 
@@ -82,7 +83,7 @@ export function MedicineTakenInfo({route}: any) {
   function showToast() {
     toast.show({
       padding: 4,
-      title: `Sucesso na confirmação da dose das ${medicineTaken?.new_notifications[0].time}!`,
+      title: `Sucesso na confirmação da dose das ${hour}!`,
       placement: "bottom",
       duration: 3000,
     })

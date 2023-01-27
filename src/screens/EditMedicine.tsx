@@ -9,7 +9,8 @@ import {
   Box,
   Switch,
   ScrollView,
-  useToast
+  useToast,
+  Input as NativeBaseInput
 } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +21,7 @@ import { Header } from '../components/Header';
 import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
 
+import { Select as SelectAutoComplete, SelectProps } from '@mobile-reality/react-native-select-pro';
 
 import * as Yup from "yup"
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -32,6 +34,7 @@ import { setMedicineNotifications } from '../services/setMedicineNotifications';
 import { THEME } from '../styles/theme';
 import { Loading } from '../components/Loading';
 import { cancelNotifications } from '../services/cancelNotifications';
+import { medList } from '../services/medList';
 
 
 type Nav = {
@@ -54,7 +57,6 @@ interface MedicineFormData {
   other_instruction?: string
 }
 
-
 const schema = Yup.object().shape({
   medicine: Yup.string().required('É necessesário informar o nome do medicamento'),
   prescription: Yup.string().required('É necessesário informar o nome do medicamento'),
@@ -71,10 +73,50 @@ const schema = Yup.object().shape({
 
 export function EditMedicine({ route }: any) {
 
+  const { colors } = useTheme()
+
+  const [selectIsSelected, setSelectIsSelected] = useState<boolean>(false)
+
+  const styles = {
+    optionsList: {
+      borderWidth: 1,
+      borderColor: THEME.color.primary,
+      borderRadius: 4,
+    },
+    option: {
+      container: {
+        borderBottomWidth: 1,
+        borderColor: colors.coolGray[100],
+      },
+      text: {
+        fontSize: 16
+      },
+      selected: {
+        container: {
+          backgroundColor: THEME.color.primary_200,
+        }
+      }
+    },
+    select: {
+      container: {
+          borderWidth: 1,
+          borderColor: selectIsSelected ? THEME.color.primary : colors.coolGray[300],
+          borderRadius: 4,
+          backgroundColor: selectIsSelected ? THEME.color.primary_200 : "transparent",
+      },
+      text: {
+        fontSize: 16
+      }
+    }
+  }
+
   const toast = useToast()
   const navigation = useNavigation<Nav>()
 
   const [oldMedicineNotificationHours, setOldMedicineNotificationHours] = useState<string[]>([])
+  const [medicineName, setMedicineName] = useState<string>()
+  const [oldMedicineName, setOldMedicineName] = useState<string>()
+
 
   const medicineUuid = route.params?.medicineUuid
 
@@ -109,10 +151,10 @@ export function EditMedicine({ route }: any) {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {uuid: any}) => medicine.uuid === medicineUuid)
 
+        setOldMedicineName(medicineData.name)
         const dosageQuantity = medicineData?.dosage.slice(0, 1)
         const dosageUnit = medicineData?.dosage.slice(2)
         const prescriptionValue = medicineData?.prescription === 1 ? "yes" : "no"
-
         setOldMedicineNotificationHours(medicineData.hours)
         
         const instructions = [
@@ -151,6 +193,7 @@ export function EditMedicine({ route }: any) {
 
         }
 
+        
         if (filteredInstructions[0] === undefined) {
           values.other_instruction = medicineData.instruction
           values.instructions = "Outro"
@@ -251,6 +294,8 @@ export function EditMedicine({ route }: any) {
     setIsLoading(true)
 
     //tratando dados
+    const name = data.medicine === "" ? medicineName : data.medicine
+
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
     const inventory =  data.inventory ? parseInt(data.inventory) : undefined
@@ -261,7 +306,7 @@ export function EditMedicine({ route }: any) {
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.put(`/${token}/medicine/update/${medicineUuid}${isCaregiver ? isCaregiver : ""}`, {
-      name: data.medicine,
+      name,
       prescription,
       dosage,
       frequency,
@@ -283,7 +328,6 @@ export function EditMedicine({ route }: any) {
     getMedicineInfo(medicineUuid)
   }, [reset])
   
-  const { colors } = useTheme()
   return(
     <>
           <Header title='Alterar medicamento'/>
@@ -295,14 +339,54 @@ export function EditMedicine({ route }: any) {
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <FormControl>
                     <Section title='Sobre o medicamento' mt={6}>
-                      <FormControl.Label _text={{bold: true}} mt={2}>Nome:</FormControl.Label>
-                      <InputForm
+                      {/* <InputForm
                         name="medicine"
                         control={control}
                         placeholder="Paracetamol 500mg"
                         autoCapitalize="sentences"
                         autoCorrect={false}
                         error={errors.medicine && errors.medicine.message}
+                      /> */}
+                      <FormControl.Label _text={{bold: true}} mt={2}>Nome Atual:</FormControl.Label>
+                      <NativeBaseInput
+                        value={oldMedicineName}
+                        minH={14}
+                        size="md"
+                        borderWidth={1}
+                        borderColor="coolGray.300"
+                        fontSize="md"
+                        fontFamily="body"
+                        color={colors.text[600]}
+                        isDisabled
+                      />
+                      <FormControl.Label _text={{bold: true}} mt={2}>Novo Nome:</FormControl.Label>
+                      <Controller
+                        control={control}
+                        render={({ field: { onChange, value } }) => (
+                          <SelectAutoComplete
+                            searchable
+                            options={medList}
+                            placeholderText="Digite o novo nome do medicamento"
+                            hideArrow
+                            styles={styles}
+                            onSelectOpened={() => setSelectIsSelected(true)}
+                            onSelectClosed={() => setSelectIsSelected(false)}
+                            onRemove={() => {
+                              onChange("")
+                            }}
+                            onSelect={value => {
+                              onChange(value.label)
+
+                              console.log(value.label)
+                            }}
+                            onSelectChangeText={value => {
+                              setMedicineName(value)
+                            }}
+                            noOptionsText="Não encontrado, digite o nome inteiro manualmente"
+                          />
+                        )}
+                        name="medicine"
+                        rules={{ required: 'Field is required' }}
                       />
                       <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>
                       <Controller
@@ -555,7 +639,7 @@ export function EditMedicine({ route }: any) {
           <VStack w="100%" bg={colors.white}>
             <Box px={4} mt={2} pb={2} w="100%">
               <ButtonPrimary
-                title="Adicionar medicamento"
+                title="Alterar medicamento"
                 w="full"
                 onPress={handleSubmit(onSubmit)}
                 isLoading={isLoading}

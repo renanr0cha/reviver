@@ -3,7 +3,7 @@ import { NativeBaseProvider, StatusBar } from "native-base";
 import { useFonts, Roboto_400Regular, Roboto_700Bold, Roboto_500Medium } from '@expo-google-fonts/roboto';
 import { THEME } from "./src/styles/theme"
 
-
+import { SelectProvider } from '@mobile-reality/react-native-select-pro';
 import { Subscription } from 'expo-modules-core'
 import * as Notifications from 'expo-notifications'
 import './src/services/notificationConfigs'
@@ -49,7 +49,9 @@ export default function App() {
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.content.data.medId &&
       lastNotificationResponse.notification.request.trigger.channelId === "medicine"
-    ){
+      ){
+      console.log(lastNotificationResponse.notification.request.trigger.channelId)
+      console.log(lastNotificationResponse.notification.request.content.data.medId)
       console.log(lastNotificationResponse.notification.request.content)
 
       Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medId}/${lastNotificationResponse.notification.request.identifier}`)
@@ -59,7 +61,7 @@ export default function App() {
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.trigger.channelId === "inspection"
     ){
-      Linking.openURL(`reviver://inforeminder`)
+      Linking.openURL(`reviver://addinfo1`)
     }
   }, [lastNotificationResponse])
 
@@ -69,14 +71,16 @@ export default function App() {
   
   return (
     <NativeBaseProvider theme={THEME}>
-      <StatusBar 
-        barStyle='light-content'
-        backgroundColor={THEME.color.primary}
-        translucent
-      />
-      <AuthProvider>
-        { fontsLoaded ? <Routes /> : <Loading/>}
-      </AuthProvider>
+      <SelectProvider>
+        <StatusBar 
+          barStyle='light-content'
+          backgroundColor={THEME.color.primary}
+          translucent
+        />
+        <AuthProvider>
+          { fontsLoaded ? <Routes /> : <Loading/>}
+        </AuthProvider>
+      </SelectProvider>
     </NativeBaseProvider>
   );
 }

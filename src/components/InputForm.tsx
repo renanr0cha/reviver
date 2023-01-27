@@ -1,8 +1,9 @@
-import { Input as NativeBaseInput, IInputProps, useTheme, Container, Text } from 'native-base';
-import { TextInputProps, TextInput } from 'react-native';
-import React, { useRef, useEffect } from 'react';
-import { Control, Controller, UseControllerProps } from 'react-hook-form';
+import { Input as NativeBaseInput, IInputProps, useTheme, Text } from 'native-base';
+import { TextInputProps } from 'react-native';
+import React from 'react';
+import { Controller } from 'react-hook-form';
 import { THEME } from '../styles/theme';
+
 
 interface InputProps extends TextInputProps {
   name: string;

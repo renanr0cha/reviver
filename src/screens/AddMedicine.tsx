@@ -20,7 +20,6 @@ import { Header } from '../components/Header';
 import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
 
-
 import * as Yup from "yup"
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,6 +30,8 @@ import api from '../services/api';
 import { setMedicineNotifications } from '../services/setMedicineNotifications';
 import { THEME } from '../styles/theme';
 import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
+import { Select as SelectAutoComplete } from '@mobile-reality/react-native-select-pro';
+import { medList } from '../services/medList';
 
 
 type Nav = {
@@ -57,8 +58,10 @@ interface MedicineFormData {
   other_instruction?: string
 }
 
+
+
 const schema = Yup.object().shape({
-  medicine: Yup.string().required('É necessesário informar o nome do medicamento'),
+  medicine: Yup.string(),
   prescription: Yup.string().required('É necessesário informar o nome do medicamento'),
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
@@ -71,6 +74,43 @@ const schema = Yup.object().shape({
 
 
 export function AddMedicine() {
+
+  const { colors } = useTheme()
+
+  const [selectIsSelected, setSelectIsSelected] = useState<boolean>(false)
+
+  const styles = {
+    optionsList: {
+      borderWidth: 1,
+      borderColor: THEME.color.primary,
+      borderRadius: 4,
+    },
+    option: {
+      container: {
+        borderBottomWidth: 1,
+        borderColor: colors.coolGray[100],
+      },
+      text: {
+        fontSize: 16
+      },
+      selected: {
+        container: {
+          backgroundColor: THEME.color.primary_200,
+        }
+      }
+    },
+    select: {
+      container: {
+          borderWidth: 1,
+          borderColor: selectIsSelected ? THEME.color.primary : colors.coolGray[300],
+          borderRadius: 4,
+          backgroundColor: selectIsSelected ? THEME.color.primary_200 : "transparent",
+      },
+      text: {
+        fontSize: 16
+      }
+    }
+  }
 
   const toast = useToast()
 
@@ -110,6 +150,7 @@ export function AddMedicine() {
 
   const [startDate, setStartDate] = useState(new Date())
   const [startTime, setStartTime] = useState(new Date())
+  const [medicineName, setMedicineName] = useState<string>()
 
   function setDateToStringDatabaseFormat(date:Date) {
     return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
@@ -153,7 +194,6 @@ export function AddMedicine() {
 
   const [isLoading, setIsLoading] = useState(false)
 
-
   const [showInputHours, setShowInputHours] = useState(false)
   
 
@@ -172,6 +212,11 @@ export function AddMedicine() {
     setIsLoading(true)
 
     //tratando dados
+    const name = data.medicine === "" ? medicineName : data.medicine
+    const nameTyped = medicineName
+    console.log(`Name in form ${name}`);
+    console.log(`Name typed: ${nameTyped}`)
+
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
     const inventory =  data.inventory ? parseInt(data.inventory) : undefined
@@ -182,7 +227,7 @@ export function AddMedicine() {
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
-      name: data.medicine,
+      name,
       prescription,
       dosage,
       frequency,
@@ -201,7 +246,6 @@ export function AddMedicine() {
     
   };
   
-  const { colors } = useTheme()
   return(
     <>
           <Header title='Adicionar medicamento'/>
@@ -211,13 +255,42 @@ export function AddMedicine() {
           <FormControl>
             <Section title='Sobre o medicamento' mt={6}>
               <FormControl.Label _text={{bold: true}} mt={2}>Nome:</FormControl.Label>
-              <InputForm
+              {/* <InputForm
                 name="medicine"
                 control={control}
                 placeholder="Paracetamol 500mg"
                 autoCapitalize="sentences"
                 autoCorrect={false}
                 error={errors.medicine && errors.medicine.message}
+                defaultValue=""
+              /> */}
+              <Controller
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <SelectAutoComplete
+                    searchable
+                    options={medList}
+                    placeholderText="Digite o nome do medicamento"
+                    hideArrow
+                    styles={styles}
+                    onSelectOpened={() => setSelectIsSelected(true)}
+                    onSelectClosed={() => setSelectIsSelected(false)}
+                    onRemove={() => {
+                      onChange("")
+                    }}
+                    onSelect={value => {
+                      onChange(value.label)
+
+                      console.log(value.label)
+                    }}
+                    onSelectChangeText={value => {
+                      setMedicineName(value)
+                    }}
+                    noOptionsText="Não encontrado, digite o nome inteiro manualmente"
+                  />
+                )}
+                name="medicine"
+                rules={{ required: 'Field is required' }}
                 defaultValue=""
               />
               <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>

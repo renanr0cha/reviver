@@ -14,8 +14,8 @@ const linking = {
       medtaken: {
         path: 'medtaken/:id/:identifier',
       },
-      inforeminder: {
-        path: 'inforeminder'
+      addinfo1: {
+        path: 'addinfo1'
       }
     }
   }

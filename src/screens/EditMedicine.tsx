@@ -21,7 +21,7 @@ import { Header } from '../components/Header';
 import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
 
-import { Select as SelectAutoComplete, SelectProps } from '@mobile-reality/react-native-select-pro';
+import { Select as SelectAutoComplete } from '@mobile-reality/react-native-select-pro';
 
 import * as Yup from "yup"
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -59,7 +59,7 @@ interface MedicineFormData {
 }
 
 const schema = Yup.object().shape({
-  medicine: Yup.string().required('É necessesário informar o nome do medicamento'),
+  medicine: Yup.string(),
   prescription: Yup.string().required('É necessesário informar o nome do medicamento'),
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
@@ -100,10 +100,11 @@ export function EditMedicine({ route }: any) {
     },
     select: {
       container: {
-          borderWidth: 1,
-          borderColor: selectIsSelected ? THEME.color.primary : colors.coolGray[300],
-          borderRadius: 4,
-          backgroundColor: selectIsSelected ? THEME.color.primary_200 : "transparent",
+        borderWidth: 1,
+        borderColor: selectIsSelected ? THEME.color.primary : colors.coolGray[300],
+        borderRadius: 4,
+        backgroundColor: selectIsSelected ? THEME.color.primary_200 : "transparent",
+        height: 46,
       },
       text: {
         fontSize: 16
@@ -117,7 +118,9 @@ export function EditMedicine({ route }: any) {
   const [oldMedicineNotificationHours, setOldMedicineNotificationHours] = useState<string[]>([])
   const [medicineName, setMedicineName] = useState<string>()
   const [oldMedicineName, setOldMedicineName] = useState<string>()
-
+  
+  const [startDate, setStartDate] = useState(new Date())
+  const [startTime, setStartTime] = useState(new Date())
 
   const medicineUuid = route.params?.medicineUuid
 
@@ -153,10 +156,11 @@ export function EditMedicine({ route }: any) {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {uuid: any}) => medicine.uuid === medicineUuid)
 
+        console.log(medicineData?.prescription)
         setOldMedicineName(medicineData.name)
         const dosageQuantity = medicineData?.dosage.slice(0, 1)
         const dosageUnit = medicineData?.dosage.slice(2)
-        const prescriptionValue = medicineData?.prescription === 1 ? "yes" : "no"
+        const prescriptionValue = medicineData?.prescription === true ? "yes" : "no"
         setOldMedicineNotificationHours(medicineData.hours)
         
         const instructions = [
@@ -181,7 +185,7 @@ export function EditMedicine({ route }: any) {
         
         // console.log(medicineData)
         const values = {
-          medicine: medicineData?.name,
+          medicine: "",
           prescription: prescriptionValue,
           frequency: String(medicineData.frequency),
           dosage_quantity: dosageQuantity,
@@ -201,8 +205,14 @@ export function EditMedicine({ route }: any) {
           values.instructions = "Outro"
           setShowOtherInstruction(true)
         }
+
+
+        console.log(new Date(medicineData.start_date.slice(0, 10)))
+        console.log(new Date(medicineData.start_time))
+        console.log(setTimeToString(new Date(medicineData.start_time)))
         setStartDate(new Date(medicineData.start_date))
         setStartTime(new Date(medicineData.start_time))
+        console.log(startTime)
         reset(values)
         setIsLoadingScreen(false)
 
@@ -223,8 +233,6 @@ export function EditMedicine({ route }: any) {
       
   }
 
-  const [startDate, setStartDate] = useState(new Date())
-  const [startTime, setStartTime] = useState(new Date())
 
   function setDateToStringDatabaseFormat(date:Date) {
     return `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
@@ -294,9 +302,18 @@ export function EditMedicine({ route }: any) {
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
     setIsLoading(true)
+    
 
+    console.log(`Dados inseridos ${data.medicine}`)
     //tratando dados
-    const name = data.medicine === "" ? medicineName : data.medicine
+
+    console.log(medicineName)
+
+    const medNameTest = medicineName === undefined || medicineName === ""
+
+    const name = data.medicine === "" && medNameTest ? oldMedicineName : medicineName
+
+    console.log(name)
 
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
@@ -346,14 +363,6 @@ export function EditMedicine({ route }: any) {
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <FormControl>
                     <Section title='Sobre o medicamento' mt={6}>
-                      {/* <InputForm
-                        name="medicine"
-                        control={control}
-                        placeholder="Paracetamol 500mg"
-                        autoCapitalize="sentences"
-                        autoCorrect={false}
-                        error={errors.medicine && errors.medicine.message}
-                      /> */}
                       <FormControl.Label _text={{bold: true}} mt={2}>Nome Atual:</FormControl.Label>
                       <NativeBaseInput
                         value={oldMedicineName}
@@ -374,6 +383,7 @@ export function EditMedicine({ route }: any) {
                             searchable
                             options={medList}
                             placeholderText="Digite o novo nome do medicamento"
+                            placeholderTextColor={colors.text[400]}
                             hideArrow
                             styles={styles}
                             onSelectOpened={() => setSelectIsSelected(true)}
@@ -388,6 +398,7 @@ export function EditMedicine({ route }: any) {
                             }}
                             onSelectChangeText={value => {
                               setMedicineName(value)
+                              console.log(medicineName)
                             }}
                             noOptionsText="Não encontrado, digite o nome inteiro manualmente"
                           />

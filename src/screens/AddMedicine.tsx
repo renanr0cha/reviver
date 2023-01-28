@@ -62,14 +62,14 @@ interface MedicineFormData {
 
 const schema = Yup.object().shape({
   medicine: Yup.string(),
-  prescription: Yup.string().required('É necessesário informar o nome do medicamento'),
+  prescription: Yup.string().required('Selelcione se ele precisa ou não de receita'),
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
   start_date: Yup.string(),
   end_date: Yup.string(),
   instructions: Yup.string(),
-  inventory: Yup.string().required('Informe o estoque do medicamento')
+  inventory: Yup.string()
 })
 
 
@@ -105,6 +105,7 @@ export function AddMedicine() {
           borderColor: selectIsSelected ? THEME.color.primary : colors.coolGray[300],
           borderRadius: 4,
           backgroundColor: selectIsSelected ? THEME.color.primary_200 : "transparent",
+          height: 46,
       },
       text: {
         fontSize: 16
@@ -201,14 +202,10 @@ export function AddMedicine() {
 
   const [showInputHours, setShowInputHours] = useState(false)
   
-
   //mostrar campo para adicionar informações adicionais
   const [showInstructions, setShowInstructions] = useState(false)
 
   const [showOtherInstruction, setShowOtherInstruction] = useState(false)
-
-  //mostrar campo para adicionar estoque
-  const [showInventory, setShowInventory] = useState(false)
 
   const { control, handleSubmit, formState: { errors } } = useForm<MedicineFormData>({
     resolver: yupResolver(schema)
@@ -216,15 +213,44 @@ export function AddMedicine() {
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
     setIsLoading(true)
 
-    //tratando dados
+    function showNameAlert() {
+      setIsLoading(false)
+      Alert.alert("Insira o nome", "Favor inserir o nome do medicamento")
+    }
+
+    const medNameTest = medicineName === undefined || medicineName === ""
+    if (data.medicine === "" && medNameTest) {
+      showNameAlert()
+      return
+    }
+
     const name = data.medicine === "" ? medicineName : data.medicine
-    const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
+
     const prescription = data.prescription === "yes" ? true : false
+    if (prescription === true && !data.inventory) {
+      setIsLoading(false)
+
+      return Alert.alert("Inserir estoque", "Se seu medicamento precisa de receita você precisa inserir o estoque que tem dele")
+    }
+    //tratando dados
+    const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const inventory =  data.inventory ? parseInt(data.inventory) : undefined
     const frequency = parseInt(data.frequency)
     const instruction = data.instructions === "Outro" && data.instructions !== undefined ? data.other_instruction : data.instructions
 
     const token = await AsyncStorage.getItem('token')
+
+    console.log({
+      name,
+      prescription,
+      dosage,
+      frequency,
+      start_date: setDateToStringDatabaseFormat(startDate),
+      start_time: setTimeToString(startTime),
+      days: 120, //remove when is no longer required
+      instruction,
+      inventory
+    })
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
@@ -256,15 +282,6 @@ export function AddMedicine() {
           <FormControl>
             <Section title='Sobre o medicamento' mt={6}>
               <FormControl.Label _text={{bold: true}} mt={2}>Nome:</FormControl.Label>
-              {/* <InputForm
-                name="medicine"
-                control={control}
-                placeholder="Paracetamol 500mg"
-                autoCapitalize="sentences"
-                autoCorrect={false}
-                error={errors.medicine && errors.medicine.message}
-                defaultValue=""
-              /> */}
               <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -272,6 +289,7 @@ export function AddMedicine() {
                     searchable
                     options={medList}
                     placeholderText="Digite o nome do medicamento"
+                    placeholderTextColor={colors.text[400]}
                     hideArrow
                     styles={styles}
                     onSelectOpened={() => setSelectIsSelected(true)}
@@ -286,6 +304,8 @@ export function AddMedicine() {
                     }}
                     onSelectChangeText={value => {
                       setMedicineName(value)
+                      console.log(value)
+
                     }}
                     noOptionsText="Não encontrado, digite o nome inteiro manualmente"
                   />
@@ -294,6 +314,8 @@ export function AddMedicine() {
                 rules={{ required: 'Field is required' }}
                 defaultValue=""
               />
+              <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.medicine && errors.medicine.message}</FormControl.Label>
+
               <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>
               <Controller
                 control={control}
@@ -304,7 +326,6 @@ export function AddMedicine() {
                     selectedValue={value}
                     onValueChange={(itemValue: string) => {
                       onChange(itemValue);
-                      setShowInventory(itemValue === "yes" ? true : false)
                     }}
                     _selectedItem={{
                       bg: THEME.color.primary_200,
@@ -319,8 +340,6 @@ export function AddMedicine() {
                 defaultValue=""
               />
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.prescription && errors.prescription.message}</FormControl.Label>
-              {
-                  showInventory &&
                   <VStack >
                     <FormControl.Label _text={{bold: true}} >Estoque do medicamento:</FormControl.Label>
                     <InputForm
@@ -331,7 +350,6 @@ export function AddMedicine() {
                     keyboardType="numeric"
                   />
                   </VStack> 
-                }
             </Section>
             
             <Section title="Sobre a frequência e dosagem" mt={6}>

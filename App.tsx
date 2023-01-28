@@ -14,6 +14,7 @@ import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { Linking } from "react-native";
 import { verifyIfInspectionNotificationsAreSet } from "./src/services/verifyIfIspectionNotificationsAreSet";
+import { cancelInventoryNotifications } from "./src/services/cancelInventoryNotifications";
 
 export default function App() {
   const getNotificationListener = useRef<Subscription>()
@@ -43,8 +44,13 @@ export default function App() {
     }
   }, [])
 
+  async function getNotifications() {
+    const notifications = await Notifications.getAllScheduledNotificationsAsync()
+    console.log(notifications)
+  }
+  
   useEffect(() => {
-
+    
     if (
       lastNotificationResponse &&
       lastNotificationResponse.notification.request.content.data.medId &&
@@ -71,9 +77,13 @@ export default function App() {
     ) {
         Notifications.dismissNotificationAsync(`${lastNotificationResponse.notification.request.content.data.medId}-inventory`)
     }
-  }, [lastNotificationResponse])
 
-  verifyIfInspectionNotificationsAreSet()
+    verifyIfInspectionNotificationsAreSet()
+  }, [lastNotificationResponse])
+  
+
+  getNotifications()
+
 
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold, Roboto_500Medium })
   

@@ -21,6 +21,7 @@ import { THEME } from '../styles/theme';
 import { cancelNotifications } from '../services/cancelNotifications';
 import { verifyIfMedicineNotificationsAreSet } from '../services/verifyIfMedicineNotificationsAreSet';
 import { Loading } from '../components/Loading';
+import { cancelInventoryNotifications } from '../services/cancelInventoryNotifications';
 
 
 
@@ -75,11 +76,11 @@ export function MedicineList() {
 
   const removeMedicine = async () => {
     const userToken = await AsyncStorage.getItem('token')
-    const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
-    await api.delete(`/${userToken}/medicine/delete/${medicineToDeleteUuid}${isCaregiver ? "/" + isCaregiver : ""}`)
+    await api.delete(`/${userToken}/medicine/delete/${medicineToDeleteUuid}`)
     .then((response) => {
       cancelNotifications(medicineToDeleteName, medicineToDeleteHours)
+      cancelInventoryNotifications(medicineToDeleteUuid)
       showToast()
       setIsLoading(false)
       setShowModal(false)

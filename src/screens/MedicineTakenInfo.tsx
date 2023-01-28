@@ -76,12 +76,11 @@ export function MedicineTakenInfo({route}: any) {
   const medicineTakenConfirmation = async () => {
 
     const token = await AsyncStorage.getItem('token')
-    const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
     const oldInventory = medicineTaken?.inventory
     const inventory = oldInventory ? oldInventory-1 : 0
     
-    await api.put(`/${token}/medicine/update/${medicineTaken?.uuid}${isCaregiver ? isCaregiver : ""}`, {
+    await api.put(`/${token}/medicine/update/${medicineTaken?.uuid}`, {
       name: medicineTaken?.name,
       prescription: medicineTaken?.prescription,
       dosage: medicineTaken?.dosage,

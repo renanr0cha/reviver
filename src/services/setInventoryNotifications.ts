@@ -32,7 +32,7 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
         title: `Você só possui ${medicine.name} para mais ${Math.floor(days)} dias`,
         body: `Consiga uma nova receita caso preciso, ou renove seu estoque nos próximos dias`,
         priority: 'max',
-        sound: "alarmsound.wav",
+        sound: "notification.mp3",
         categoryIdentifier: "okButton",
         vibrate: [0, 250, 250, 250],
         data: {
@@ -58,7 +58,7 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
         title: `ATENÇÃO: Você só possui ${medicine.name} para mais ${Math.floor(days)} dias`,
         body: `Consiga uma nova receita e/ou renove seu estoque com urgência!`,
         priority: 'max',
-        sound: "alarmsound.wav",
+        sound: "notification.mp3",
         categoryIdentifier: "okButton",
         vibrate: [0, 250, 250, 250],
         data: {
@@ -85,7 +85,7 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
         title: `Você não possui mais estoque de ${medicine.name}`,
         body: `Enquanto você não adicionar mais estoque, vamos parar de lhe enviar notificações deste medicamento`,
         priority: 'max',
-        sound: "alarmsound.wav",
+        sound: "notification.mp3",
         categoryIdentifier: "okButton",
         vibrate: [0, 250, 250, 250],
         data: {

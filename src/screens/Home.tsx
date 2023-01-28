@@ -23,6 +23,7 @@ type Nav = {
 export function Home() {
 
   const [isCaregiver, setIsCaregiver] = useState<string | null>()
+  const [userName, setUserName] = useState<string | null>()
 
   //check if you selected caregiver on login if yes, move to patientlist
   async function getRole() {
@@ -55,7 +56,9 @@ export function Home() {
 
     const checkIfCaregiver = async () => {
       const patientUuid = await AsyncStorage.getItem("uuidPatient")
-      
+      const nameUser = await AsyncStorage.getItem("nameUser")
+
+      setUserName(nameUser)
       setIsCaregiver(patientUuid)
     }
 
@@ -100,7 +103,7 @@ export function Home() {
         px={4}
       >
         <Heading color={colors.white}  textAlign="left" fontSize="xl" flex={1} >
-          Olá, {!isCaregiver ? "Paciente" : "Cuidador"}
+          Olá, {!isCaregiver ? `Paciente ${userName}` : `Cuidador ${userName}`}
         </Heading>
         {
           isCaregiver &&

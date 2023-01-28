@@ -55,12 +55,17 @@ function AuthProvider({ children }: AuthProviderProps) {
       cpf,
       password
     }).then(async response => {
-      const { token, uuid } = response.data
+      const { token } = response.data
+      const { name, uuid } = response.data.user
       if (token === "paciente" || token === "cuidador") {
         return Alert.alert("CPF ou Senha incorreta")
       }
+      const firstName = name.split(' ')[0]
+      console.log(firstName)
       await AsyncStorage.setItem('token', token)
       await AsyncStorage.setItem('uuidUser', uuid )
+      await AsyncStorage.setItem('nameUser', firstName )
+
 
       setData({ token })
     }).catch(error => {
@@ -69,20 +74,14 @@ function AuthProvider({ children }: AuthProviderProps) {
       Alert.alert("CPF ou Senha incorreta") : console.log(error.response.data.error)
     })
     
-    
-    
-    
-
-    
-
-
-    
   }, [])
 
   const signOut = useCallback(async () => {
     await AsyncStorage.removeItem('uuidPatient')
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('uuidUser')
+    await AsyncStorage.removeItem('nameUser')
+
 
 
     setData({} as AuthState)

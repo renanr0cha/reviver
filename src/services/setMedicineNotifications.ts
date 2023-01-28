@@ -28,7 +28,7 @@ export async function setMedicineNotifications(medicine: Props) {
         title: `Você tem medicamento agora ${hour}`,
         body: `${medicine.name} - Confirme que tomou apertando aqui`,
         priority: 'max',
-        sound: "alarmsound.wav",
+        sound: "notification.mp3",
         vibrate: [0, 250, 250, 250],
         data: {
           medId

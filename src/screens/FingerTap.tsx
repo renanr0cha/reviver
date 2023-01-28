@@ -206,7 +206,7 @@ export function FingerTap() {
         )
       :
         (
-          <Modal isOpen={showModal} closeOnOverlayClick={false} onClose={() => setShowModal(false)}>
+          <Modal isOpen={showModal} closeOnOverlayClick={false} onClose={() => setShowModal(false)} isKeyboardDismissable={false}>
             <Modal.Content maxWidth="400px">
               <Modal.Header _text={{ fontWeight:"bold"}} >Teste de Finger Tap</Modal.Header>
               <Modal.Body>

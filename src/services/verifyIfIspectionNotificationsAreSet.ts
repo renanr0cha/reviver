@@ -13,7 +13,7 @@ export async function verifyIfInspectionNotificationsAreSet() {
       if (notification.identifier === "inspection-reminder")
         return notification
     })
-    if (inspectionNotifications === undefined) {
+    if (inspectionNotifications.length === 0) {
       setInspectionNotifications("weekly")
     return
     }

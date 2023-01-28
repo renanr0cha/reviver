@@ -136,7 +136,9 @@ export function EditMedicine({ route }: any) {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {id: any}) => medicine.id === medId)
         
-        cancelNotifications(medicineData.name, oldMedicineNotificationHours)
+        const oldName = oldMedicineName ? oldMedicineName : medicineData.name
+
+        cancelNotifications(oldName, oldMedicineNotificationHours)
         setMedicineNotifications(medicineData)
         calcDaysOfMedicineLeft(medicineData, medicineData.hours)
         showToast()
@@ -324,7 +326,7 @@ export function EditMedicine({ route }: any) {
     const token = await AsyncStorage.getItem('token')
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
-    await api.put(`/${token}/medicine/update/${medicineUuid}${isCaregiver ? isCaregiver : ""}`, {
+    await api.put(`/${token}/medicine/update/${medicineUuid}`, {
       name,
       prescription,
       dosage,

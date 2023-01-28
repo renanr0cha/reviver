@@ -13,8 +13,8 @@ interface Props {
 }
 
 export async function calcDaysOfMedicineLeft(medicine: Props, hours: string[]) {
-  const numberOfTimesPerDay = Number(hours.length+1)
-  console.log(numberOfTimesPerDay)
+  const numberOfTimesPerDay = Number(hours.length)
+  console.log("Number per day" + numberOfTimesPerDay)
   if (medicine.inventory !== undefined) {
     const days = medicine.inventory/numberOfTimesPerDay
     setInventoryNotifications(medicine, days)

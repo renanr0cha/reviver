@@ -19,6 +19,26 @@ export async function getPushNotificationToken() {
       }
     }
   })
+  Notifications.setNotificationChannelAsync('inventory', {
+    name: 'Lembretes de estoque',
+    importance: Notifications.AndroidImportance.MAX,
+    lightColor: '#FF231F7C',
+    enableVibrate: true,
+    bypassDnd: true,
+    vibrationPattern: [0, 250, 250, 250],
+    lockscreenVisibility:AndroidNotificationVisibility.PUBLIC,
+    audioAttributes: {
+      flags: {
+        enforceAudibility: true,
+        requestHardwareAudioVideoSynchronization: true
+      }
+    }
+  })
+  Notifications.setNotificationCategoryAsync('okButton', [{
+    identifier: "ok",
+    buttonTitle: 'Ok, entendido',
+}])
+
   Notifications.setNotificationChannelAsync('inspection', {
     name: 'Lembretes para fazer registro de saúde',
     importance: Notifications.AndroidImportance.MAX,

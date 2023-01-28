@@ -1,10 +1,24 @@
-import * as Notifications from 'expo-notifications';
+import { setInventoryNotifications } from './setInventoryNotifications';
 
-export async function calcDaysOfMedicineLeft(inventory: number, hours: string[]) {
-  console.log(hours.length);
-  console.log(Number(hours.length + 1));
-  const days = inventory/Number(hours.length)
-  console.log(days);
+interface Props {
+  name: string,
+  id: number,
+  uuid: string,
+  notifications: string[],
+  hours: string[],
+  dosage: string,
+  inventory: number,
+  end_date?: string,
+  medicine: Object,
+}
+
+export async function calcDaysOfMedicineLeft(medicine: Props, hours: string[]) {
+  const numberOfTimesPerDay = Number(hours.length+1)
+  console.log(numberOfTimesPerDay)
+  if (medicine.inventory !== undefined) {
+    const days = medicine.inventory/numberOfTimesPerDay
+    setInventoryNotifications(medicine, days)
+  }
 }
 
 

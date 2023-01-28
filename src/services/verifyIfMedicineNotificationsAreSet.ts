@@ -1,9 +1,11 @@
 import * as Notifications from 'expo-notifications';
+import { calcDaysOfMedicineLeft } from './calcDaysOfMedicineLeft';
 import { setMedicineNotifications } from './setMedicineNotifications';
 
 interface Props {
   name: string,
   id: number,
+  uuid: string,
   notifications: string[],
   hours: string[],
   dosage: string,
@@ -17,6 +19,7 @@ export async function verifyIfMedicineNotificationsAreSet( allMedicines: Array<P
   if (notifications.length === 0) {
     allMedicines.forEach(medicine => {
       setMedicineNotifications(medicine)
+      calcDaysOfMedicineLeft(medicine, medicine.hours)
     })
     return
   }
@@ -31,6 +34,7 @@ export async function verifyIfMedicineNotificationsAreSet( allMedicines: Array<P
     if (medicineNotifications === undefined) {
       allMedicines.forEach(medicine => {
         setMedicineNotifications(medicine)
+        calcDaysOfMedicineLeft(medicine, medicine.hours)
       })
       return
     }

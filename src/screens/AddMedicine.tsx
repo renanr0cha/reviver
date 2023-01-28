@@ -173,11 +173,15 @@ export function AddMedicine() {
   const onChangeDate = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setStartDate(currentDate);
+    console.log(currentDate.getTimezoneOffset());
+
   };
 
   const onChangeTime = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setStartTime(currentDate);
+    console.log(currentDate.getTimezoneOffset());
+
   };
 
   const showMode = (currentMode: any) => {
@@ -251,6 +255,7 @@ export function AddMedicine() {
       instruction,
       inventory
     })
+
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {

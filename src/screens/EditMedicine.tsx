@@ -119,8 +119,8 @@ export function EditMedicine({ route }: any) {
   const [medicineName, setMedicineName] = useState<string>()
   const [oldMedicineName, setOldMedicineName] = useState<string>()
   
-  const [startDate, setStartDate] = useState(new Date())
-  const [startTime, setStartTime] = useState(new Date())
+  const [startDate, setStartDate] = useState<Date>(new Date())
+  const [startTime, setStartTime] = useState<Date>(new Date())
 
   const medicineUuid = route.params?.medicineUuid
 
@@ -158,7 +158,6 @@ export function EditMedicine({ route }: any) {
         const medicines = response.data
         const medicineData = medicines.find((medicine: {uuid: any}) => medicine.uuid === medicineUuid)
 
-        console.log(medicineData?.prescription)
         setOldMedicineName(medicineData.name)
         const dosageQuantity = medicineData?.dosage.slice(0, 1)
         const dosageUnit = medicineData?.dosage.slice(2)
@@ -192,13 +191,13 @@ export function EditMedicine({ route }: any) {
           frequency: String(medicineData.frequency),
           dosage_quantity: dosageQuantity,
           dosage_unit: dosageUnit,
-          start_date: medicineData?.start_date,
+          start_date: "",
           end_date: "",
           quantity_of_days: String(medicineData?.days),
           instructions: filteredInstructions[0],
           inventory: String(medicineData?.inventory),
-          other_instruction: undefined
-
+          other_instruction: undefined,
+          start_time: "",
         }
 
         
@@ -208,13 +207,14 @@ export function EditMedicine({ route }: any) {
           setShowOtherInstruction(true)
         }
 
+        // console.log(new Date(medicineData.start_time))
+        setStartDate(new Date(new Date(medicineData.start_date).getFullYear(), new Date(medicineData.start_date).getMonth(), new Date(medicineData.start_date).getDate()+1))
+        setStartTime(new Date(new Date(medicineData.start_date).getFullYear(), new Date(medicineData.start_date).getMonth(), new Date(medicineData.start_date).getDate()+1,new Date(medicineData.start_time).getHours()+3, new Date(medicineData.start_time).getMinutes()))
+        // console.log(startTime)
+        // console.log(startDate)
 
-        console.log(new Date(medicineData.start_date.slice(0, 10)))
-        console.log(new Date(medicineData.start_time))
-        console.log(setTimeToString(new Date(medicineData.start_time)))
-        setStartDate(new Date(medicineData.start_date))
-        setStartTime(new Date(medicineData.start_time))
-        console.log(startTime)
+        // console.log(setDateToStringLocalFormat(startDate? startDate : new Date(medicineData.start_date)))
+
         reset(values)
         setIsLoadingScreen(false)
 

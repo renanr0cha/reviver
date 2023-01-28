@@ -11,8 +11,8 @@ import {
   CheckIcon,
   ScrollView
 } from 'native-base';
-import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableWithoutFeedback, Keyboard, BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { InputForm } from '../components/InputForm';
@@ -54,6 +54,11 @@ const schema = Yup.object().shape({
 
 
 export function AddInspection1() {
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
   
   const [showPressure, setShowPressure] = useState(false)
   const [showFrequency, setShowFrequency] = useState(false)

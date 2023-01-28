@@ -63,6 +63,14 @@ export default function App() {
     ){
       Linking.openURL(`reviver://addinfo1`)
     }
+
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification.request.trigger.channelId === "inventory" &&
+      lastNotificationResponse.actionIdentifier === "ok"
+    ) {
+        Notifications.dismissNotificationAsync(`${lastNotificationResponse.notification.request.content.data.medId}-inventory`)
+    }
   }, [lastNotificationResponse])
 
   verifyIfInspectionNotificationsAreSet()

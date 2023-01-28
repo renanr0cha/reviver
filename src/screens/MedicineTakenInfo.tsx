@@ -8,13 +8,14 @@ import { Loading } from '../components/Loading';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import * as Notifications from 'expo-notifications'
 import { useNavigation } from '@react-navigation/native';
+import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
 
 type Medicine = {
   days: 1,
   dosage: string,
   end_date: string,
   frequency: number,
-  hours: Array<string>[],
+  hours: string[],
   id: number,
   instruction: string | null,
   inventory: number,
@@ -58,12 +59,16 @@ export function MedicineTakenInfo({route}: any) {
 
     const userToken = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
-
+    
     await api.get(`/${userToken}/medicine/list${isCaregiver ? isCaregiver : ""}`)
     .then((response) => {
-      const medicines:Array<Medicine> = response.data
-      const medicine = medicines.find(element => element.id === id)
+      const medicines = response.data
+      const medicine = medicines.find((medicine: {id: any}) => medicine.id  === id)
       getMedicineTaken(medicine)
+      if (medicine !== undefined) {
+        calcDaysOfMedicineLeft(medicine, medicine.hours)
+      }
+
     })
     .catch(error => console.error(`Error: ${error}`))
   }
@@ -73,18 +78,37 @@ export function MedicineTakenInfo({route}: any) {
     const token = await AsyncStorage.getItem('token')
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
 
-    console.log(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`);
-    await api.get(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`)
+    const oldInventory = medicineTaken?.inventory
+    const inventory = oldInventory ? oldInventory-1 : 0
+    
+    await api.put(`/${token}/medicine/update/${medicineTaken?.uuid}${isCaregiver ? isCaregiver : ""}`, {
+      name: medicineTaken?.name,
+      prescription: medicineTaken?.prescription,
+      dosage: medicineTaken?.dosage,
+      frequency: medicineTaken?.frequency,
+      start_date: medicineTaken?.start_date,
+      start_time: medicineTaken?.start_time,
+      days: 120, //remove when is no longer needed
+      instruction: medicineTaken?.instruction,
+      inventory
+    })
     .then((response) => {
-      if (response.data.used === 1) {
-        console.log(response.data);
-        showToast()
-        return
-      }
-      console.log(response.data) 
+      console.log("Agora vem a response do update")
+      console.log(response.data);
+      showToast()
     })
     .catch(error => console.error(`Error: ${error}`))
-  }
+    
+  //   console.log(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`);
+  //   await api.get(`/${token}/notification/create/${medicineTaken?.uuid}/${medicineTaken?.notifications[0]}/${isCaregiver ? isCaregiver : ""}`)
+  //   .then((response) => {
+  //     if (response.data.used === 1) {
+        
+  //     }
+  //     console.log(response.data) 
+  //   })
+  //   .catch(error => console.error(`Error: ${error}`))
+    }
 
   function showToast() {
     toast.show({

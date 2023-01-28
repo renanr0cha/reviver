@@ -11,8 +11,8 @@ import {
 } from 'native-base';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
-import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TouchableWithoutFeedback, Keyboard, Alert, BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
@@ -52,6 +52,12 @@ const schema = Yup.object().shape({
 
 
 export function AddPatient() {
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
+  
   const [phone, setPhone] = React.useState('');
   const [cpf, setCpf] = React.useState('');
 

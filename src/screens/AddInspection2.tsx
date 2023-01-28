@@ -8,8 +8,8 @@ import {
   CheckIcon,
   ScrollView
 } from 'native-base';
-import React from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useEffect } from 'react';
+import { TouchableWithoutFeedback, Keyboard, BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
@@ -51,12 +51,14 @@ const schema = Yup.object().shape({
 })
 
 export function AddInspection2() {
+  
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
+  
   const { colors } = useTheme()
 
-  const retrieveData = async () => {
-    const resp = await getFormData()
-    return resp
-  }
   const navigation = useNavigation<Nav>()
 
   const { control, handleSubmit, formState: { errors } } = useForm<AddInspection2FormData>({

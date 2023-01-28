@@ -20,6 +20,7 @@ import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
 import api from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 import { THEME } from '../styles/theme';
+import { BackHandler } from 'react-native';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -45,6 +46,11 @@ export function FingerTap() {
 
   useEffect(() => {
     setShowModal(true)
+  }, [])
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
   }, [])
 
   const Timer = () =>{

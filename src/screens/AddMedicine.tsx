@@ -11,9 +11,9 @@ import {
   ScrollView,
   useToast
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert, BackHandler } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -112,6 +112,11 @@ export function AddMedicine() {
     }
   }
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
+
   const toast = useToast()
 
   function navigate() {
@@ -127,7 +132,7 @@ export function AddMedicine() {
 
         console.log(medicineData)
         setMedicineNotifications(medicineData)
-        calcDaysOfMedicineLeft(medicineData.inventory, medicineData.hours)
+        calcDaysOfMedicineLeft(medicineData, medicineData.hours)
         showToast()
         setTimeout( navigate, 3000)
       })
@@ -213,10 +218,6 @@ export function AddMedicine() {
 
     //tratando dados
     const name = data.medicine === "" ? medicineName : data.medicine
-    const nameTyped = medicineName
-    console.log(`Name in form ${name}`);
-    console.log(`Name typed: ${nameTyped}`)
-
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
     const inventory =  data.inventory ? parseInt(data.inventory) : undefined

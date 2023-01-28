@@ -14,7 +14,7 @@ import {
 } from 'native-base';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Alert, BackHandler } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
@@ -35,6 +35,7 @@ import { THEME } from '../styles/theme';
 import { Loading } from '../components/Loading';
 import { cancelNotifications } from '../services/cancelNotifications';
 import { medList } from '../services/medList';
+import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
 
 
 type Nav = {
@@ -134,6 +135,7 @@ export function EditMedicine({ route }: any) {
         
         cancelNotifications(medicineData.name, oldMedicineNotificationHours)
         setMedicineNotifications(medicineData)
+        calcDaysOfMedicineLeft(medicineData, medicineData.hours)
         showToast()
         setTimeout( navigate, 3000)
       })
@@ -323,6 +325,11 @@ export function EditMedicine({ route }: any) {
     .catch(error => console.error(`Error: ${error}`))
     
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
+    return () => backHandler.remove()
+  }, [])
 
   useEffect(() => {
     getMedicineInfo(medicineUuid)

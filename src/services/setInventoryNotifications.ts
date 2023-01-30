@@ -14,7 +14,6 @@ interface Props {
 }
 
 export async function setInventoryNotifications(medicine: Props, days: number) {
-  console.log(medicine)
   const medId = medicine.uuid
 
   if (days > 14 ) {
@@ -41,7 +40,8 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
       },
       trigger: {
         channelId: 'inventory',
-        seconds: 60,
+        hour: 9,
+        minute: 30,
         repeats: true,
       },
     });

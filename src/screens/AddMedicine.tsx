@@ -47,6 +47,8 @@ interface MedicineFormData {
   medicine: string,
   prescription: string,
   frequency: string,
+  concentration_quant?: string,
+  concentration_type?: string,
   dosage_quantity: string,
   dosage_unit: string,
   start_date?: string,
@@ -64,6 +66,8 @@ const schema = Yup.object().shape({
   medicine: Yup.string(),
   prescription: Yup.string().required('Selelcione se ele precisa ou não de receita'),
   frequency: Yup.string().required('É necessesário informar a frequência'),
+  concentration_quant: Yup.string(),
+  concentration_type: Yup.string(),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
   start_date: Yup.string(),
@@ -227,8 +231,21 @@ export function AddMedicine() {
       showNameAlert()
       return
     }
+    if (data.concentration_quant !== undefined && data.concentration_type === "" ) {
+      setIsLoading(false)
+      return Alert.alert("Informação incompleta", "Você inseriu a concentração, escolha também o tipo")
+    }
+    if (data.concentration_quant === undefined && data.concentration_type !== "" ) {
+      setIsLoading(false)
+      return Alert.alert("Informação incompleta", "Você escolheu o tipo, insira também a concentração")
+    }
 
     const name = data.medicine === "" ? medicineName : data.medicine
+
+
+    const concQuant = data.concentration_quant === undefined ? "" : data.concentration_quant
+    const concType = data.concentration_type === "" ? "" : data.concentration_type
+    const concentration = concQuant !== "" && concType !== "" ? `${concQuant} ${concType}` : undefined
 
     const prescription = data.prescription === "yes" ? true : false
     if (prescription === true && !data.inventory) {
@@ -244,25 +261,13 @@ export function AddMedicine() {
 
     const token = await AsyncStorage.getItem('token')
 
-    console.log({
-      name,
-      prescription,
-      dosage,
-      frequency,
-      start_date: setDateToStringDatabaseFormat(startDate),
-      start_time: setTimeToString(startTime),
-      days: 120, //remove when is no longer required
-      instruction,
-      inventory
-    })
-
-
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.post(`/${token}/medicine/create${isCaregiver ? isCaregiver : ""}`, {
       name,
       prescription,
       dosage,
       frequency,
+      concentration,
       start_date: setDateToStringDatabaseFormat(startDate),
       start_time: setTimeToString(startTime),
       days: 120, //remove when is no longer required
@@ -320,7 +325,44 @@ export function AddMedicine() {
                 defaultValue=""
               />
               <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.medicine && errors.medicine.message}</FormControl.Label>
-
+              <HStack justifyContent="space-between">
+                        <VStack w="46%" mr={4}>
+                          <FormControl.Label _text={{bold: true}} mt={2}>Concentração:</FormControl.Label>
+                            <InputForm
+                            name="concentration_quant"
+                            control={control}
+                            placeholder="Digite um número"
+                            keyboardType="numeric"
+                          />
+                        </VStack>
+                        <VStack w="46%">
+                        <FormControl.Label _text={{bold: true}} mt={2}>Tipo de concentração:</FormControl.Label>
+                          <Controller
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                              <Select
+                              accessibilityLabel="Escolha"
+                              placeholder="Escolha"
+                              selectedValue={value}
+                              onValueChange={(itemValue: string) => {
+                                onChange(itemValue);
+                              }}
+                              _selectedItem={{
+                                bg: THEME.color.primary_200,
+                                endIcon: <CheckIcon size="5" />
+                              }} size="md" fontSize="md">
+                                <Select.Item label="" value="" disabled/>
+                                <Select.Item label="Miligrama(s) / mg" value="mg" />
+                                <Select.Item label="Grama(s) / g" value="g" />
+                              </Select>
+                            )}
+                            name="concentration_type"
+                            rules={{ required: 'Field is required' }}
+                            defaultValue=""
+                          />
+                          <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.concentration_type && errors.concentration_type.message}</FormControl.Label>
+                        </VStack>
+                        </HStack>
               <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>
               <Controller
                 control={control}
@@ -412,10 +454,7 @@ export function AddMedicine() {
                         <Select.Item label="Mais comuns" value="" disabled/>
                         <Select.Item label="Comprimido(s)" value="Comprimido(s)" />
                         <Select.Item label="Cápsula(s)" value="Cápsula(s)" />
-                        <Select.Item label="Miligrama(s) / mg" value="mg" />
-                        <Select.Item label="Mililitro(s) / ml" value="ml" />
                         <Select.Item label="Gota(s)" value="Gota(s)" />
-                        <Select.Item label="Grama(s)" value="Grama(s)" />
                         <Select.Item label="Unidade(s)" value="Unidade(s)" />
                         <Select.Item label="" value="" disabled/>
                         <Select.Item label="Outros" value="" disabled/>

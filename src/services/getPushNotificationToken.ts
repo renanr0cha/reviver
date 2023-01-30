@@ -7,10 +7,7 @@ export async function getPushNotificationToken() {
     name: 'Lembretes de medicamento',
     importance: Notifications.AndroidImportance.MAX,
     lightColor: '#FF231F7C',
-    sound: 'notification.mp3',
-    enableVibrate: true,
     bypassDnd: true,
-    vibrationPattern: [0, 250, 250, 250],
     lockscreenVisibility:AndroidNotificationVisibility.PUBLIC,
     audioAttributes: {
       flags: {

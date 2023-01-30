@@ -1,8 +1,8 @@
 import * as Notifications from 'expo-notifications';
 
 export async function setInspectionNotifications(mode: "daily" | "weekly") {
-  Notifications.cancelScheduledNotificationAsync("inspection-reminder")
-  Notifications.scheduleNotificationAsync({
+  await Notifications.cancelScheduledNotificationAsync("inspection-reminder")
+  await Notifications.scheduleNotificationAsync({
     identifier: "inspection-reminder",
     content: {
       autoDismiss: false,

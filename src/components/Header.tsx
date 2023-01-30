@@ -7,10 +7,22 @@ type Props = StyledProps & {
   title: string
 }
 
+type Nav = {
+  navigate: (value: string) => void;
+  goBack: () => void;
+  canGoBack: () => boolean;
+}
+
 export function Header({ title, ...rest}: Props) {
   
-  
-  const navigation = useNavigation()
+  function handleReturnButton() {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return
+    }
+    navigation.navigate("home")
+  }
+  const navigation = useNavigation<Nav>()
 
   const { colors } = useTheme()
 
@@ -30,7 +42,7 @@ export function Header({ title, ...rest}: Props) {
         icon={<CaretLeft color={colors.white} size={24}
         weight="bold"/>}
         _pressed={{ bg: THEME.color.primary_800}}
-        onPress={() => navigation.goBack()}
+        onPress={handleReturnButton}
       />
 
       <Heading color={colors.white}  textAlign="left" fontSize="xl" flex={1} ml={4}>

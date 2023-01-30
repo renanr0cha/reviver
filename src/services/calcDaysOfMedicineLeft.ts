@@ -17,6 +17,7 @@ export async function calcDaysOfMedicineLeft(medicine: Props, hours: string[]) {
   console.log("Number per day" + numberOfTimesPerDay)
   if (medicine.inventory !== undefined) {
     const days = medicine.inventory/numberOfTimesPerDay
+    console.log(days);
     setInventoryNotifications(medicine, days)
   }
 }

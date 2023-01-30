@@ -14,7 +14,6 @@ import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { Linking } from "react-native";
 import { verifyIfInspectionNotificationsAreSet } from "./src/services/verifyIfIspectionNotificationsAreSet";
-import { cancelInventoryNotifications } from "./src/services/cancelInventoryNotifications";
 
 export default function App() {
   const getNotificationListener = useRef<Subscription>()
@@ -53,21 +52,20 @@ export default function App() {
     
     if (
       lastNotificationResponse &&
-      lastNotificationResponse.notification.request.content.data.medId &&
-      lastNotificationResponse.notification.request.trigger.channelId === "medicine"
+      lastNotificationResponse.notification.request.trigger.channelId === "medicine" &&
+      lastNotificationResponse.notification.request.content.data.medId
       ){
-      console.log(lastNotificationResponse.notification.request.trigger.channelId)
-      console.log(lastNotificationResponse.notification.request.content.data.medId)
-      console.log(lastNotificationResponse.notification.request.content)
-
       Linking.openURL(`reviver://medtaken/${lastNotificationResponse.notification.request.content.data.medId}/${lastNotificationResponse.notification.request.identifier}`)
+      return
     }
 
     if (
       lastNotificationResponse &&
-      lastNotificationResponse.notification.request.trigger.channelId === "inspection"
+      lastNotificationResponse.notification.request.identifier === "inspection-reminder"
     ){
+      console.log(lastNotificationResponse.notification.request.trigger.channelId);
       Linking.openURL(`reviver://addinfo1`)
+      return
     }
 
     if (
@@ -75,7 +73,8 @@ export default function App() {
       lastNotificationResponse.notification.request.trigger.channelId === "inventory" &&
       lastNotificationResponse.actionIdentifier === "ok"
     ) {
-        Notifications.dismissNotificationAsync(`${lastNotificationResponse.notification.request.content.data.medId}-inventory`)
+      Notifications.dismissNotificationAsync(`${lastNotificationResponse.notification.request.content.data.medId}-inventory`)
+      return
     }
 
     verifyIfInspectionNotificationsAreSet()

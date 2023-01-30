@@ -13,6 +13,7 @@ import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
 type Medicine = {
   days: 1,
   dosage: string,
+  concentration?: string,
   end_date: string,
   frequency: number,
   hours: string[],
@@ -51,7 +52,7 @@ export function MedicineTakenInfo({route}: any) {
       getAllMedicines()
     }, [])
 
-  const [medicineTaken, getMedicineTaken] = useState<Medicine>();
+  const [medicineTaken, setMedicineTaken] = useState<Medicine>();
 
   const [isLoading, setIsLoading] = useState(false)
   
@@ -64,12 +65,9 @@ export function MedicineTakenInfo({route}: any) {
     .then((response) => {
       const medicines = response.data
       const medicine = medicines.find((medicine: {id: any}) => medicine.id  === id)
-      getMedicineTaken(medicine)
-      if (medicine !== undefined) {
-        calcDaysOfMedicineLeft(medicine, medicine.hours)
-      }
-
-    })
+      setMedicineTaken(medicine)
+      calcDaysOfMedicineLeft(medicine, medicine.hours)
+      })
     .catch(error => console.error(`Error: ${error}`))
   }
 
@@ -148,17 +146,34 @@ export function MedicineTakenInfo({route}: any) {
                         {medicineTaken.name}
                       </Heading>
                     </VStack>
-                  <VStack px={4} pt={8}>
+                  <VStack px={4} pt={6}>
                     <View>
+                      {
+                        medicineTaken.concentration &&
+                          (
+                            <>
+                              <Text fontSize='lg' fontWeight='medium' color={colors.coolGray[800]}>Informação de concentração: </Text>
+                              <Text fontSize='lg' fontWeight='bold' mb={4} color={THEME.color.primary_800}>{medicineTaken.concentration}</Text>
+                            </>
+                          )
+                      }
                       <Text fontSize='lg' fontWeight='medium' color={colors.coolGray[800]}>Dose para ser administrada:</Text>
                       <Text fontSize='lg' fontWeight='bold' mb={4} color={THEME.color.primary_800}>{medicineTaken.dosage}</Text>
-                      
                       {
                         medicineTaken.instruction !== null &&
                           (
                             <>
                               <Text fontSize='lg' fontWeight='medium' color={colors.coolGray[800]}>Instruções especiais: </Text>
-                              <Text fontSize='lg' fontWeight='bold' mb={6} color={THEME.color.primary_800}>{medicineTaken.instruction}</Text>
+                              <Text fontSize='lg' fontWeight='bold' mb={4} color={THEME.color.primary_800}>{medicineTaken.instruction}</Text>
+                            </>
+                          )
+                      }
+                      {
+                        medicineTaken.inventory > 0 &&
+                          (
+                            <>
+                              <Text fontSize='lg' fontWeight='medium' color={colors.coolGray[800]}>Quantidade de estoque: </Text>
+                              <Text fontSize='lg' fontWeight='bold' mb={4} color={THEME.color.primary_800}>{medicineTaken.inventory}</Text>
                             </>
                           )
                       }
@@ -172,6 +187,7 @@ export function MedicineTakenInfo({route}: any) {
                   <View px={4} mb={4}>
                     <Box
                       alignItems='center'
+                      justifyContent="center"
                       borderStyle='solid'
                       borderWidth={2}
                       p={2}
@@ -180,9 +196,9 @@ export function MedicineTakenInfo({route}: any) {
                       borderRadius='2xl'
                       bg={colors.white}
                     >
-                      <Heading pb={1} fontWeight='bold' color={colors.coolGray[700]}>Seu estoque hoje: <Heading color={THEME.color.primary_800}>{medicineTaken.inventory}</Heading></Heading>
+                      <Heading fontSize="lg" fontWeight='bold' color={colors.coolGray[700]}>ATUAL ESTOQUE PARA: <Heading color={THEME.color.primary_800}>{medicineTaken.inventory/medicineTaken.hours.length} dias</Heading></Heading>
                     </Box>
-                    <Text fontSize='md' fontWeight='medium' mb={10}><Text fontWeight='bold' color='#F13C46'>Atenção: </Text>Lembre de sempre renovar seu estoque quando estiver próximo ao fim!</Text>
+                    <Text fontSize='md' fontWeight='medium' mb={6}><Text fontWeight='bold' color='#F13C46'>Atenção: </Text>Lembre de sempre renovar seu estoque quando estiver próximo ao fim!</Text>
                     <Text fontSize='lg' fontWeight='bold'>Você confirma que tomou a dose do seu medicamento ainda pouco?</Text>
                   </View>
                   <Box px={4} mt={2} pb={2} w="100%">

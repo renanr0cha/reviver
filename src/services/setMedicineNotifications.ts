@@ -12,8 +12,6 @@ interface Props {
 }
 
 export async function setMedicineNotifications(medicine: Props) {
-  console.log(medicine)
-
   const medId = medicine.id
   medicine.hours.forEach(hour => {
 
@@ -28,8 +26,7 @@ export async function setMedicineNotifications(medicine: Props) {
         title: `Você tem medicamento agora ${hour}`,
         body: `${medicine.name} - Confirme que tomou apertando aqui`,
         priority: 'max',
-        sound: "notification.mp3",
-        vibrate: [0, 250, 250, 250],
+        sound: "default",
         data: {
           medId
         }

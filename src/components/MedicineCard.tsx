@@ -11,6 +11,7 @@ type MedicineCardProps = {
   thirdTime?: string,
   fourthTime?: string,
   dosage: string,
+  concentration?: string,
   days: string,
   endDate: string,
   inventory: number,
@@ -18,7 +19,7 @@ type MedicineCardProps = {
   onPressUpdate: any,
 }
 
-export function MedicineCard({medicineName, frequency, startTime, secondTime, thirdTime, fourthTime, dosage, endDate, inventory, onPressDelete, onPressUpdate}: MedicineCardProps) {
+export function MedicineCard({medicineName, frequency, startTime, secondTime, thirdTime, fourthTime, dosage, concentration, endDate, inventory, onPressDelete, onPressUpdate}: MedicineCardProps) {
   const { colors } = useTheme()
 
     return (
@@ -53,6 +54,9 @@ export function MedicineCard({medicineName, frequency, startTime, secondTime, th
           <VStack alignItems="flex-start" space={3} textAlign="left">
             <HStack alignItems="center" textAlign="left">
               <Eyedropper size={20} color={colors.text[500]}/>
+              {
+                concentration && <Text ml={2} fontSize="md" fontWeight="medium">{concentration} -</Text>
+              }
               <Text ml={2} fontSize="md" fontWeight="medium">{dosage}</Text>
               <Text fontWeight="medium" fontSize="md" > - {frequency} vezes por dia</Text>
             </HStack>

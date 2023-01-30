@@ -147,6 +147,7 @@ export function MedicineList() {
                             thirdTime={medicine.hours[2]}
                             fourthTime={medicine.hours[3]}
                             dosage={medicine.dosage}
+                            concentration={medicine.concentration}
                             days={medicine.days}
                             endDate={`${String(new Date(medicine.end_date).getDate()).padStart(2, "0")}/${String(new Date(medicine.end_date).getMonth() + 1).padStart(2, "0")}/${String(new Date(medicine.end_date).getFullYear())}`}
                             key={index}

@@ -49,6 +49,8 @@ interface MedicineFormData {
   frequency: string,
   dosage_quantity: string,
   dosage_unit: string,
+  concentration_quant?: string,
+  concentration_type?: string,
   start_date?: string,
   end_date?: string,
   quantity_of_days: string,
@@ -64,6 +66,8 @@ const schema = Yup.object().shape({
   frequency: Yup.string().required('É necessesário informar a frequência'),
   dosage_quantity: Yup.string().required('Informe a quantidade'),
   dosage_unit: Yup.string().required('Informe a unidade'),
+  concentration_quant: Yup.string(),
+  concentration_type: Yup.string(),
   start_date: Yup.string(),
   end_date: Yup.string(),
   quantity_of_days: Yup.string(),
@@ -161,6 +165,8 @@ export function EditMedicine({ route }: any) {
         setOldMedicineName(medicineData.name)
         const dosageQuantity = medicineData?.dosage.slice(0, 1)
         const dosageUnit = medicineData?.dosage.slice(2)
+        const concentration = medicineData?.concentration === null || medicineData?.concentration === "undefined" ? "" : medicineData?.concentration
+        const concentrationArray = concentration !== "" ? concentration.split(" ") : ["",""]
         const prescriptionValue = medicineData?.prescription === true ? "yes" : "no"
         setOldMedicineNotificationHours(medicineData.hours)
         
@@ -191,6 +197,8 @@ export function EditMedicine({ route }: any) {
           frequency: String(medicineData.frequency),
           dosage_quantity: dosageQuantity,
           dosage_unit: dosageUnit,
+          concentration_quant: concentrationArray[0],
+          concentration_type: concentrationArray[1],
           start_date: "",
           end_date: "",
           quantity_of_days: String(medicineData?.days),
@@ -294,6 +302,8 @@ export function EditMedicine({ route }: any) {
       frequency: "",
       dosage_quantity: "",
       dosage_unit: "",
+      concentration_quant: "",
+      concentration_type: "",
       start_date: "",
       start_time: "",
       end_date: "",
@@ -304,18 +314,16 @@ export function EditMedicine({ route }: any) {
   });
   const onSubmit: SubmitHandler<MedicineFormData> = async (data) => {
     setIsLoading(true)
-    
 
-    console.log(`Dados inseridos ${data.medicine}`)
     //tratando dados
-
-    console.log(medicineName)
-
     const medNameTest = medicineName === undefined || medicineName === ""
 
     const name = data.medicine === "" && medNameTest ? oldMedicineName : medicineName
+    const finalName = data.medicine === "" ? name : data.medicine
 
-    console.log(name)
+    const concQuant = data.concentration_quant === undefined ? "" : data.concentration_quant
+    const concType = data.concentration_type === "" ? "" : data.concentration_type
+    const concentration = concQuant !== "" && concType !== "" ? `${concQuant} ${concType}` : undefined
 
     const dosage = `${data.dosage_quantity} ${data.dosage_unit}`
     const prescription = data.prescription === "yes" ? true : false
@@ -327,13 +335,14 @@ export function EditMedicine({ route }: any) {
 
     const isCaregiver = await AsyncStorage.getItem("uuidPatient")
     await api.put(`/${token}/medicine/update/${medicineUuid}`, {
-      name,
+      name: finalName,
       prescription,
       dosage,
       frequency,
+      concentration,
       start_date: setDateToStringDatabaseFormat(startDate),
       start_time: setTimeToString(startTime),
-      days: 120, //removed when is no longer needed
+      days: 120, //remove when is no longer needed
       instruction,
       inventory
     })
@@ -408,6 +417,45 @@ export function EditMedicine({ route }: any) {
                         name="medicine"
                         rules={{ required: 'Field is required' }}
                       />
+                      <HStack justifyContent="space-between">
+                        <VStack w="46%" mr={4}>
+                          <FormControl.Label _text={{bold: true}} mt={2}>Concentração:</FormControl.Label>
+                            <InputForm
+                            name="concentration_quant"
+                            control={control}
+                            placeholder="Digite um número"
+                            keyboardType="numeric"
+                          />
+                        </VStack>
+                        <VStack w="46%">
+                        <FormControl.Label _text={{bold: true}} mt={2}>Tipo de concentração:</FormControl.Label>
+                          <Controller
+                            control={control}
+                            render={({ field: { onChange, value } }) => (
+                              <Select
+                              accessibilityLabel="Escolha"
+                              placeholder="Escolha"
+                              selectedValue={value}
+                              onValueChange={(itemValue: string) => {
+                                onChange(itemValue);
+                              }}
+                              _selectedItem={{
+                                bg: THEME.color.primary_200,
+                                endIcon: <CheckIcon size="5" />
+                              }} size="md" fontSize="md">
+                                <Select.Item label="" value="" disabled/>
+                                <Select.Item label="Miligrama(s) / mg" value="mg" />
+                                <Select.Item label="Grama(s) / g" value="g" />
+                              </Select>
+                            )}
+                            name="concentration_type"
+                            rules={{ required: 'Field is required' }}
+                            defaultValue=""
+                          />
+                          <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.concentration_type && errors.concentration_type.message}</FormControl.Label>
+                        </VStack>
+                        </HStack>
+                      
                       <FormControl.Label _text={{bold: true}} mt={2}>Precisa de receita para adquirir?</FormControl.Label>
                       <Controller
                         control={control}
@@ -484,7 +532,7 @@ export function EditMedicine({ route }: any) {
                           <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.dosage_quantity && errors.dosage_quantity.message}</FormControl.Label>
                         </VStack>
                         <VStack w="46%">
-                          <FormControl.Label _text={{bold: true}} mt={2}>Unidade:</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}} mt={2}>Unidade:</FormControl.Label>
                           <Controller
                             control={control}
                             render={({ field: { onChange, value } }) => (
@@ -502,10 +550,7 @@ export function EditMedicine({ route }: any) {
                                 <Select.Item label="Mais comuns" value="" disabled/>
                                 <Select.Item label="Comprimido(s)" value="Comprimido(s)" />
                                 <Select.Item label="Cápsula(s)" value="Cápsula(s)" />
-                                <Select.Item label="Miligrama(s) / mg" value="mg" />
-                                <Select.Item label="Mililitro(s) / ml" value="ml" />
                                 <Select.Item label="Gota(s)" value="Gota(s)" />
-                                <Select.Item label="Grama(s)" value="Grama(s)" />
                                 <Select.Item label="Unidade(s)" value="Unidade(s)" />
                                 <Select.Item label="" value="" disabled/>
                                 <Select.Item label="Outros" value="" disabled/>
@@ -530,32 +575,32 @@ export function EditMedicine({ route }: any) {
                           <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.dosage_unit && errors.dosage_unit.message}</FormControl.Label>
                         </VStack>
                       </HStack>
-                      <FormControl.Label _text={{bold: true}} mt={2}>Quantas vezes tomar?</FormControl.Label>
-                      <Controller
-                        control={control}
-                        render={({ field: { onChange, value } }) => (
-                          <Select
-                          accessibilityLabel="Escolha"
-                          placeholder="Escolha uma frequência"
-                          selectedValue={value}
-                          onValueChange={(itemValue: string) => {
-                            onChange(itemValue);
-                          }}
-                          _selectedItem={{
-                            bg: THEME.color.primary_200,
-                            endIcon: <CheckIcon size="5" />
-                          }} size="md" fontSize="md">
-                            <Select.Item label="Uma vez ao dia" value="24" />
-                            <Select.Item label="Duas vezes ao dia" value="12" />
-                            <Select.Item label="Três vezes ao dia" value="8" />
-                            <Select.Item label="Quatro vezes ao dia" value="6" />
-                          </Select>
-                          
-                        )}
-                        name="frequency"
-                        rules={{ required: 'Field is required' }}
-                      />
-                      <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.frequency && errors.frequency.message}</FormControl.Label>
+                        <FormControl.Label _text={{bold: true}} mt={2}>Quantas vezes tomar?</FormControl.Label>
+                        <Controller
+                          control={control}
+                          render={({ field: { onChange, value } }) => (
+                            <Select
+                              accessibilityLabel="Escolha"
+                              placeholder="Escolha uma frequência"
+                              selectedValue={value}
+                              onValueChange={(itemValue: string) => {
+                                onChange(itemValue);
+                              }}
+                              _selectedItem={{
+                                bg: THEME.color.primary_200,
+                                endIcon: <CheckIcon size="5" />
+                              }} size="md" fontSize="md">
+                                <Select.Item label="Uma vez ao dia" value="24" />
+                                <Select.Item label="Duas vezes ao dia" value="12" />
+                                <Select.Item label="Três vezes ao dia" value="8" />
+                                <Select.Item label="Quatro vezes ao dia" value="6" />
+                              </Select>
+                              
+                            )}
+                            name="frequency"
+                            rules={{ required: 'Field is required' }}
+                          />
+                          <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.frequency && errors.frequency.message}</FormControl.Label>
                         <VStack>
                           <FormControl.Label _text={{bold: true}} mt={2}>Horário que começou a tomar:</FormControl.Label>
                               <Button

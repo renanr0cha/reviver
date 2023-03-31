@@ -14,6 +14,7 @@ import { Routes } from "./src/routes";
 import { AuthProvider } from "./src/hooks/auth";
 import { Linking } from "react-native";
 import { verifyIfInspectionNotificationsAreSet } from "./src/services/verifyIfIspectionNotificationsAreSet";
+// import { testNotificationSound } from "./src/services/testNotificationSound";
 
 export default function App() {
   const getNotificationListener = useRef<Subscription>()
@@ -77,9 +78,12 @@ export default function App() {
       return
     }
 
+    // testNotificationSound()
+
     verifyIfInspectionNotificationsAreSet()
   }, [lastNotificationResponse])
   
+
 
   getNotifications()
 

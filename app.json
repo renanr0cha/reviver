@@ -3,7 +3,7 @@
   "displayName": "Reviver",
   "expo": {
     "name": "Reviver",
-    "slug": "Reviver",
+    "slug": "reviver",
     "scheme": "reviver",
     "version": "1.0.0",
     "sdkVersion": "45.0.0",
@@ -16,7 +16,10 @@
         {
           "icon": "./assets/pill-icon.png",
           "color": "#F5A648",
-          "sounds": ["./assets/notification.mp3"]
+          "sounds": [
+            "./assets/alarmsound.wav",
+            "./assets/notification.mp3"
+          ]
         }
       ]
     ],

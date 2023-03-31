@@ -130,15 +130,6 @@ export function Home() {
       <VStack flex={1} bg={colors.white} justifyContent="space-between">
         <VStack justifyContent="space-between">
           <CardMenu
-            title="Progresso"
-            subtitle="Acompanhe sua evolução"
-            icon={ChartLine}
-          >
-            <HStack alignSelf="flex-end">
-              <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleSeeInspectionHistory}/>
-            </HStack>
-          </CardMenu>
-          <CardMenu
             title="Medicamentos"
             subtitle="Veja seus medicamentos atuais e também adicione novos"
             icon={Pill}
@@ -159,10 +150,19 @@ export function Home() {
 
             </HStack>
           </CardMenu>
-          
+          {
+          isCaregiver &&
+            <CardMenu
+              title="Progresso do Paciente"
+              subtitle="Acompanhe a evolução dos sintomas"
+              icon={ChartLine}
+            >
+              <HStack alignSelf="flex-end">
+                <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleSeeInspectionHistory}/>
+              </HStack>
+            </CardMenu>
+          }
         </VStack>
-            
-    
       </VStack>
     </>
   );

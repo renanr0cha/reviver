@@ -196,7 +196,7 @@ export function MedicineTakenInfo({route}: any) {
                       borderRadius='2xl'
                       bg={colors.white}
                     >
-                      <Heading fontSize="lg" fontWeight='bold' color={colors.coolGray[700]}>ATUAL ESTOQUE PARA: <Heading color={THEME.color.primary_800}>{medicineTaken.inventory/medicineTaken.hours.length} dias</Heading></Heading>
+                      <Heading fontSize="lg" fontWeight='bold' color={colors.coolGray[700]}>ATUAL ESTOQUE PARA: <Heading color={THEME.color.primary_800}>{Math.floor(medicineTaken.inventory/medicineTaken.hours.length)} dias</Heading></Heading>
                     </Box>
                     <Text fontSize='md' fontWeight='medium' mb={6}><Text fontWeight='bold' color='#F13C46'>Atenção: </Text>Lembre de sempre renovar seu estoque quando estiver próximo ao fim!</Text>
                     <Text fontSize='lg' fontWeight='bold'>Você confirma que tomou a dose do seu medicamento ainda pouco?</Text>

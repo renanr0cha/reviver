@@ -8,7 +8,8 @@ import {
   ScrollView,
   Modal,
   Text,
-  Button
+  Button,
+  useToast
 } from 'native-base';
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
@@ -28,8 +29,12 @@ type Nav = NavigationAction & {
 
 export function PatientList() {
 
-  const [showModal, setShowModal] = useState(false);
+  const toast = useToast();
+
+  const [showModalSelect, setShowModalSelect] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const [patients, getPatients] = useState([]);
+  const [patientToDelete, setPatientToDelete] = useState<string>('');
 
   const { signOut } = useAuth();
 
@@ -38,6 +43,7 @@ export function PatientList() {
   const navigation = useNavigation<Nav>()
 
   function handleSelectPatient() {
+    showToastSelect()
     navigation.navigate("home")
   }
 
@@ -58,6 +64,26 @@ export function PatientList() {
   const deletePatientUuid = async () => {
     await AsyncStorage.removeItem('uuidPatient')
   }
+
+  function showToastSelect() {
+    toast.show({
+      padding: 4,
+      title: "Paciente escolhido com sucesso!",
+      placement: "bottom",
+      duration: 4000,
+    })
+      
+  }
+
+  function showToastDelete() {
+    toast.show({
+      padding: 4,
+      title: "Paciente desvinculado com sucesso!",
+      placement: "bottom",
+      duration: 4000,
+    })
+      
+  }
   // get patient list from database
   const getAllPatients = async () => {
 
@@ -68,6 +94,23 @@ export function PatientList() {
       getPatients(allPatients)
     })
     .catch(error => console.error(`Error: ${error}`))
+  }
+
+  const removePatient = async () => {
+    const userToken = await AsyncStorage.getItem('token')
+    console.log(userToken, patientToDelete)
+
+    await api.get(`/${userToken}/patient/detach/${patientToDelete}`)
+    .then((response) => {
+      console.log(response.data)
+      showToastDelete()
+      setShowModalDelete(false)
+      setPatientToDelete("")
+      getAllPatients()
+    })
+    .catch(error => console.error(`Error: ${error}`))
+
+
   }
 
   const { colors } = useTheme()
@@ -112,7 +155,12 @@ export function PatientList() {
                       sex={patient.sex === "m" ? "Masculino" : "Feminino"}
                       key={index} onPress={() => {
                         setPatientUuid(patient.uuid)
-                        setShowModal(true)
+                        setShowModalSelect(true)
+                      }}
+                      onPressDelete={() => {
+                        console.log(patient.name)
+                        setPatientToDelete(patient.uuid)
+                        setShowModalDelete(true)
                       }}
                       />
                         
@@ -133,7 +181,7 @@ export function PatientList() {
           </VStack>
         </TouchableWithoutFeedback>
       </ScrollView>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} >
+      <Modal isOpen={showModalSelect} onClose={() => setShowModalSelect(false)} >
         <Modal.Content maxWidth="400px">
           <Modal.Header _text={{ fontWeight:"bold"}} >Selecionar este paciente?</Modal.Header>
           <Modal.Body>
@@ -144,7 +192,7 @@ export function PatientList() {
           <Modal.Footer>
             <Button.Group space={2}>
               <Button variant="ghost" colorScheme="coolGray" onPress={() => {
-              setShowModal(false);
+              setShowModalSelect(false);
               deletePatientUuid()
             }}>
                 CANCELAR
@@ -153,10 +201,41 @@ export function PatientList() {
               bg={THEME.color.primary}
               _pressed={{ bg: THEME.color.primary_800}}
               onPress={() => {
-              setShowModal(false);
+              setShowModalSelect(false);
               
               handleSelectPatient()
             }}>
+                CONFIRMAR
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+      <Modal isOpen={showModalDelete} onClose={() => setShowModalDelete(false)} >
+        <Modal.Content maxWidth="400px">
+          <Modal.Header _text={{ fontWeight:"bold"}} >Desvincular esse paciente de você?</Modal.Header>
+          <Modal.Body>
+            <Text>
+              Ao apertar em confirmar o paciente será desvinculado de você e para voltar a cuidar dele você terá que adicionar ele novamente
+            </Text>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button variant="ghost" colorScheme="coolGray" onPress={() => {
+              setShowModalDelete(false)
+              setPatientToDelete("")
+            }}>
+                CANCELAR
+              </Button>
+              <Button
+                bg={THEME.color.primary}
+                _pressed={{ bg: THEME.color.primary_800}}
+                onPress={() => {
+                  setShowModalDelete(false);
+                  
+                  removePatient()
+                }}
+              >
                 CONFIRMAR
               </Button>
             </Button.Group>

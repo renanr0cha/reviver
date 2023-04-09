@@ -399,7 +399,7 @@ export function AddMedicine() {
                   </VStack> 
             </Section>
             
-            <Section title="Sobre a frequência e dosagem" mt={6}>
+            <Section title="Sobre a frequência e dose" mt={6}>
 
             <HStack justifyContent="space-between">
                 <VStack w="46%" mr={4}>

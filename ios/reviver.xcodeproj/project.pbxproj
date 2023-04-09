@@ -315,8 +315,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.reviver;
-				PRODUCT_NAME = reviver;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.reviver-project";
+				PRODUCT_NAME = reviver-project;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -338,8 +338,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.name.reviver;
-				PRODUCT_NAME = reviver;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.reviver-project";
+				PRODUCT_NAME = reviver-project;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

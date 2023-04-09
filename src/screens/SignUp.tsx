@@ -316,6 +316,20 @@ export function SignUp() {
                   name="phone"
                 />
                 <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.phone && errors.phone.message}</FormControl.Label>
+                <FormControl.Label _text={{bold: true}}>Você é Paciente ou Cuidador?</FormControl.Label>
+                  <Select
+                  accessibilityLabel="Escolha"
+                  placeholder="Selecione como quer se cadastrar:"
+                  placeholderTextColor={colors.text[600]}
+                  defaultValue=""
+                  w="100%"
+                  _selectedItem={{
+                    bg: THEME.color.primary_200,
+                    endIcon: <CheckIcon size="5" />
+                  }} size="md" fontSize="md">
+                    <Select.Item label="Paciente" value="paciente" />
+                    <Select.Item label="Cuidador" value="cuidador" />
+                  </Select>
               </Section>
               <Section title="Informações de segurança" mt={6}>
                 <FormControl.Label _text={{

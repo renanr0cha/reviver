@@ -121,7 +121,7 @@ export function AddInspection2() {
               </Section>
               
               <Section title=''>
-                <Heading fontSize="xl" mb={6}>Como está sua deglutição?</Heading>
+                <Heading fontSize="xl" mb={6}>Como está sua ingestão de alimentos?</Heading>
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -138,9 +138,9 @@ export function AddInspection2() {
                     }} size="md" fontSize="md">
                       <Select.Item label="Normal" value="0" />
                       <Select.Item label="Raros engasgos" value="1" />
-                      <Select.Item label="Engasgos ocasionais" value="2" />
-                      <Select.Item label="Necessita alimentos pastosos" value="3"/>
-                      <Select.Item label="Necessita alimentação por sonda nasogástrica ou gastrostomia" value="4" />
+                      <Select.Item label="Engasgos frequentes" value="2" />
+                      <Select.Item label="Necessita de alimentos pastosos" value="3"/>
+                      <Select.Item label="Necessita de alimentação por sonda nasogástrica ou gastrostomia" value="4" />
                     </Select>
                   )}
                   name="swallowing"
@@ -165,7 +165,7 @@ export function AddInspection2() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Normal" value="0" />
-                      <Select.Item label="Ação lenta, mas não precisa de ajuda" value="1" />
+                      <Select.Item label="Realiza sua higiene de forma lenta, mas não precisa de ajuda" value="1" />
                       <Select.Item label="Precisa de ajuda no chuveiro ou apresenta-se muito lento nos cuidados de higiene" value="2" />
                       <Select.Item label="Necessita de assistência para se lavar, escovar os dentes, pentear-se, ir ao banheiro" value="3"/>
                       <Select.Item label="Sonda vesical (tubo para ajudar na eliminação da urina) ou outra ajuda mecânica" value="4" />
@@ -193,9 +193,9 @@ export function AddInspection2() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Normal" value="0" />
-                      <Select.Item label="Ação lenta e desajeitada, mas não precisa de ajuda" value="1" />
-                      <Select.Item label="Pode girar sozinho na cama ou colocar lençóis, mas com grande dificuldade" value="2" />
-                      <Select.Item label="Pode iniciar, mas não consegue rolar na cama ou colocar lençóis sozinho" value="3"/>
+                      <Select.Item label="Se move de forma lenta, mas não precisa de ajuda" value="1" />
+                      <Select.Item label="Consegue se movimentar sozinho na cama, mas com grande dificuldade" value="2" />
+                      <Select.Item label="Inicia o movimento, mas não consegue finalizar ou colocar lençóis sozinho" value="3"/>
                       <Select.Item label="Incapaz" value="4" />
                     </Select>
                   )}
@@ -221,7 +221,7 @@ export function AddInspection2() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Normal" value="0" />
-                      <Select.Item label="Leve dificuldade, pode não balançar os braços ou tende a arrastar as pernas" value="1" />
+                      <Select.Item label="Com leve dificuldade, mas às vezes balança os braços ou arrasta as pernas" value="1" />
                       <Select.Item label="Dificuldade moderada, mas necessita de pouca ou nenhuma ajuda" value="2" />
                       <Select.Item label="Dificuldade intensa de andar, necessitando de ajuda" value="3"/>
                       <Select.Item label="Não consegue andar, mesmo com ajuda" value="4" />
@@ -276,8 +276,8 @@ export function AddInspection2() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Normal" value="0" />
-                      <Select.Item label="Lenta ou pode precisar de mais de uma tentativa" value="1" />
-                      <Select.Item label="Apoia-se nos braços da cadeira" value="2" />
+                      <Select.Item label="Ação lenta ou podendo precisar de mais de uma tentativa" value="1" />
+                      <Select.Item label="Precisa se apoiar nos braços da cadeira" value="2" />
                       <Select.Item label="Tende a cair para trás, podendo necessitar de várias tentativas, mas consegue levantar-se" value="3"/>
                       <Select.Item label="Incapaz de levantar-se sem ajuda" value="4" />
                     </Select>
@@ -360,10 +360,10 @@ export function AddInspection2() {
                       endIcon: <CheckIcon size="5" />
                     }} size="md" fontSize="md">
                       <Select.Item label="Nenhuma" value="0" />
-                      <Select.Item label="Lentidão mínima, com possível redução na amplitude dos movimentos" value="1" />
-                      <Select.Item label="Lentidão leve, com diminuição da amplitude dos movimentos" value="2" />
-                      <Select.Item label="Lentidão MODERADA, com diminuição da amplitude dos movimentos" value="3"/>
-                      <Select.Item label="Lentidão ACENTUADA, com diminuição da amplitude dos movimentos" value="4" />
+                      <Select.Item label="Lentidão mínima, com possível diminuição dos movimentos" value="1" />
+                      <Select.Item label="Lentidão leve, com diminuição dos movimentos" value="2" />
+                      <Select.Item label="Lentidão moderada, com diminuição dos movimentos" value="3"/>
+                      <Select.Item label="Lentidão acentuada, com diminuição dos movimentos" value="4" />
                     </Select>
                   )}
                   name="slowness"

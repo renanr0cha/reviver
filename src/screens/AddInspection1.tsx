@@ -235,7 +235,7 @@ export function AddInspection1() {
               
             </Section>
             <Section title=''>
-              <Heading fontSize="xl" mb={6}>Sua motivação hoje:</Heading>
+              <Heading fontSize="xl" mb={6}>Como está sua motivação hoje:</Heading>
               <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -254,7 +254,7 @@ export function AddInspection1() {
                     <Select.Item label="🙂  -  Está menos interessado que o normal, sentindo-se mais desanimado" value="1" />
                     <Select.Item label="😔  -  Sem vontade de realizar tarefas ou desinteresse por atividades não rotineiras" value="2" />
                     <Select.Item label="😟  -  Sem vontade de realizar tarefas ou desinteresse por atividades do dia-a-dia" value="3"/>
-                    <Select.Item label="😩  -  Sentindo-se retraído, perda completa de motivação" value="4" />
+                    <Select.Item label="😩  -  Sentindo-se calado, com perda completa da motivação" value="4" />
                   </Select>
                 )}
                 name="motivation"
@@ -263,7 +263,7 @@ export function AddInspection1() {
             </Section>
 
             <Section title=''>
-              <Heading fontSize="xl" mb={6}>Seu estado depressivo hoje:</Heading>
+              <Heading fontSize="xl" mb={6}>Como está seu sentimento de tristeza hoje:</Heading>
               <Controller
                 control={control}
                 render={({ field: { onChange, value } }) => (
@@ -279,10 +279,10 @@ export function AddInspection1() {
                     endIcon: <CheckIcon size="5" />
                   }} size="md" fontSize="md">
                     <Select.Item label="😃  -  Ausente" value="0" />
-                    <Select.Item label="🙁  -  Períodos de tristeza ou culpa acima do normal, nunca por dias ou semanas" value="1" />
-                    <Select.Item label="😢  -  Depressão permanente, período de uma semana ou mais" value="2" />
-                    <Select.Item label="😰  -  Depressão mantida com alguns sintomas como insônia, anorexia, perda de peso, desinteresse" value="3"/>
-                    <Select.Item label="😭  -  Depressão mantida com sintomas como insônia, anorexia, perda de peso, desinteresse e até pensamento ou tentativa de suicídio" value="4" />
+                    <Select.Item label="🙁  -  Períodos de tristeza ou culpa acima do normal, por períodos curtos" value="1" />
+                    <Select.Item label="😢  -  Tristeza permanente, período de uma semana ou mais" value="2" />
+                    <Select.Item label="😰  -  Tristeza mantida com alguns sintomas como insônia, falta de apetite, perda de peso e desinteresse" value="3"/>
+                    <Select.Item label="😭  -  Tristeza mantida com sintomas como insônia, falta de apetite, perda de peso, desinteresse e pensamento ou tentativa de suicídio" value="4" />
                   </Select>
                   )}
                   name="depression"

@@ -418,15 +418,23 @@ export function AddMedicine() {
                         bg: THEME.color.primary_200,
                         endIcon: <CheckIcon size="5" />
                       }} size="md" fontSize="md">
-                        <Select.Item label="1" value="1" />
-                        <Select.Item label="2" value="2" />
-                        <Select.Item label="3" value="3" />
-                        <Select.Item label="4" value="4" />
-                        <Select.Item label="5" value="5" />
-                        <Select.Item label="6" value="6" />
-                        <Select.Item label="7" value="7" />
-                        <Select.Item label="8" value="8" />
-                        <Select.Item label="9" value="9" />
+                        <Select.Item label="1/4 - Um quarto" value="1/4" />
+                        <Select.Item label="2/4 - Dois quartos" value="2/4" />
+                        <Select.Item label="3/4 - Três quartos" value="3/4" />
+                        <Select.Item label="1/2 - Meio(a)" value="1/2" />
+                        <Select.Item label="1 - Um(a)" value="1" />
+                        <Select.Item label="1.1/2 - Um(a) e meio(a)" value="1 e 1/2" />
+                        <Select.Item label="1.1/4 - Um(a) e um quarto" value="1 e 1/4" />
+                        <Select.Item label="1.2/4 - Um(a) e dois quartos" value="1 e 2/4" />
+                        <Select.Item label="1.3/4 - Um(a) e três quartos" value="1 e 3/4" />
+                        <Select.Item label="2 - Dois" value="2" />
+                        <Select.Item label="3 - Três" value="3" />
+                        <Select.Item label="4 - Quatro" value="4" />
+                        <Select.Item label="5 - Cinco" value="5" />
+                        <Select.Item label="6 - Seis" value="6" />
+                        <Select.Item label="7 - Sete" value="7" />
+                        <Select.Item label="8 - Oito" value="8" />
+                        <Select.Item label="9 - Nove" value="9" />
                       </Select>
                     )}
                     name="dosage_quantity"

@@ -114,6 +114,7 @@ export function SignIn() {
                   placeholder="Selecione como quer logar:"
                   placeholderTextColor={colors.text[600]}
                   selectedValue={value}
+                  minH={46}
                   defaultValue=""
                   w="100%"
                   mt={3}

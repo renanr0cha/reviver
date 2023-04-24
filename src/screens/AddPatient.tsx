@@ -43,7 +43,7 @@ interface AddPatientFormData {
 //form validation
 const schema = Yup.object().shape({
   name: Yup.string().required('O nome do paciente é obrigatório'),
-   cpf: Yup.string().required('Insira o CPF do paciente').min(11, 'Insira todos os 11 digitos'),
+  cpf: Yup.string().required('Insira o CPF do paciente').min(11, 'Insira todos os 11 digitos'),
   email: Yup.string().email('Favor inserir um endereço de email válido').required('Email é obrigatório'),
   phone: Yup.string().required('Insira o contato do paciente').min(14, 'Insira o número do telefone completo').max(14, 'Insira o número do telefone completo'),
   sex: Yup.string().required('Selecione o sexo do paciente'),
@@ -60,6 +60,12 @@ export function AddPatient() {
   
   const [phone, setPhone] = React.useState('');
   const [cpf, setCpf] = React.useState('');
+  const [patientCpf, setPatientCpf] = React.useState<string>('')
+  const [patientData, setPatientData] = React.useState<object>({})
+
+  useEffect(() => {
+    console.log(patientCpf)
+  }, [setPatientCpf])
 
   const [birthDate, setBirthDate] = useState(new Date())
   const [birthDateIsSelected, setBirthDateIsSelected] = useState(false)
@@ -79,6 +85,45 @@ export function AddPatient() {
       
     })
       
+  }
+
+  function cpfNotFound() {
+    setPatientCpf('')
+    toast.show({
+      padding: 4,
+      marginTop: 14,
+      maxW: 300,
+      title: "CPF não encontrado na base de dados, tente novamente ou insira os dados abaixo para cadastrar",
+      placement: "top",
+      duration: 8000,
+      
+    })
+  }
+
+  function cpfFound(data:AddPatientFormData) {
+    console.log(data)
+    const values = {
+      name: data.name,
+      cpf: data.cpf,
+      email: data.email,
+      phone: data.phone,
+      sex: data.sex,
+      birth_date: setDateToStringLocalFormat(new Date(data.birth_date))
+    }
+    setCpf(data.cpf)
+    setPhone(data.phone)
+    setBirthDate(new Date(data.birth_date))
+    toast.show({
+      padding: 4,
+      marginTop: 14,
+      maxW: 300,
+      title: "As informações do paciente foram carregadas, você só precisar apertar em Cadastrar paciente para finalizar",
+      placement: "top",
+      duration: 5000,
+      
+    })
+
+    reset(values)
   }
 
   function setDateToStringDatabaseFormat(date:Date) {
@@ -111,9 +156,24 @@ export function AddPatient() {
   };
 
   //métodos do form
-  const { control, handleSubmit, formState: { errors } } = useForm<AddPatientFormData>({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<AddPatientFormData>({
     resolver: yupResolver(schema)
   });
+
+  const findPatient = async (patientCpf: string) => {
+    console.log(patientCpf)
+    const token = await AsyncStorage.getItem('token')
+    api.get(`/${token}/patient/show/${patientCpf}`)
+    .then((response) => {
+      const data = response.data
+      if (Array.isArray(data) && data.length === 0) {
+        cpfNotFound()
+      } else {
+        cpfFound(response.data)
+      }
+    })
+    .catch(error => console.error(`Error: ${error}`))
+  }
 
   //submit function do form
   const onSubmit: SubmitHandler<AddPatientFormData>  = async (data) => {
@@ -170,9 +230,41 @@ export function AddPatient() {
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <VStack alignItems="center" bg="white" w="100%" h="100%">
-          <Header title='Cadastrar paciente'/>
+        <Header title='Cadastrar paciente'/>
+        <VStack w="100%">
+          <Section title='Pesquise pelo CPF' mt={6}>
+          <FormControl.Label _text={{bold: true}}>Insira o CPF do Paciente (ele precisa possuir cadastro na plataforma):</FormControl.Label>
+            <MaskInput
+              keyboardType='numeric'
+              style={{
+                fontSize: 16,
+                borderWidth: 1,
+                borderColor: colors.coolGray[300],
+                padding: 8,
+                paddingLeft: 12,
+                borderRadius: 4,
+                minHeight: 46
+              }}
+                value={patientCpf}
+                onChangeText={(masked, unmasked) => {
+                  setPatientCpf(unmasked)
+                }}
+                mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
+            />
+            <Box mx={4} mt={6} pb={2}>
+              <ButtonPrimary
+                title="Pesquisar paciente pelo CPF"
+                textAlign="center"
+                w="full"
+                onPress={() => findPatient(patientCpf)}
+                isLoading={isLoading}
+              />
+            </Box>
+          </Section>
+        </VStack>
+          <VStack w="100%">
             <FormControl>
-            <Section title='Informações do paciente' mt={6}>
+            <Section title='Digite as informações do paciente' mt={6}>
               <FormControl.Label _text={{bold: true}} mt={2}>Nome:</FormControl.Label>
               <InputForm
                 name="name"
@@ -195,7 +287,9 @@ export function AddPatient() {
                     borderColor: colors.coolGray[300],
                     padding: 8,
                     paddingLeft: 12,
-                    borderRadius: 4
+                    borderRadius: 4,
+                    marginBottom: 4,
+                    minHeight: 46
                   }}
                     value={cpf}
                     onChangeText={(masked, unmasked) => {
@@ -220,15 +314,11 @@ export function AddPatient() {
               <HStack justifyContent="space-between" >
               <VStack w="46%" mr={4}>
                   <FormControl.Label _text={{bold: true}}>Data de nascimento:</FormControl.Label>
-                  <Controller
-                    control={control}
-                    name="birth_date"
-                    render={() => (
-                      <>
                         <Button
                           onPress={showDatepicker}
                           variant="outline"
                           size="md"
+                          minH={14}
                           borderWidth={1}
                           borderColor="coolGray.300"
                           fontSize="lg"
@@ -238,20 +328,17 @@ export function AddPatient() {
                           alignItems="space-between"
 
                           _text={{
-                            color: birthDateIsSelected ?  colors.text[600] : colors.text[400],
+                            color: colors.text[600],
                             fontSize: "md",
-                            fontFamily: "body"
+                            fontFamily: "body",
+                            paddingBottom: 0,
+
                           }}
                         >
                           {
-                            birthDateIsSelected ?
-                            setDateToStringLocalFormat(birthDate) :
-                            'Escolha a data'
+                            setDateToStringLocalFormat(birthDate)
                           }
                         </Button>
-                      </>
-                    )}
-                  />
                   <FormControl.Label _text={{bold: true, fontSize: 12, color: colors.red[400]}}>{errors.birth_date && errors.birth_date.message}</FormControl.Label>
                 </VStack>
                 <VStack w="46%">
@@ -262,6 +349,7 @@ export function AddPatient() {
                       <Select
                         accessibilityLabel="Escolha"
                         placeholder="Escolha"
+                        minH={46}
                         selectedValue={value}
                         onValueChange={(itemValue: string) => {
                           onChange(itemValue);
@@ -293,7 +381,8 @@ export function AddPatient() {
                     borderColor: colors.coolGray[300],
                     padding: 8,
                     paddingLeft: 12,
-                    borderRadius: 4
+                    borderRadius: 4,
+                    minHeight: 46
                   }}
                     value={phone}
                     onChangeText={(masked, unmasked) => {
@@ -316,6 +405,7 @@ export function AddPatient() {
                 />
               </Box>
             </FormControl>
+        </VStack>
         </VStack>
       </TouchableWithoutFeedback>
     </>

@@ -377,8 +377,8 @@ export function EditMedicine({ route }: any) {
                       <FormControl.Label _text={{bold: true}} mt={2}>Nome Atual:</FormControl.Label>
                       <NativeBaseInput
                         value={oldMedicineName}
-                        minH={14}
                         size="md"
+                        minH={46}
                         borderWidth={1}
                         borderColor="coolGray.300"
                         fontSize="md"
@@ -435,6 +435,7 @@ export function EditMedicine({ route }: any) {
                               <Select
                               accessibilityLabel="Escolha"
                               placeholder="Escolha"
+                              minH={46}
                               selectedValue={value}
                               onValueChange={(itemValue: string) => {
                                 onChange(itemValue);
@@ -464,7 +465,7 @@ export function EditMedicine({ route }: any) {
                             accessibilityLabel="Escolha"
                             placeholder="Escolha"
                             selectedValue={value}
-
+                            minH={46}
                             onValueChange={(itemValue: string) => {
                               onChange(itemValue);
                               setShowInventory(itemValue === "yes" ? true : false)
@@ -496,11 +497,11 @@ export function EditMedicine({ route }: any) {
                         }
                     </Section>
                     
-                    <Section title="Sobre a frequência e dosagem" mt={6}>
+                    <Section title="Sobre a frequência e dose" mt={6}>
 
                     <HStack justifyContent="space-between">
                         <VStack w="46%" mr={4}>
-                          <FormControl.Label _text={{bold: true}} mt={2}>Dosagem:</FormControl.Label>
+                          <FormControl.Label _text={{bold: true}} mt={2}>Dose:</FormControl.Label>
                           <Controller
                             control={control}
                             render={({ field: { onChange, value } }) => (
@@ -508,6 +509,7 @@ export function EditMedicine({ route }: any) {
                               accessibilityLabel="Escolha"
                               placeholder="Escolha"
                               selectedValue={value}
+                              minH={46}
                               onValueChange={(itemValue: string) => {
                                 onChange(itemValue);
                               }}
@@ -539,6 +541,7 @@ export function EditMedicine({ route }: any) {
                               <Select
                               accessibilityLabel="Escolha"
                               placeholder="Escolha"
+                              minH={46}
                               selectedValue={value}
                               onValueChange={(itemValue: string) => {
                                 onChange(itemValue);
@@ -582,6 +585,7 @@ export function EditMedicine({ route }: any) {
                             <Select
                               accessibilityLabel="Escolha"
                               placeholder="Escolha uma frequência"
+                              minH={46}
                               selectedValue={value}
                               onValueChange={(itemValue: string) => {
                                 onChange(itemValue);
@@ -610,6 +614,7 @@ export function EditMedicine({ route }: any) {
                                 borderWidth={1}
                                 borderColor="coolGray.300"
                                 fontSize="lg"
+                                minH={46}
                                 fontFamily="body"
                                 color={colors.text[400]}
                                 justifyContent="space-between"
@@ -631,6 +636,7 @@ export function EditMedicine({ route }: any) {
                         variant="outline"
                         size="md"
                         borderWidth={1}
+                        minH={46}
                         borderColor="coolGray.300"
                         fontSize="lg"
                         fontFamily="body"
@@ -661,6 +667,7 @@ export function EditMedicine({ route }: any) {
                             accessibilityLabel="Escolha"
                             placeholder="Escolha"
                             selectedValue={value}
+                            minH={46}
                             onValueChange={(itemValue: string) => {
                               onChange(itemValue);
                               itemValue === "Outro" ? setShowOtherInstruction(true) : setShowOtherInstruction(false)

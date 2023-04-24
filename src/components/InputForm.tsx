@@ -27,7 +27,7 @@ export function InputForm({ name, control, error,...rest}: IInputProps & InputPr
           <NativeBaseInput
             onChangeText={(val) => onChange(val)}
             value={value}
-            minH={14}
+            minH={46}
             size="md"
             borderWidth={1}
             borderColor="coolGray.300"

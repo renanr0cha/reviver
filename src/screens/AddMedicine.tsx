@@ -343,6 +343,8 @@ export function AddMedicine() {
                               <Select
                               accessibilityLabel="Escolha"
                               placeholder="Escolha"
+                              minH={46}
+
                               selectedValue={value}
                               onValueChange={(itemValue: string) => {
                                 onChange(itemValue);
@@ -370,6 +372,7 @@ export function AddMedicine() {
                   <Select
                     accessibilityLabel="Escolha"
                     placeholder="Escolha"
+                    minH={46}
                     selectedValue={value}
                     onValueChange={(itemValue: string) => {
                       onChange(itemValue);
@@ -403,13 +406,14 @@ export function AddMedicine() {
 
             <HStack justifyContent="space-between">
                 <VStack w="46%" mr={4}>
-                  <FormControl.Label _text={{bold: true}} mt={2}>Dosagem:</FormControl.Label>
+                  <FormControl.Label _text={{bold: true}} mt={2}>Dose:</FormControl.Label>
                   <Controller
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Select
                       accessibilityLabel="Escolha"
                       placeholder="Escolha"
+                      minH={46}
                       selectedValue={value}
                       onValueChange={(itemValue: string) => {
                         onChange(itemValue);
@@ -451,6 +455,7 @@ export function AddMedicine() {
                       <Select
                       accessibilityLabel="Escolha"
                       placeholder="Escolha"
+                      minH={46}
                       selectedValue={value}
                       onValueChange={(itemValue: string) => {
                         onChange(itemValue);
@@ -495,6 +500,7 @@ export function AddMedicine() {
                   accessibilityLabel="Escolha"
                   placeholder="Escolha uma frequência"
                   selectedValue={value}
+                  minH={46}
                   defaultValue=""
                   onValueChange={(itemValue: string) => {
                     onChange(itemValue);
@@ -578,6 +584,7 @@ export function AddMedicine() {
                     <Select
                     accessibilityLabel="Escolha"
                     placeholder="Escolha"
+                    minH={46}
                     selectedValue={value}
                     onValueChange={(itemValue: string) => {
                       onChange(itemValue);

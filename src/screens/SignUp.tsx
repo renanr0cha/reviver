@@ -183,7 +183,8 @@ export function SignUp() {
                       borderColor: colors.coolGray[300],
                       padding: 8,
                       paddingLeft: 12,
-                      borderRadius: 4
+                      borderRadius: 4,
+                      minHeight: 46
                     } : {
                       fontSize: 16,
                       borderWidth: 1,
@@ -191,7 +192,8 @@ export function SignUp() {
                       backgroundColor: THEME.color.primary_200,
                       padding: 8,
                       paddingLeft: 12,
-                      borderRadius: 4
+                      borderRadius: 4,
+                      minHeight: 46
                     }}
                       value={cpf}
                       onChangeText={(masked, unmasked) => {
@@ -227,6 +229,7 @@ export function SignUp() {
                           onPress={showDatepicker}
                           variant="outline"
                           size="md"
+                          minH={46}
                           borderWidth={1}
                           borderColor="coolGray.300"
                           fontSize="lg"
@@ -260,6 +263,7 @@ export function SignUp() {
                         <Select
                           accessibilityLabel="Escolha"
                           placeholder="Escolha"
+                          minH={46}
                           selectedValue={value}
                           onValueChange={(itemValue: string) => {
                             onChange(itemValue);
@@ -294,7 +298,8 @@ export function SignUp() {
                       borderColor: colors.coolGray[300],
                       padding: 8,
                       paddingLeft: 12,
-                      borderRadius: 4
+                      borderRadius: 4,
+                      minHeight: 46
                     } : {
                       fontSize: 16,
                       borderWidth: 1,
@@ -302,7 +307,8 @@ export function SignUp() {
                       backgroundColor: THEME.color.primary_200,
                       padding: 8,
                       paddingLeft: 12,
-                      borderRadius: 4
+                      borderRadius: 4,
+                      minHeight: 46
                     }}
                       value={phone}
                       onChangeText={(masked, unmasked) => {
@@ -319,6 +325,7 @@ export function SignUp() {
                 <FormControl.Label _text={{bold: true}}>Você é Paciente ou Cuidador?</FormControl.Label>
                   <Select
                   accessibilityLabel="Escolha"
+                  minH={46}
                   placeholder="Selecione como quer se cadastrar:"
                   placeholderTextColor={colors.text[600]}
                   defaultValue=""

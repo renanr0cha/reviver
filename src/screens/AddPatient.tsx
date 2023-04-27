@@ -7,7 +7,8 @@ import {
   Select,
   CheckIcon,
   Box,
-  useToast
+  useToast,
+  ScrollView
 } from 'native-base';
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -228,9 +229,10 @@ export function AddPatient() {
 
   return(
     <>
+      <Header title='Cadastrar paciente'/>
+      <ScrollView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <VStack alignItems="center" bg="white" w="100%" h="100%">
-        <Header title='Cadastrar paciente'/>
         <VStack w="100%">
           <Section title='Pesquise pelo CPF' mt={6}>
           <FormControl.Label _text={{bold: true}}>Insira o CPF do Paciente (ele precisa possuir cadastro na plataforma):</FormControl.Label>
@@ -408,6 +410,7 @@ export function AddPatient() {
         </VStack>
         </VStack>
       </TouchableWithoutFeedback>
+      </ScrollView>
     </>
   )
 }

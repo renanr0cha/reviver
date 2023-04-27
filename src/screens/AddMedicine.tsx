@@ -10,6 +10,7 @@ import {
   Switch,
   ScrollView,
   useToast
+
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -525,26 +526,26 @@ export function AddMedicine() {
                   {
                     showInputHours &&
                     <VStack>
-                      <FormControl.Label _text={{bold: true}} mt={2}>Horário que começou a tomar:</FormControl.Label>
-                          <Button
-                            onPress={showTimepicker}
-                            variant="outline"
-                            size="md"
-                            borderWidth={1}
-                            borderColor="coolGray.300"
-                            fontSize="lg"
-                            fontFamily="body"
-                            color={colors.text[400]}
-                            justifyContent="space-between"
-                            alignItems="space-between"
-                            _text={{
-                              color: colors.text[600],
-                              fontSize: "md",
-                              fontFamily: "body"
-                            }}
-                          >
-                                {setTimeToString(startTime)}
-                          </Button>
+                      <FormControl.Label _text={{bold: true}} mt={2}>Horário que começou a tomar:"</FormControl.Label>
+                      <Button
+                        onPress={showTimepicker}
+                        variant="outline"
+                        size="md"
+                        borderWidth={1}
+                        borderColor="coolGray.300"
+                        fontSize="lg"
+                        fontFamily="body"
+                        color={colors.text[400]}
+                        justifyContent="space-between"
+                        alignItems="space-between"
+                        _text={{
+                          color: colors.text[600],
+                          fontSize: "md",
+                          fontFamily: "body"
+                        }}
+                      >
+                            {setTimeToString(startTime)}
+                      </Button>
                     </VStack>
                   }
             </Section>

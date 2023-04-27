@@ -199,7 +199,6 @@ export function SignUp() {
                       onChangeText={(masked, unmasked) => {
                         onChange(unmasked)
                         setCpf(unmasked); 
-                        
                       }}
                       mask={[/\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, ".", /\d/, /\d/, /\d/, "-", /\d/, /\d/]}
                     />

@@ -67,7 +67,8 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
       },
       trigger: {
         channelId: 'inventory',
-        seconds: 30,
+        hour: 9,
+        minute: 30,
         repeats: true,
       },
     });
@@ -83,7 +84,7 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
         autoDismiss: false,
         sticky: true,
         title: `Você não possui mais estoque de ${medicine.name}`,
-        body: `Enquanto você não adicionar mais estoque, vamos parar de lhe enviar notificações deste medicamento`,
+        body: `Enquanto você não adicionar mais estoque, vamos parar de lhe enviar notificações para tomar este medicamento`,
         priority: 'max',
         sound: "notification.mp3",
         categoryIdentifier: "okButton",
@@ -94,7 +95,8 @@ export async function setInventoryNotifications(medicine: Props, days: number) {
       },
       trigger: {
         channelId: 'inventory',
-        seconds: 60,
+        hour: 9,
+        minute: 30,
         repeats: true,
       },
     });

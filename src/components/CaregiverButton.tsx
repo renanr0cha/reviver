@@ -13,7 +13,7 @@ export function CaregiverButton({
 }:Props) {
   <Container {...rest}>
     <Icon />
-    <Text>
+    <Text allowFontScaling={false}>
       {title}
     </Text>
   </Container>

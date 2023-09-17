@@ -1,4 +1,4 @@
-import { Button as ButtonNativeBase, IButtonProps, Heading, useTheme } from 'native-base';
+import { Button as ButtonNativeBase, Heading, IButtonProps, useTheme } from 'native-base';
 import { THEME } from '../styles/theme';
 
 type Props = IButtonProps & {
@@ -16,7 +16,7 @@ export function ButtonSmall({ title, ...rest }: Props) {
       shadow={2}
       {...rest}
     >
-      <Heading color="white" fontSize="sm" textTransform="uppercase">{title}</Heading>
+      <Heading color="white" fontSize="sm" allowFontScaling={false} textTransform="uppercase">{title}</Heading>
     </ButtonNativeBase>
   );
 }

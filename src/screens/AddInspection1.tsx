@@ -1,26 +1,26 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
 import {
-  VStack,
-  useTheme,
-  HStack,
-  FormControl,
   Box,
+  CheckIcon,
+  FormControl,
+  HStack,
   Heading,
+  ScrollView,
+  Select,
   Switch,
   Text,
-  Select,
-  CheckIcon,
-  ScrollView
+  VStack,
+  useTheme
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, BackHandler } from 'react-native';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { BackHandler, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import * as Yup from "yup";
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { InputForm } from '../components/InputForm';
 import { Section } from '../components/Section';
-import { useNavigation } from '@react-navigation/native';
-import * as Yup from "yup"
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { getFormData, storeFormData } from '../lib/storage';
 import { THEME } from '../styles/theme';
 
@@ -103,15 +103,15 @@ export function AddInspection1() {
   return(
     <>
       <Header title='Adicionar - Sinais vitais e Humor'/>
-      <ScrollView>
+      <ScrollView bg={colors.white}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <VStack alignItems="center" bg="white" w="100%" pb={10}>
           <FormControl>
             <FormControl.HelperText _text={{fontSize: 'sm',textAlign: 'center'}}>Insire os dados ou selecione não informar para prosseguir.</FormControl.HelperText>
             <Section title='' >
               <HStack alignItems="center">
-                  <Heading fontSize="xl" mb={2}>Pressão arterial</Heading>
-                  <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
+                  <Heading fontSize="xl" mb={2} allowFontScaling={false}>Pressão arterial</Heading>
+                  <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1} allowFontScaling={false}>Informar</Text>
                   <Switch size="md" colorScheme="orange" onToggle={() =>setShowPressure(previousState => !previousState)} value={!showPressure}></Switch>
               </HStack>
               {
@@ -144,8 +144,8 @@ export function AddInspection1() {
 
             <Section title=''>
               <HStack  alignItems="center">
-                <Heading alignSelf="center" fontSize="xl" mb={2}>Frequência cardíaca</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
+                <Heading alignSelf="center" fontSize="xl" mb={2} allowFontScaling={false}>Frequência cardíaca</Heading>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1} allowFontScaling={false}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowFrequency(previousState => !previousState)} value={!showFrequency}></Switch>
               </HStack>
                 {
@@ -165,8 +165,8 @@ export function AddInspection1() {
             
             <Section title=''>
               <HStack  alignItems="center">
-                <Heading alignSelf="center" fontSize="xl" mb={2}>Saturação do Sangue</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
+                <Heading alignSelf="center" fontSize="xl" mb={2} allowFontScaling={false}>Saturação do Sangue</Heading>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1} allowFontScaling={false}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowSaturation(previousState => !previousState)} value={!showSaturation}></Switch>
               </HStack>
               {
@@ -185,8 +185,8 @@ export function AddInspection1() {
             </Section>
             <Section title=''>
               <HStack  alignItems="center">
-                <Heading alignSelf="center" fontSize="xl" mb={2}>Glicemia</Heading>
-                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1}>Informar</Text>
+                <Heading alignSelf="center" fontSize="xl" mb={2} allowFontScaling={false}>Glicemia</Heading>
+                <Text ml={6} mr={2} fontSize="md" color="coolGray.500" pb={1} allowFontScaling={false}>Informar</Text>
                 <Switch size="md" colorScheme="orange" onToggle={() =>setShowGlucose(previousState => !previousState)} value={!showGlucose}></Switch>
               </HStack>
               {

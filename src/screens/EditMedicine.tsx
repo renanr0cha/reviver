@@ -1,41 +1,41 @@
+import { useNavigation } from '@react-navigation/native';
 import {
+  Box,
+  Button,
+  CheckIcon,
+  FormControl,
+  HStack,
+  Input as NativeBaseInput,
+  ScrollView,
+  Select,
+  Switch,
   VStack,
   useTheme,
-  HStack,
-  Button,
-  FormControl,
-  Select,
-  CheckIcon,
-  Box,
-  Switch,
-  ScrollView,
-  useToast,
-  Input as NativeBaseInput
+  useToast
 } from 'native-base';
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { TouchableWithoutFeedback, Keyboard, Alert, BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, BackHandler, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
-import { Section } from '../components/Section';
 import { InputForm } from '../components/InputForm';
+import { Section } from '../components/Section';
 
 import { Select as SelectAutoComplete } from '@mobile-reality/react-native-select-pro';
 
-import * as Yup from "yup"
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import * as Yup from "yup";
 
-import api from '../services/api';
-import { setMedicineNotifications } from '../services/setMedicineNotifications';
-import { THEME } from '../styles/theme';
 import { Loading } from '../components/Loading';
+import api from '../services/api';
+import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
 import { cancelNotifications } from '../services/cancelNotifications';
 import { medList } from '../services/medList';
-import { calcDaysOfMedicineLeft } from '../services/calcDaysOfMedicineLeft';
+import { setMedicineNotifications } from '../services/setMedicineNotifications';
+import { THEME } from '../styles/theme';
 
 
 type Nav = {
@@ -369,7 +369,7 @@ export function EditMedicine({ route }: any) {
           {
             !isLoadingScreen ?
               (
-                <ScrollView>
+                <ScrollView bg={colors.white}>
                   <VStack alignItems="center" bg="white" w="100%" pb={10}>
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                   <FormControl>

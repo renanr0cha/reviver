@@ -1,18 +1,19 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   HStack,
   Heading,
+  IconButton,
+  ScrollView,
   VStack,
-  useTheme,
-  IconButton
+  useTheme
 } from "native-base";
+import { ChartLine, Clipboard, Pill, SignOut, UserCircle } from "phosphor-react-native";
 import React, { useState } from "react";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { SignOut, ChartLine, Pill, Clipboard, UserCircle } from "phosphor-react-native"
 import { ButtonSmall } from "../components/ButtonSmall";
-import { useAuth } from "../hooks/auth";
 import { CardMenu } from "../components/CardMenu";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { deleteFormData } from "../lib/storage"
+import { useAuth } from "../hooks/auth";
+import { deleteFormData } from "../lib/storage";
 import { THEME } from '../styles/theme';
 
 type Nav = {
@@ -102,7 +103,7 @@ export function Home() {
         pt={10}
         px={4}
       >
-        <Heading color={colors.white}  textAlign="left" fontSize="xl" flex={1} >
+        <Heading color={colors.white} allowFontScaling={false} textAlign="left" fontSize="xl" flex={1} >
           Olá, {!isCaregiver ? `Paciente ${userName}` : `Cuidador ${userName}`}
         </Heading>
         {
@@ -127,43 +128,45 @@ export function Home() {
           }}
         />
       </HStack>
-      <VStack flex={1} bg={colors.white} justifyContent="space-between">
-        <VStack justifyContent="space-between">
-          <CardMenu
-            title="Medicamentos"
-            subtitle="Veja seus medicamentos atuais e também adicione novos"
-            icon={Pill}
-          >
-            <HStack alignSelf="flex-end">
-              <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewMedicine}/>
-              <ButtonSmall title="ver lista" onPress={handleMedicineList} h={12} mt={2} p={4} ml={4}/>
-            </HStack>
-          </CardMenu>
-          <CardMenu
-            title="Registrar sinais"
-            subtitle="Adicione como você se sente, seus sintomas e medições"
-            icon={Clipboard}
-          >
-            <HStack alignSelf="flex-end">
-              <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewInspection}/>
-              <ButtonSmall title="lembretes" h={12} mt={2} p={4} ml={4} onPress={handleInspectionNotifications}/>
-
-            </HStack>
-          </CardMenu>
-          {
-          isCaregiver &&
+      <ScrollView bg={colors.white}>
+        <VStack flex={1} bg={colors.white} justifyContent="space-between">
+          <VStack justifyContent="space-between">
             <CardMenu
-              title="Progresso do Paciente"
-              subtitle="Acompanhe a evolução dos sintomas"
-              icon={ChartLine}
+              title="Medicamentos"
+              subtitle="Veja seus medicamentos atuais e também adicione novos"
+              icon={Pill}
             >
               <HStack alignSelf="flex-end">
-                <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleSeeInspectionHistory}/>
+                <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewMedicine}/>
+                <ButtonSmall title="ver lista" onPress={handleMedicineList} h={12} mt={2} p={4} ml={4}/>
               </HStack>
             </CardMenu>
-          }
+            <CardMenu
+              title="Registrar sinais"
+              subtitle="Adicione como você se sente, seus sintomas e medições"
+              icon={Clipboard}
+            >
+              <HStack alignSelf="flex-end">
+                <ButtonSmall title="adicionar" h={12} mt={2} p={4} onPress={handleNewInspection}/>
+                <ButtonSmall title="lembretes" h={12} mt={2} p={4} ml={4} onPress={handleInspectionNotifications}/>
+
+              </HStack>
+            </CardMenu>
+            {
+            isCaregiver &&
+              <CardMenu
+                title="Progresso do Paciente"
+                subtitle="Acompanhe a evolução dos sintomas"
+                icon={ChartLine}
+              >
+                <HStack alignSelf="flex-end">
+                  <ButtonSmall title="Ver evolução" h={12} mt={2} p={4} onPress={handleSeeInspectionHistory}/>
+                </HStack>
+              </CardMenu>
+            }
+          </VStack>
         </VStack>
-      </VStack>
+      </ScrollView>
     </>
   );
 }

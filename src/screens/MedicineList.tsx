@@ -1,27 +1,27 @@
-import {
-  VStack,
-  useTheme,
-  Box,
-  Heading,
-  ScrollView,
-  Modal,
-  Button,
-  useToast,
-  Text
-} from 'native-base';
-import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ButtonPrimary } from '../components/ButtonPrimary';
-import { Header } from '../components/Header';
-import { MedicineCard } from '../components/MedicineCard';
-import api from '../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { THEME } from '../styles/theme';
+import {
+  Box,
+  Button,
+  Heading,
+  Modal,
+  ScrollView,
+  Text,
+  VStack,
+  useTheme,
+  useToast
+} from 'native-base';
+import React, { useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { ButtonPrimary } from '../components/ButtonPrimary';
+import { Header } from '../components/Header';
+import { Loading } from '../components/Loading';
+import { MedicineCard } from '../components/MedicineCard';
+import api from '../services/api';
+import { cancelInventoryNotifications } from '../services/cancelInventoryNotifications';
 import { cancelNotifications } from '../services/cancelNotifications';
 import { verifyIfMedicineNotificationsAreSet } from '../services/verifyIfMedicineNotificationsAreSet';
-import { Loading } from '../components/Loading';
-import { cancelInventoryNotifications } from '../services/cancelInventoryNotifications';
+import { THEME } from '../styles/theme';
 
 
 
@@ -131,7 +131,7 @@ export function MedicineList() {
         )
         :
         (
-          <ScrollView >
+          <ScrollView>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <VStack alignItems="center" justifyContent="space-between" bg="coolGray.100" w="100%" h="full" pb={8}>
                 <VStack w="100%">

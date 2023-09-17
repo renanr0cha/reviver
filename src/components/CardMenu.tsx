@@ -1,4 +1,4 @@
-import { VStack, Box, useTheme, Heading, Text, HStack  } from 'native-base';
+import { Box, HStack, Heading, Text, VStack, useTheme } from 'native-base';
 import { IconProps } from 'phosphor-react-native';
 import React, { ReactNode } from 'react';
 import { THEME } from '../styles/theme';
@@ -33,8 +33,8 @@ export function CardMenu({ title, subtitle, icon: Icon, children,...rest}: Props
           flex={1}
           justifyContent="flex-end"
         >
-          <Heading fontSize="lg" alignSelf="flex-start" mb={2}>{title}</Heading>
-          <Text alignSelf="flex-start" fontSize="md">{subtitle}</Text>
+          <Heading fontSize="lg" alignSelf="flex-start" allowFontScaling={false} mb={2}>{title}</Heading>
+          <Text alignSelf="flex-start" fontSize="md" allowFontScaling={false}>{subtitle}</Text>
           {children}
         </VStack>
         

@@ -1,31 +1,30 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { useNavigation } from '@react-navigation/native';
 import {
+  Box,
+  Button,
+  CheckIcon,
+  FormControl,
+  HStack,
+  ScrollView,
+  Select,
   VStack,
   useTheme,
-  HStack,
-  Button,
-  FormControl,
-  Select,
-  CheckIcon,
-  Box,
-  useToast,
-  ScrollView
+  useToast
 } from 'native-base';
-import * as Yup from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup"
 import React, { useEffect, useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, Alert, BackHandler } from 'react-native';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, BackHandler, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import MaskInput from 'react-native-mask-input';
+import * as Yup from 'yup';
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
+import { InputForm } from '../components/InputForm';
 import { Section } from '../components/Section';
 import api from '../services/api';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { InputForm } from '../components/InputForm';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import MaskInput from 'react-native-mask-input';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { THEME } from '../styles/theme';
-
 
 type Nav = {
   goBack(): unknown;
@@ -58,6 +57,7 @@ export function AddPatient() {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
     return () => backHandler.remove()
   }, [])
+
   
   const [phone, setPhone] = React.useState('');
   const [cpf, setCpf] = React.useState('');
@@ -230,7 +230,7 @@ export function AddPatient() {
   return(
     <>
       <Header title='Cadastrar paciente'/>
-      <ScrollView>
+      <ScrollView bg={colors.white}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <VStack alignItems="center" bg="white" w="100%" h="100%">
         <VStack w="100%">

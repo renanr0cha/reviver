@@ -1,26 +1,26 @@
-import
-  React,
-  { useEffect,
-    useState
-  } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import {
   Box,
   Button,
-  Heading,
   HStack,
+  Heading,
   Modal,
+  ScrollView,
   Text,
+  VStack,
   useTheme,
-  useToast,
-  VStack
+  useToast
 } from 'native-base';
+import React, {
+  useEffect,
+  useState
+} from 'react';
+import { BackHandler } from 'react-native';
 import { ButtonPrimary } from '../components/ButtonPrimary';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteFormData, getFormData, storeFormData } from '../lib/storage';
 import api from '../services/api';
-import { useNavigation } from '@react-navigation/native';
 import { THEME } from '../styles/theme';
-import { BackHandler } from 'react-native';
 
 type Nav = {
   navigate: (value: string) => void;
@@ -138,24 +138,25 @@ export function FingerTap() {
         px={4}
         mb={10}
       >
-        <Heading color={colors.white}  textAlign="left" fontSize="xl" ml={4} flex={1} >
+        <Heading color={colors.white}  textAlign="left" fontSize="xl" ml={4} flex={1} allowFontScaling={false}>
           Teste de Finger Tap
         </Heading>
         </HStack>
+        <ScrollView bg={colors.white}>
       <VStack alignItems="center" justifyContent="space-between" flex={1} w="100%">
         <VStack alignItems="center" justifyContent="center" >
-          <Heading color={colors.text[600]}mb={4} >Finger Tap</Heading>
-          <Text w={300} textAlign="center" color={colors.text[600]} mb={8}>
-            Usando seu dedo indicador, aperte o botão laranja <Text fontWeight="bold">seguidamente o mais rápido que você puder</Text>
+          <Heading color={colors.text[600]}mb={4} allowFontScaling={false}>Finger Tap</Heading>
+          <Text w={300} textAlign="center" color={colors.text[600]} mb={8} allowFontScaling={false}>
+            Usando seu dedo indicador, aperte o botão laranja <Text fontWeight="bold" allowFontScaling={false}>seguidamente o mais rápido que você puder</Text>
           </Text>
           <HStack px={20} mb={20} alignItems="center"justifyContent="space-around" w="100%">
             <HStack >
-              <Text fontWeight="bold" mr={2}>CLIQUES:</Text>
-              <Text fontWeight="bold">{count}</Text>
+              <Text fontWeight="bold" mr={2} allowFontScaling={false}>CLIQUES:</Text>
+              <Text fontWeight="bold" allowFontScaling={false}>{count}</Text>
             </HStack>
             <HStack>
-              <Text fontWeight="bold" mr={2}>TEMPO:</Text>
-              <Text fontWeight="bold" >{seconds}</Text>
+              <Text fontWeight="bold" mr={2} allowFontScaling={false}>TEMPO:</Text>
+              <Text fontWeight="bold" allowFontScaling={false}>{seconds}</Text>
             </HStack>
           </HStack>
           <Button
@@ -163,20 +164,19 @@ export function FingerTap() {
             rounded="full"
             w={250}
             bg={THEME.color.primary}
-            _text={{ fontWeight: 'bold', fontSize: "2xl"}}
             h={250}
             _pressed={{ bg: THEME.color.primary_800}}
             onPress={()=> seconds===15 ? null : setCount(count + 1)}
             disabled={seconds === 15 ? true : false }
           >
-            APERTE AQUI
+            <Text allowFontScaling={false} fontWeight={"bold"} fontSize={"2xl"}>APERTE AQUI</Text>
           </Button>
 
         </VStack>
         { 
           showSubmitButton && 
           <>
-            <Text w={300} textAlign="center" color={colors.text[600]} mb={2}>
+            <Text w={300} textAlign="center" color={colors.text[600]} mb={2} allowFontScaling={false}>
               Parabéns, você finalizou o teste, aperte o botão abaixo para gravar seu registro
             </Text>
             <Box px={4} mt={2} pb={2} w="100%">
@@ -188,6 +188,7 @@ export function FingerTap() {
           </>
         }
       </VStack>
+      </ScrollView>
       {visibleCount ? 
         (
           <Modal isOpen={visibleCount} closeOnOverlayClick={false} onClose={() => setVisibleCount(false)}>

@@ -2,7 +2,7 @@ const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (() => {
   const config = getDefaultConfig(__dirname);
-
+  require("graceful-fs").gracefulify(require("fs"));
   const { transformer, resolver } = config;
 
   config.transformer = {

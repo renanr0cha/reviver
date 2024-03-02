@@ -1,25 +1,25 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationAction, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
-  VStack,
-  useTheme,
-  HStack,
   Box,
+  Button,
+  HStack,
   Heading,
   IconButton,
-  ScrollView,
   Modal,
+  ScrollView,
   Text,
-  Button,
+  VStack,
+  useTheme,
   useToast
 } from 'native-base';
-import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { ButtonPrimary } from '../components/ButtonPrimary';
-import api from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, NavigationAction, useFocusEffect } from '@react-navigation/native';
-import { PatientCard } from '../components/PatientCard';
 import { SignOut } from 'phosphor-react-native';
+import React, { useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { ButtonPrimary } from '../components/ButtonPrimary';
+import { PatientCard } from '../components/PatientCard';
 import { useAuth } from '../hooks/auth';
+import api from '../services/api';
 import { THEME } from '../styles/theme';
 
 type Nav = NavigationAction & {
@@ -28,7 +28,6 @@ type Nav = NavigationAction & {
 }
 
 export function PatientList() {
-
   const toast = useToast();
 
   const [showModalSelect, setShowModalSelect] = useState(false);
@@ -37,7 +36,6 @@ export function PatientList() {
   const [patientToDelete, setPatientToDelete] = useState<string>('');
 
   const { signOut } = useAuth();
-
   
   //navigation
   const navigation = useNavigation<Nav>()
@@ -139,7 +137,7 @@ export function PatientList() {
         />
       </HStack>
       
-      <ScrollView bg="white">
+      <ScrollView bg={colors.white}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack alignItems="center" justifyContent="space-between" bg="white" w="100%" h="100%" >
             <VStack w="100%" pb={10} bg="white" >

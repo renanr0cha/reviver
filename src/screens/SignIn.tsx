@@ -1,29 +1,30 @@
+import { useNavigation } from '@react-navigation/native';
 import {
-  Heading,
-  VStack,
-  useTheme,
-  Icon,
-  HStack,
-  Text,
+  Box,
   Button,
   CheckIcon,
-  Select,
   FormControl,
+  HStack,
+  Heading,
+  Icon,
   Pressable,
-  Box
+  ScrollView,
+  Select,
+  Text,
+  VStack,
+  useTheme
 } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
 import { Eye, EyeSlash, Key, User } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form";
 import { useAuth } from '../hooks/auth';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'react-native';
+import * as Yup from "yup";
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { InputForm } from '../components/InputForm';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from "yup"
-import { Image } from 'react-native';
 import { THEME } from '../styles/theme';
 
 type Nav = {
@@ -71,6 +72,7 @@ export function SignIn() {
 
   return(
     <>
+      <ScrollView bg={colors.white}>
         <VStack alignItems="flex-start" bg="white" w="100%" h="100%" px={4} pt={24}>
           <Box alignSelf="center">
             <Image
@@ -153,6 +155,7 @@ export function SignIn() {
               </Button>
             </HStack>
         </VStack>
+      </ScrollView>
     </>
   )
 }

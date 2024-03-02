@@ -1,23 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
 import {
-  VStack,
-  useTheme,
-  FormControl,
   Box,
-  Heading,
-  Select,
   CheckIcon,
-  ScrollView
+  FormControl,
+  Heading,
+  ScrollView,
+  Select,
+  VStack,
+  useTheme
 } from 'native-base';
 import React, { useEffect } from 'react';
-import { TouchableWithoutFeedback, Keyboard, BackHandler } from 'react-native';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { BackHandler, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import * as Yup from "yup";
 import { ButtonPrimary } from '../components/ButtonPrimary';
 import { Header } from '../components/Header';
 import { Section } from '../components/Section';
-import * as Yup from "yup"
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import { getFormData, storeFormData } from '../lib/storage';
+import { storeFormData } from '../lib/storage';
 import { THEME } from '../styles/theme';
 
 type Nav = {
@@ -88,7 +88,7 @@ export function AddInspection2() {
   return(
     <>
       <Header title='Adicionar - Seus sintomas'/>
-      <ScrollView>
+      <ScrollView bg={colors.white}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <VStack alignItems="center" bg="white" w="100%" pb={10}>
             <FormControl>
